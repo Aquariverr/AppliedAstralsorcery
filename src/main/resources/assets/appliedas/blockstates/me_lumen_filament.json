@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "base_face=down": { "model": "appliedas:block/me_lumen_filament" },
+    "base_face=up": { "model": "appliedas:block/me_lumen_filament", "x": 180 },
+    "base_face=north": { "model": "appliedas:block/me_lumen_filament", "x": 270 },
+    "base_face=south": { "model": "appliedas:block/me_lumen_filament", "x": 90 },
+    "base_face=west": { "model": "appliedas:block/me_lumen_filament", "x": 90, "y": 90 },
+    "base_face=east": { "model": "appliedas:block/me_lumen_filament", "x": 90, "y": 270 }
+  }
+}

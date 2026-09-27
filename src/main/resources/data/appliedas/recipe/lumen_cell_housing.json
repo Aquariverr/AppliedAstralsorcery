@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": ["aba", "b b", "cdc"],
+  "key": {
+    "a": { "item": "ae2:quartz_glass" },
+    "b": { "item": "astralsorcery:stardust" },
+    "c": { "tag": "c:ingots/iron" },
+    "d": { "item": "astralsorcery:starmetal_ingot" }
+  },
+  "result": { "id": "appliedas:lumen_cell_housing", "count": 1 }
+}

@@ -1,0 +1,105 @@
+{
+  "type": "astralsorcery:altar_crafting",
+  "baseFocusShatterChance": 0.0,
+  "duration": 100,
+  "effects": [
+    "astralsorcery:default_altar_sparkle",
+    "astralsorcery:default_lumen_input",
+    "astralsorcery:default_relay_input",
+    "astralsorcery:default_central_beam"
+  ],
+  "grid": {
+    "key": {
+      "E": {
+        "type": "item",
+        "ingredient": {
+          "type": "appliedas:upgradeable_lumen_cell"
+        }
+      },
+      "R": {
+        "type": "item",
+        "ingredient": {
+          "item": "astralsorcery:resonating_gem"
+        }
+      },
+      "S": {
+        "type": "item",
+        "ingredient": {
+          "item": "astralsorcery:stardust"
+        }
+      }
+    },
+    "pattern": [
+      "   ",
+      " E ",
+      "   "
+    ],
+    "relayPattern": [
+      "  S  ",
+      "R   R",
+      "S   S",
+      "     ",
+      "  S  "
+    ]
+  },
+  "mayChain": false,
+  "onlyNight": true,
+  "outputModifiers": [
+    {
+      "type": "astralsorcery:replace_with_input",
+      "input_slot": 4,
+      "slot_type": "altar_grid"
+    },
+    {
+      "type": "astralsorcery:generate_identifier"
+    },
+    {
+      "type": "appliedas:enhance_lumen_cell"
+    },
+    {
+      "type": "astralsorcery:set_data_component",
+      "componentType": "minecraft:rarity",
+      "value": "astralsorcery:artifact"
+    },
+    {
+      "type": "astralsorcery:set_flag",
+      "flag": "is_artifact_enhanced"
+    }
+  ],
+  "outputs": [
+    {
+      "count": 1,
+      "id": "appliedas:lumen_storage_cell_256k",
+      "components": {
+        "appliedas:lumen_cell_enhancement": 1,
+        "minecraft:rarity": "astralsorcery:artifact"
+      }
+    }
+  ],
+  "requiredAdditionalInputs": [
+    {
+      "count": 1,
+      "ingredient": {
+        "type": "astralsorcery:is_stable_artifact"
+      }
+    }
+  ],
+  "requiredFluid": [
+    {
+      "amount": 1000,
+      "id": "astralsorcery:liquid_starlight"
+    },
+    {
+      "amount": 1000,
+      "id": "astralsorcery:liquid_starlight"
+    }
+  ],
+  "requiredLumen": [
+    {
+      "amount": 600,
+      "lumen": "astralsorcery:prismatic"
+    }
+  ],
+  "requiredStarlight": [],
+  "requiredType": "radiance"
+}

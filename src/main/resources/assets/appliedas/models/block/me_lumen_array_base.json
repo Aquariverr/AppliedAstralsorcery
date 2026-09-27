@@ -1,0 +1,498 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "4": "astralsorcery:block/lumen_array/lumen_array",
+    "metal": "ae2:part/interface_sides",
+    "socket": "ae2:block/interface",
+    "underside": "ae2:part/interface_back",
+    "stone": "astralsorcery:block/sooty_marble_raw",
+    "wood": "astralsorcery:block/infused_wood_engraved",
+    "particle": "astralsorcery:block/marble_raw"
+  },
+  "elements": [
+    {
+      "name": "Lower machined rim",
+      "from": [
+        0.75,
+        0,
+        0.75
+      ],
+      "to": [
+        15.25,
+        0.3,
+        15.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#underside"
+        }
+      }
+    },
+    {
+      "name": "Recessed sooty marble chassis",
+      "from": [
+        1,
+        0.3,
+        1
+      ],
+      "to": [
+        15,
+        1.2,
+        15
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#stone"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#stone"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#stone"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#stone"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#stone"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#stone"
+        }
+      }
+    },
+    {
+      "name": "Upper machined rim",
+      "from": [
+        0.75,
+        1.2,
+        0.75
+      ],
+      "to": [
+        15.25,
+        1.5,
+        15.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "North ME inset",
+      "from": [
+        6,
+        0.35,
+        0.7
+      ],
+      "to": [
+        10,
+        1.15,
+        1
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5,
+            6,
+            11,
+            10
+          ],
+          "texture": "#socket"
+        },
+        "east": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "South ME inset",
+      "from": [
+        6,
+        0.35,
+        15
+      ],
+      "to": [
+        10,
+        1.15,
+        15.3
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [
+            5,
+            6,
+            11,
+            10
+          ],
+          "texture": "#socket"
+        },
+        "west": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "West ME inset",
+      "from": [
+        0.7,
+        0.35,
+        6
+      ],
+      "to": [
+        1,
+        1.15,
+        10
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [
+            5,
+            6,
+            11,
+            10
+          ],
+          "texture": "#socket"
+        },
+        "up": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "East ME inset",
+      "from": [
+        15,
+        0.35,
+        6
+      ],
+      "to": [
+        15.3,
+        1.15,
+        10
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [
+            5,
+            6,
+            11,
+            10
+          ],
+          "texture": "#socket"
+        },
+        "south": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [
+            5,
+            3,
+            11,
+            4
+          ],
+          "texture": "#metal"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "appliedas:item/lumen_cell_housing"
+  }
+}

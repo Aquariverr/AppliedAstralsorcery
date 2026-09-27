@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "appliedas:lumen_storage_component_1k" },
+    { "item": "appliedas:lumen_cell_housing" }
+  ],
+  "result": { "id": "appliedas:lumen_storage_cell_1k", "count": 1 }
+}

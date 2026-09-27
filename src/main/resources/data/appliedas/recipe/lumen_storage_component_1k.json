@@ -1,0 +1,102 @@
+{
+  "type": "astralsorcery:altar_crafting",
+  "baseFocusShatterChance": 0.0,
+  "duration": 100,
+  "effects": [
+    "astralsorcery:default_altar_sparkle",
+    "astralsorcery:default_lumen_input",
+    "astralsorcery:default_relay_input",
+    "astralsorcery:default_central_beam"
+  ],
+  "grid": {
+    "key": {
+      "A": {
+        "type": "item",
+        "ingredient": {
+          "tag": "c:gems/aquamarine"
+        }
+      },
+      "C": {
+        "type": "item",
+        "ingredient": {
+          "item": "astralsorcery:marble_chiseled"
+        }
+      },
+      "G": {
+        "type": "item",
+        "ingredient": {
+          "tag": "c:nuggets/gold"
+        }
+      },
+      "P": {
+        "type": "item",
+        "ingredient": {
+          "item": "astralsorcery:marble_pillar"
+        }
+      },
+      "S": {
+        "type": "item",
+        "ingredient": {
+          "item": "astralsorcery:sooty_marble_raw"
+        }
+      },
+      "F": {
+        "type": "item",
+        "ingredient": {
+          "item": "ae2:formation_core"
+        }
+      },
+      "D": {
+        "type": "item",
+        "ingredient": {
+          "item": "ae2:annihilation_core"
+        }
+      },
+      "K": {
+        "type": "item",
+        "ingredient": {
+          "item": "ae2:cell_component_1k"
+        }
+      }
+    },
+    "pattern": [
+      "G G",
+      "FKD",
+      "GGG"
+    ],
+    "relayPattern": [
+      "A   A",
+      "P   P",
+      "P   P",
+      "PG GP",
+      "CSSSC"
+    ]
+  },
+  "mayChain": false,
+  "onlyNight": true,
+  "outputModifiers": [],
+  "outputs": [
+    {
+      "id": "appliedas:lumen_storage_component_1k",
+      "count": 1
+    }
+  ],
+  "requiredAdditionalInputs": [
+    {
+      "count": 1,
+      "ingredient": {
+        "tag": "c:gems/aquamarine"
+      }
+    },
+    {
+      "count": 1,
+      "ingredient": {
+        "tag": "c:gems/aquamarine"
+      }
+    }
+  ],
+  "requiredFluid": [],
+  "requiredLumen": [],
+  "requiredStarlight": [],
+  "requiredType": "resonance"
+}

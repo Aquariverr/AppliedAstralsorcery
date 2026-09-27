@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "item": "astralsorcery:stardust"
+    },
+    "b": {
+      "item": "ae2:calculation_processor"
+    },
+    "c": {
+      "item": "appliedas:lumen_storage_component_1k"
+    },
+    "d": {
+      "item": "astralsorcery:glass_lens"
+    }
+  },
+  "pattern": [
+    "aba",
+    "cdc",
+    "aca"
+  ],
+  "result": {
+    "count": 1,
+    "id": "appliedas:lumen_storage_component_4k"
+  }
+}

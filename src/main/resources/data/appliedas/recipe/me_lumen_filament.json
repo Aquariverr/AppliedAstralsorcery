@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "astralsorcery:lumen_filament" },
+    { "item": "ae2:import_bus" },
+    { "item": "ae2:fluix_crystal" },
+    { "item": "ae2:engineering_processor" }
+  ],
+  "result": { "id": "appliedas:me_lumen_filament", "count": 1 }
+}

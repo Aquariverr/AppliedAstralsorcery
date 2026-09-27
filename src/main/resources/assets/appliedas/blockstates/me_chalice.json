@@ -1,0 +1,25 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "appliedas:block/me_chalice_body"
+      }
+    },
+    {
+      "when": {
+        "top_connected": "true"
+      },
+      "apply": {
+        "model": "appliedas:block/me_chalice_top"
+      }
+    },
+    {
+      "when": {
+        "bottom_connected": "true"
+      },
+      "apply": {
+        "model": "appliedas:block/me_chalice_bottom"
+      }
+    }
+  ]
+}

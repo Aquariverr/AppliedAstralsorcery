@@ -1,0 +1,634 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "render_type": "minecraft:solid",
+  "textures": {
+    "particle": "astralsorcery:block/chalice_base",
+    "metal": "ae2:part/interface_sides",
+    "socket": "ae2:block/interface",
+    "underside": "ae2:part/interface_back",
+    "fluix": "ae2:block/fluix_block"
+  },
+  "elements": [
+    {
+      "name": "North upper ME lower rim",
+      "from": [1.5,14.3,1.5],
+      "to": [14.5,14.55,3.75],
+      "faces": {
+        "north": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "North upper ME top rim",
+      "from": [1.5,15.7,1.5],
+      "to": [14.5,15.985,3.75],
+      "faces": {
+        "north": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "South upper ME lower rim",
+      "from": [1.5,14.3,12.25],
+      "to": [14.5,14.55,14.5],
+      "faces": {
+        "north": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "South upper ME top rim",
+      "from": [1.5,15.7,12.25],
+      "to": [14.5,15.985,14.5],
+      "faces": {
+        "north": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "West upper ME lower rim",
+      "from": [1.5,14.3,3.75],
+      "to": [3.75,14.55,12.25],
+      "faces": {
+        "north": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "West upper ME top rim",
+      "from": [1.5,15.7,3.75],
+      "to": [3.75,15.985,12.25],
+      "faces": {
+        "north": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "East upper ME lower rim",
+      "from": [12.25,14.3,3.75],
+      "to": [14.5,14.55,12.25],
+      "faces": {
+        "north": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "East upper ME top rim",
+      "from": [12.25,15.7,3.75],
+      "to": [14.5,15.985,12.25],
+      "faces": {
+        "north": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "North upper ME Fluix chassis",
+      "from": [1.65,14.55,1.65],
+      "to": [14.35,15.7,3.6],
+      "faces": {
+        "north": {
+          "uv": [2,6,14,10],
+          "texture": "#fluix"
+        },
+        "east": {
+          "uv": [2,6,14,10],
+          "texture": "#fluix"
+        },
+        "south": {
+          "uv": [2,6,14,10],
+          "texture": "#fluix"
+        },
+        "west": {
+          "uv": [2,6,14,10],
+          "texture": "#fluix"
+        },
+        "up": {
+          "uv": [0,0,16,16],
+          "texture": "#fluix"
+        },
+        "down": {
+          "uv": [0,0,16,16],
+          "texture": "#fluix"
+        }
+      }
+    },
+    {
+      "name": "South upper ME Fluix chassis",
+      "from": [1.65,14.55,12.4],
+      "to": [14.35,15.7,14.35],
+      "faces": {
+        "north": {
+          "uv": [2,6,14,10],
+          "texture": "#fluix"
+        },
+        "east": {
+          "uv": [2,6,14,10],
+          "texture": "#fluix"
+        },
+        "south": {
+          "uv": [2,6,14,10],
+          "texture": "#fluix"
+        },
+        "west": {
+          "uv": [2,6,14,10],
+          "texture": "#fluix"
+        },
+        "up": {
+          "uv": [0,0,16,16],
+          "texture": "#fluix"
+        },
+        "down": {
+          "uv": [0,0,16,16],
+          "texture": "#fluix"
+        }
+      }
+    },
+    {
+      "name": "West upper ME Fluix chassis",
+      "from": [1.65,14.55,3.9],
+      "to": [3.6,15.7,12.1],
+      "faces": {
+        "north": {
+          "uv": [2,6,14,10],
+          "texture": "#fluix"
+        },
+        "east": {
+          "uv": [2,6,14,10],
+          "texture": "#fluix"
+        },
+        "south": {
+          "uv": [2,6,14,10],
+          "texture": "#fluix"
+        },
+        "west": {
+          "uv": [2,6,14,10],
+          "texture": "#fluix"
+        },
+        "up": {
+          "uv": [0,0,16,16],
+          "texture": "#fluix"
+        },
+        "down": {
+          "uv": [0,0,16,16],
+          "texture": "#fluix"
+        }
+      }
+    },
+    {
+      "name": "East upper ME Fluix chassis",
+      "from": [12.4,14.55,3.9],
+      "to": [14.35,15.7,12.1],
+      "faces": {
+        "north": {
+          "uv": [2,6,14,10],
+          "texture": "#fluix"
+        },
+        "east": {
+          "uv": [2,6,14,10],
+          "texture": "#fluix"
+        },
+        "south": {
+          "uv": [2,6,14,10],
+          "texture": "#fluix"
+        },
+        "west": {
+          "uv": [2,6,14,10],
+          "texture": "#fluix"
+        },
+        "up": {
+          "uv": [0,0,16,16],
+          "texture": "#fluix"
+        },
+        "down": {
+          "uv": [0,0,16,16],
+          "texture": "#fluix"
+        }
+      }
+    },
+    {
+      "name": "Upper ring support",
+      "from": [2.25,14,2.25],
+      "to": [3.5,14.3,3.5],
+      "faces": {
+        "north": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "Upper ring support",
+      "from": [2.25,14,12.5],
+      "to": [3.5,14.3,13.75],
+      "faces": {
+        "north": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "Upper ring support",
+      "from": [12.5,14,2.25],
+      "to": [13.75,14.3,3.5],
+      "faces": {
+        "north": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "Upper ring support",
+      "from": [12.5,14,12.5],
+      "to": [13.75,14.3,13.75],
+      "faces": {
+        "north": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "down": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "Top ME network contact",
+      "from": [2.05,15.75,2.05],
+      "to": [3.65,16,3.65],
+      "faces": {
+        "north": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [4,4,12,12],
+          "texture": "#socket"
+        },
+        "down": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "Top ME network contact",
+      "from": [2.05,15.75,12.35],
+      "to": [3.65,16,13.95],
+      "faces": {
+        "north": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [4,4,12,12],
+          "texture": "#socket"
+        },
+        "down": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "Top ME network contact",
+      "from": [12.35,15.75,2.05],
+      "to": [13.95,16,3.65],
+      "faces": {
+        "north": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [4,4,12,12],
+          "texture": "#socket"
+        },
+        "down": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "name": "Top ME network contact",
+      "from": [12.35,15.75,12.35],
+      "to": [13.95,16,13.95],
+      "faces": {
+        "north": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "east": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "south": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "west": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        },
+        "up": {
+          "uv": [4,4,12,12],
+          "texture": "#socket"
+        },
+        "down": {
+          "uv": [5,3,11,4],
+          "texture": "#metal"
+        }
+      }
+    }
+  ]
+}

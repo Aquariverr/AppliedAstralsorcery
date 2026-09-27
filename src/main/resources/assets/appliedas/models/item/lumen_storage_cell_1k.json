@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "appliedas:item/lumen_storage_cell_1k",
+    "layer1": "appliedas:item/lumen_storage_cell_1k_led"
+  }
+}

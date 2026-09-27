@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","pattern":[" M ","CAC"," I "],"key":{"M":{"item":"ae2:fluix_crystal"},"C":{"item":"ae2:calculation_processor"},"A":{"item":"astralsorcery:lumen_array"},"I":{"item":"ae2:interface"}},"result":{"id":"appliedas:me_lumen_array","count":1}}
