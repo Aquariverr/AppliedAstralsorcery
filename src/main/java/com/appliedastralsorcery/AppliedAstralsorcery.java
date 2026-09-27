@@ -18,5 +18,6 @@ public final class AppliedAstralsorcery {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(LumenIntegration::register);
+        event.enqueueWork(com.appliedastralsorcery.wand.MEResonatingWandItem::registerLinking);
     }
 }

@@ -21,6 +21,7 @@ Applied Astralsorcery connects AE2 with Astral Sorcery, allowing ME networks to 
 - [Capacity enhancement](enhancement.md)
 - [Transferring lumen with buses](buses.md)
 - [Using ME Lumen Filaments](filament.md)
+- [Building with the ME Resonating Wand](wand.md)
 - [Troubleshooting](troubleshooting.md)
 
 Hover over items in recipe diagrams to see their names.

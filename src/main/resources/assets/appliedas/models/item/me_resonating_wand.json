@@ -1,0 +1,6 @@
+{
+  "parent": "astralsorcery:item/wand",
+  "textures": {
+    "layer0": "appliedas:item/me_resonating_wand"
+  }
+}

@@ -18,6 +18,7 @@ import com.appliedastralsorcery.lumen.MELumenArrayMenu;
 import com.appliedastralsorcery.chalice.MEChaliceBlock;
 import com.appliedastralsorcery.chalice.MEChaliceBlockEntity;
 import com.appliedastralsorcery.chalice.MEChaliceMenu;
+import com.appliedastralsorcery.wand.MEResonatingWandItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.flag.FeatureFlags;
@@ -52,6 +53,9 @@ public final class ModContent {
             MENUS.register("me_lumen_array", () -> new MenuType<>(MELumenArrayMenu::new, FeatureFlags.VANILLA_SET));
     public static final DeferredHolder<MenuType<?>, MenuType<MEChaliceMenu>> CHALICE_MENU =
             MENUS.register("me_chalice", () -> new MenuType<>(MEChaliceMenu::new, FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<MenuType<?>, MenuType<com.appliedastralsorcery.wand.MEResonatingWandMenu>> WAND_MENU =
+            MENUS.register("me_resonating_wand", () -> new MenuType<>(
+                    com.appliedastralsorcery.wand.MEResonatingWandMenu::new, FeatureFlags.VANILLA_SET));
     public static final DeferredBlock<MEChaliceBlock> ME_CHALICE = BLOCKS.register("me_chalice", MEChaliceBlock::new);
     public static final DeferredItem<BlockItem> ME_CHALICE_ITEM = ITEMS.registerSimpleBlockItem(ME_CHALICE);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MEChaliceBlockEntity>> CHALICE_ENTITY =
@@ -64,6 +68,8 @@ public final class ModContent {
                     MELumenArrayBlockEntity::new, ME_LUMEN_ARRAY.get()).build(null));
 
     public static final DeferredItem<Item> LUMEN_CELL_HOUSING = ITEMS.registerSimpleItem("lumen_cell_housing");
+    public static final DeferredItem<MEResonatingWandItem> ME_RESONATING_WAND =
+            ITEMS.register("me_resonating_wand", MEResonatingWandItem::new);
     public static final DeferredItem<Item> LUMEN_COMPONENT = ITEMS.registerSimpleItem("lumen_storage_component_1k");
     public static final DeferredItem<BasicStorageCell> LUMEN_CELL = ITEMS.register("lumen_storage_cell_1k",
             () -> new BasicStorageCell(new Item.Properties().stacksTo(1), 0.5, 1, 8, LUMEN_CELL_TYPES, LumenKeyType.INSTANCE));
@@ -122,6 +128,7 @@ public final class ModContent {
                     output.accept(ME_LUMEN_FILAMENT_ITEM);
                     output.accept(ME_LUMEN_ARRAY_ITEM);
                     output.accept(ME_CHALICE_ITEM);
+                    output.accept(ME_RESONATING_WAND);
                 }).build());
     }
 
@@ -129,6 +136,7 @@ public final class ModContent {
 
     public static void register(IEventBus bus) {
         LumenCellEnhancement.register(bus);
+        MEResonatingWandItem.registerComponents(bus);
         BLOCKS.register(bus);
         ITEMS.register(bus);
         BLOCK_ENTITIES.register(bus);

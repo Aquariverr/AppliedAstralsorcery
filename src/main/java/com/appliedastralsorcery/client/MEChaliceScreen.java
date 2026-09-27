@@ -21,7 +21,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.lwjgl.glfw.GLFW;
 
-/** A marble chalice with a suspended fluid chamber and two illuminated ME bases. */
+/** A marble chalice with a suspended fluid cube and two ME fittings. */
 public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu> {
     private static final int CAPACITY = 64000;
     private static final int SIDE_MARGIN = 12;
@@ -35,7 +35,6 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
     private static final int EDGE = 0xFF9D9073;
     private static final ResourceLocation MARBLE = material("marble_raw");
     private static final ResourceLocation WOOD = material("infused_wood");
-    private static final ResourceLocation SOOTY = material("sooty_marble_raw");
     private static final ResourceLocation AQUAMARINE = ResourceLocation.fromNamespaceAndPath(
             "astralsorcery", "textures/item/aquamarine.png");
     private EditBox target;
@@ -239,7 +238,7 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
         g.renderItem(ModContent.ME_CHALICE_ITEM.toStack(), leftPos + SIDE_MARGIN + 5, topPos + 9);
         g.blit(AQUAMARINE, leftPos + 224, topPos + 9, 0, 0, 16, 16, 16, 16);
 
-        drawChalice(g);
+        drawChalice(g, tick);
         inset(g, leftPos + 76, topPos + 30, SIDE_MARGIN + CONTENT_WIDTH - 76, 78);
         g.fill(leftPos + 80, topPos + 31, leftPos + 248, topPos + 49, 0x508BD2DD);
         g.fill(leftPos + 82, topPos + 49, leftPos + 246, topPos + 50, GOLD_SHADE);
@@ -262,40 +261,12 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
         if (menu.value(7) == 1) g.fill(leftPos + 188, topPos + 197, leftPos + 190, topPos + 233, GOLD_SHADE);
     }
 
-    private void drawChalice(GuiGraphics g) {
+    private void drawChalice(GuiGraphics g, float partialTick) {
         int x = leftPos, y = topPos;
         inset(g, x + SIDE_MARGIN, y + 31, 56, 76);
-        tile(g, SOOTY, x + 17, y + 41, 46, 54);
-        g.fill(x + 17, y + 41, x + 63, y + 95, 0x60405459);
-        // A suspended cube of fluid above a stepped marble cup and narrow stem.
-        g.fill(x + 26, y + 47, x + 52, y + 69, 0xFF304B53);
-        FluidStack fluid = menu.getStoredFluid();
-        int fill = 20 * Math.clamp(menu.getStoredAmount(), 0, CAPACITY) / CAPACITY;
-        if (!fluid.isEmpty() && fill == 0) fill = 1;
-        if (fill > 0) {
-            drawFluid(g, fluid, x + 27, y + 68 - fill, 24, fill);
-            g.fill(x + 27, y + 68 - fill, x + 51, y + 69 - fill, 0x65FFFFFF);
-        }
-        g.renderOutline(x + 26, y + 47, 26, 22, 0xFF8BAFB4);
-        g.fill(x + 28, y + 49, x + 30, y + 66, 0x487ED6E0);
-        g.fill(x + 48, y + 50, x + 49, y + 66, 0x38C8F3F5);
-        plate(g, x + 20, y + 73, 39, 5);
-        plate(g, x + 24, y + 78, 31, 5);
-        plate(g, x + 31, y + 83, 17, 4);
-        tile(g, MARBLE, x + 36, y + 86, 7, 8);
-        g.fill(x + 37, y + 86, x + 39, y + 94, 0x90FFF8DC);
-        plate(g, x + 26, y + 93, 27, 4);
-        g.fill(x + 20, y + 72, x + 59, y + 74, GOLD);
-        // Both ME interfaces share the network lamp color; no side sockets.
-        drawMEBase(g, x + 16, y + 34, 47);
-        drawMEBase(g, x + 16, y + 97, 47);
-    }
-
-    private void drawMEBase(GuiGraphics g, int x, int y, int width) {
-        tile(g, SOOTY, x, y, width, 8);
-        g.fill(x + 1, y, x + width - 1, y + 1, GOLD);
-        g.fill(x + 1, y + 7, x + width - 1, y + 8, GOLD_SHADE);
-        for (int i = 0; i < 3; i++) g.fill(x + 13 + i * 7, y + 3, x + 18 + i * 7, y + 5, networkColor());
+        g.fillGradient(x + 16, y + 35, x + 64, y + 103, 0x60455965, 0x183B6670);
+        AstralMachinePreview.chalice(g, x + 40, y + 78, menu.getStoredFluid(), menu.getStoredAmount(),
+                CAPACITY, partialTick);
     }
 
     private void drawFluid(GuiGraphics g, FluidStack fluid, int x, int y, int width, int height) {

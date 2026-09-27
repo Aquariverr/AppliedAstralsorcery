@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "ae2:entropy_manipulator" },
+    { "item": "astralsorcery:wand" },
+    { "item": "ae2:wireless_receiver" },
+    { "item": "ae2:engineering_processor" }
+  ],
+  "result": { "id": "appliedas:me_resonating_wand", "count": 1 }
+}

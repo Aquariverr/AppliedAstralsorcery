@@ -42,7 +42,7 @@ public final class MELumenArrayMenu extends AbstractContainerMenu {
             public int getCount() { return 10; }
         };
         addDataSlots(data);
-        addSlot(new SlotItemHandler(array == null ? new ItemStackHandler(1) : array.getTileData().getInventory(), 0, 30, 65) {
+        addSlot(new SlotItemHandler(array == null ? new ItemStackHandler(1) : array.getTileData().getInventory(), 0, 45, 85) {
             @Override public boolean mayPlace(ItemStack stack) {
                 // AS's InventoryView.isItemValid is deliberately permissive; insertItem owns its recipe/fluid filters.
                 return !stack.isEmpty() && getItemHandler().insertItem(0, stack.copyWithCount(1), true).isEmpty();

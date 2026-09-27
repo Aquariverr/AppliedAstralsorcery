@@ -39,6 +39,7 @@ public final class LumenClient {
         event.register(ModContent.FILAMENT_MENU.get(), MELumenFilamentScreen::new);
         event.register(ModContent.ARRAY_MENU.get(), MELumenArrayScreen::new);
         event.register(ModContent.CHALICE_MENU.get(), MEChaliceScreen::new);
+        event.register(ModContent.WAND_MENU.get(), MEResonatingWandScreen::new);
     }
 
     @SubscribeEvent

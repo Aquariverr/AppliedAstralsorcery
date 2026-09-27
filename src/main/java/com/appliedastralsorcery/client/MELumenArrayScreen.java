@@ -8,6 +8,8 @@ import com.appliedastralsorcery.lumen.MELumenArrayMenu;
 import hellfirepvp.astralsorcery.client.ClientProxy;
 import hellfirepvp.astralsorcery.client.lib.TexturesAS;
 import hellfirepvp.astralsorcery.common.lumen.Lumen;
+import hellfirepvp.astralsorcery.common.util.RecipeFinder;
+import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -17,6 +19,7 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import org.lwjgl.glfw.GLFW;
 
 /** An Astral Sorcery marble altar, set in infused wood, gold and aquamarine. */
@@ -33,12 +36,12 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
     private static final int EDGE = 0xFF9D9073;
     private static final ResourceLocation MARBLE = material("marble_raw");
     private static final ResourceLocation WOOD = material("infused_wood");
-    private static final ResourceLocation SOOTY = material("sooty_marble_raw");
     private static final ResourceLocation AQUAMARINE = ResourceLocation.fromNamespaceAndPath(
             "astralsorcery", "textures/item/aquamarine.png");
     private EditBox target;
     private final ReserveMarkerDrag reserveDrag = new ReserveMarkerDrag();
     private int lastTarget = -1;
+    private ItemStack catalystMarker = ItemStack.EMPTY;
     private ArrayButton apply, previous, next, export, supply, filaments;
 
     public MELumenArrayScreen(MELumenArrayMenu menu, Inventory inventory, Component title) {
@@ -99,7 +102,7 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
 
     public List<Rect2i> getJeiDropAreas() {
         return List.of(new Rect2i(leftPos + 102, topPos + 30, 124, 20),
-                new Rect2i(leftPos + 24, topPos + 39, 28, 21));
+                new Rect2i(leftPos + 19, topPos + 84, 18, 18));
     }
 
     private boolean clickMarker(double x, double y, int button) {
@@ -161,7 +164,7 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
     private void select(int direction) {
         if (menu.getTypes().isEmpty()) return;
         int current = menu.getTypes().indexOf(menu.getSelectedLumen());
-        send(100 + Math.floorMod(current + direction, menu.getTypes().size()));
+        acceptJeiLumen(menu.getTypes().get(Math.floorMod(current + direction, menu.getTypes().size())));
     }
 
     @Override public boolean keyPressed(int key, int scanCode, int modifiers) {
@@ -180,6 +183,7 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
     }
 
     @Override public void render(GuiGraphics g, int mx, int my, float tick) {
+        updateCatalystMarker();
         if (!reserveDrag.isDragging() && lastTarget != menu.value(1) && !target.isFocused()) {
             target.setValue(Integer.toString(menu.value(1)));
             lastTarget = menu.value(1);
@@ -193,11 +197,16 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
         renderTooltip(g, mx, my);
         if (isHovering(102, 30, 124, 20, mx, my)) {
             g.renderTooltip(font, selectedName(), mx, my);
-        } else if (isHovering(24, 39, 28, 21, mx, my)) {
+        } else if (isHovering(19, 84, 18, 18, mx, my)) {
             g.renderTooltip(font, menu.getActiveLumen() == null ? selectedName() :
                     tr("active", LumenKey.of(menu.getActiveLumen()).getDisplayName()), mx, my);
-        } else if (isHovering(29, 64, 18, 18, mx, my) && !menu.getSlot(0).hasItem()) {
-            g.renderTooltip(font, tr("catalyst_hint"), mx, my);
+        } else if (isHovering(44, 84, 18, 18, mx, my) && !menu.getSlot(0).hasItem()) {
+            if (!catalystMarker.isEmpty()) {
+                g.renderComponentTooltip(font, List.of(tr("catalyst_for", selectedName()),
+                        catalystMarker.getHoverName(), tr("catalyst_marker_hint")), mx, my);
+            } else {
+                g.renderTooltip(font, tr(menu.getSelectedLumen() == null ? "catalyst_hint" : "catalyst_missing"), mx, my);
+            }
         } else if (isHovering(80, 60, 168, 13, mx, my)) {
             g.renderTooltip(font, tr("marker_hint"), mx, my);
         } else if (isHovering(80, 52, 168, 8, mx, my)) {
@@ -213,6 +222,19 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
 
     private Component selectedName() {
         return menu.getSelectedLumen() == null ? tr("choose") : LumenKey.of(menu.getSelectedLumen()).getDisplayName();
+    }
+
+    private void updateCatalystMarker() {
+        catalystMarker = ItemStack.EMPTY;
+        Lumen selected = menu.getSelectedLumen();
+        if (selected == null || minecraft == null || minecraft.level == null || menu.getSlot(0).hasItem()) return;
+        // Follow the selected recipe even while the array is draining its previous lumen.
+        RecipeFinder.of(minecraft.level).findLumenGenerationRecipeByOutput(selected).ifPresent(recipe -> {
+            ItemStack[] alternatives = recipe.value().getInput().getItems();
+            if (alternatives.length > 0) {
+                catalystMarker = alternatives[(int) ((Util.getMillis() / 1000L) % alternatives.length)].copyWithCount(1);
+            }
+        });
     }
 
     private Lumen displayedLumen() {
@@ -274,44 +296,27 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
     private void drawBasin(GuiGraphics g) {
         int x = leftPos, y = topPos;
         inset(g, x + SIDE_MARGIN, y + 31, 56, 76);
-        // Glass chamber, marble columns, gold rim and a bottom ME interface.
-        g.fillGradient(x + 23, y + 39, x + 55, y + 91, 0xFF62858E, 0xFF90AAA9);
-        int fluidHeight = 50 * Math.clamp(menu.value(3), 0, 2000) / 2000;
-        if (fluidHeight > 0) {
-            int surface = y + 90 - fluidHeight;
-            g.fillGradient(x + 24, surface, x + 54, y + 91, 0xFF71CDDB, 0xFF277798);
-            g.fill(x + 24, surface, x + 54, surface + 1, 0xFFC3ECED);
-        }
-        g.fill(x + 25, y + 40, x + 27, y + 90, 0x287BCCE4);
-        g.fill(x + 51, y + 40, x + 52, y + 90, 0x388AD7EA);
-        for (int column : new int[] {16, 56}) {
-            tile(g, MARBLE, x + column, y + 38, 7, 57);
-            g.fill(x + column + 1, y + 39, x + column + 3, y + 94, 0x70FFF7DC);
-            g.fill(x + column + 5, y + 39, x + column + 7, y + 94, 0x506A6B60);
-            plate(g, x + column - 1, y + 34, 9, 6);
-            g.fill(x + column, y + 40, x + column + 7, y + 42, AQUA);
-            g.fill(x + column, y + 87, x + column + 7, y + 89, GOLD);
-            plate(g, x + column - 1, y + 91, 9, 5);
-        }
-        g.fill(x + 23, y + 36, x + 56, y + 38, GOLD);
-        g.fill(x + 23, y + 91, x + 56, y + 93, GOLD);
-        g.fill(x + 24, y + 38, x + 55, y + 39, 0xFF766542);
+        g.fillGradient(x + 16, y + 35, x + 64, y + 81, 0x60455965, 0x183B6670);
+        AstralMachinePreview.array(g, x + 40, y + 57, menu.value(3));
+        // Keep the marker and catalyst below the miniature so the original silhouette stays visible.
+        g.fill(x + 19, y + 84, x + 37, y + 102, 0xFF304A53);
+        g.renderOutline(x + 19, y + 84, 18, 18, GOLD);
         if (displayedLumen() != null) {
-            g.fill(x + 29, y + 41, x + 47, y + 59, 0xFF304A53);
-            g.renderOutline(x + 29, y + 41, 18, 18, GOLD);
             // Full tint opacity, preserving the native rune sprite's transparent silhouette.
             var sprite = minecraft.getModelManager().getAtlas(TexturesAS.ATLAS_LUMEN)
                     .getSprite(displayedLumen().getRegistryKey().orElseThrow().location());
             int color = lumenColor();
-            g.blit(x + 30, y + 42, 0, 16, 16, sprite,
+            g.blit(x + 20, y + 85, 0, 16, 16, sprite,
                     ((color >> 16) & 255) / 255F, ((color >> 8) & 255) / 255F,
                     (color & 255) / 255F, 1F);
         }
-        slot(g, x + 30, y + 65, true);
-        tile(g, SOOTY, x + 13, y + 96, 54, 9);
-        g.fill(x + 15, y + 96, x + 65, y + 97, GOLD);
-        g.fill(x + 16, y + 103, x + 64, y + 105, GOLD_SHADE);
-        for (int i = 0; i < 3; i++) g.fill(x + 30 + i * 7, y + 99, x + 35 + i * 7, y + 101, networkColor());
+        slot(g, x + menu.getSlot(0).x, y + menu.getSlot(0).y, true);
+        if (!catalystMarker.isEmpty() && !menu.getSlot(0).hasItem()) {
+            int slotX = x + menu.getSlot(0).x, slotY = y + menu.getSlot(0).y;
+            g.fill(slotX, slotY, slotX + 16, slotY + 16, 0xFF628A88);
+            g.renderFakeItem(catalystMarker, slotX, slotY);
+            g.fill(slotX, slotY, slotX + 16, slotY + 16, 200, 0x60628A88);
+        }
     }
 
     private void bar(GuiGraphics g, int x, int y, int width, int value, int max, int color) {

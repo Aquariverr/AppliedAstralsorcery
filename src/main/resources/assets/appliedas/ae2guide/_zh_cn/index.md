@@ -21,6 +21,7 @@ navigation:
 - [容量强化](enhancement.md)
 - [用总线搬运流明](buses.md)
 - [使用 ME 流明丝结](filament.md)
+- [使用 ME 共振星杖建造结构](wand.md)
 - [排查问题](troubleshooting.md)
 
 配方图中的物品可悬停查看名称。
