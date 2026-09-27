@@ -8,6 +8,8 @@ Applied Astralsorcery is an addon for **Astral Sorcery** and **Applied Energisti
 
 For **Minecraft 1.21.1 / NeoForge**.
 
+Licensed under the [MIT License](LICENSE).
+
 ## Features
 
 - **Lumen storage**: Available in 1k, 4k, 16k, 64k, and 256k capacities, ME Lumen Storage Cells can be installed in an ME Drive or ME Chest, with stored amounts visible in an ME Terminal. Each cell stores up to 5 lumen types by default.

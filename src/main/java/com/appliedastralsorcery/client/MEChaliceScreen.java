@@ -24,6 +24,9 @@ import org.lwjgl.glfw.GLFW;
 /** A marble chalice with a suspended fluid chamber and two illuminated ME bases. */
 public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu> {
     private static final int CAPACITY = 64000;
+    private static final int SIDE_MARGIN = 12;
+    private static final int CONTENT_WIDTH = 264 - 2 * SIDE_MARGIN;
+    private static final int BUTTON_HEIGHT = 18;
     private static final int INK = 0xFF3B3933;
     private static final int MUTED = 0xFF696356;
     private static final int GOLD = 0xFFD4BE76;
@@ -62,11 +65,11 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
         target.setTooltip(Tooltip.create(tr("target_hint")));
         addRenderableWidget(target);
         lastTarget = menu.getPullTarget();
-        apply = addButton(180, 89, 72, tr("apply"), -1, b -> applyTarget());
+        apply = addButton(180, 89, 68, tr("apply"), -1, b -> applyTarget());
         apply.setTooltip(Tooltip.create(tr("apply_hint")));
-        export = addButton(12, 110, 116, tr("export"), 4, b -> send(1));
+        export = addButton(SIDE_MARGIN, 110, 116, tr("export"), 4, b -> send(1));
         pull = addButton(136, 110, 116, tr("pull"), 5, b -> send(2));
-        clear = addButton(12, 132, 240, tr("clear"), -1, b -> setMarker(null));
+        clear = addButton(SIDE_MARGIN, 132, CONTENT_WIDTH, tr("clear"), -1, b -> setMarker(null));
         export.setTooltip(Tooltip.create(tr("export_hint")));
         pull.setTooltip(Tooltip.create(tr("pull_hint")));
         clear.setTooltip(Tooltip.create(tr("clear_hint")));
@@ -93,8 +96,8 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
     public int getDisplayedPullTarget() { return reserveDrag.displayed(menu.getPullTarget()); }
 
     public List<Rect2i> getJeiDropAreas() {
-        return List.of(new Rect2i(leftPos + 80, topPos + 30, 172, 20),
-                new Rect2i(leftPos + 12, topPos + 31, 56, 76));
+        return List.of(new Rect2i(leftPos + 80, topPos + 30, 168, 20),
+                new Rect2i(leftPos + SIDE_MARGIN, topPos + 31, 56, 76));
     }
 
     public void acceptJeiFluid(AEFluidKey fluid) {
@@ -120,15 +123,15 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
     }
 
     private void updateReserveDrag(double mouseX) {
-        reserveDrag.update(mouseX, leftPos + 81, 170, CAPACITY);
+        reserveDrag.update(mouseX, leftPos + 81, 166, CAPACITY);
         target.setValue(Integer.toString(getDisplayedPullTarget()));
     }
 
     @Override public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (clickMarker(mouseX, mouseY, button)) return true;
-        if (button == 0 && isHovering(80, 60, 172, 13, mouseX, mouseY)) {
+        if (button == 0 && isHovering(80, 60, 168, 13, mouseX, mouseY)) {
             target.setFocused(false);
-            reserveDrag.begin(mouseX, leftPos + 81, 170, CAPACITY);
+            reserveDrag.begin(mouseX, leftPos + 81, 166, CAPACITY);
             updateReserveDrag(mouseX);
             return true;
         }
@@ -189,11 +192,11 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
         renderTooltip(g, mx, my);
         if (MarkerAreas.contains(getJeiDropAreas(), mx, my)) {
             g.renderComponentTooltip(font, List.of(selectedName(), tr("filter_hint")), mx, my);
-        } else if (isHovering(80, 60, 172, 13, mx, my)) {
+        } else if (isHovering(80, 60, 168, 13, mx, my)) {
             g.renderTooltip(font, tr("marker_hint"), mx, my);
-        } else if (isHovering(80, 52, 172, 8, mx, my)) {
+        } else if (isHovering(80, 52, 168, 8, mx, my)) {
             g.renderTooltip(font, tr("fluid_hint", menu.getStoredAmount(), getDisplayedPullTarget()), mx, my);
-        } else if (isHovering(80, 72, 172, 16, mx, my)) {
+        } else if (isHovering(80, 72, 168, 16, mx, my)) {
             g.renderTooltip(font, storedName(), mx, my);
         } else if (isHovering(188, 196, 64, 38, mx, my)) {
             g.renderTooltip(font, tr(menu.value(7) == 1 ? "switch_hint" : "target_hint"), mx, my);
@@ -228,18 +231,18 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
     @Override protected void renderBg(GuiGraphics g, float tick, int mx, int my) {
         plate(g, leftPos, topPos, imageWidth, imageHeight);
         g.fill(leftPos + 5, topPos + 5, leftPos + 259, topPos + 233, 0x24FFF8E5);
-        tile(g, WOOD, leftPos + 7, topPos + 6, 250, 22);
-        g.renderOutline(leftPos + 7, topPos + 6, 250, 22, GOLD_SHADE);
-        plate(g, leftPos + 11, topPos + 9, 242, 16);
-        g.fill(leftPos + 12, topPos + 10, leftPos + 252, topPos + 24, 0x40FFF9EC);
-        g.fill(leftPos + 12, topPos + 24, leftPos + 252, topPos + 25, GOLD);
-        g.renderItem(ModContent.ME_CHALICE_ITEM.toStack(), leftPos + 12, topPos + 9);
-        g.blit(AQUAMARINE, leftPos + 229, topPos + 9, 0, 0, 16, 16, 16, 16);
+        tile(g, WOOD, leftPos + SIDE_MARGIN, topPos + 6, CONTENT_WIDTH, 22);
+        g.renderOutline(leftPos + SIDE_MARGIN, topPos + 6, CONTENT_WIDTH, 22, GOLD_SHADE);
+        plate(g, leftPos + SIDE_MARGIN + 4, topPos + 9, CONTENT_WIDTH - 8, 16);
+        g.fill(leftPos + SIDE_MARGIN + 5, topPos + 10, leftPos + SIDE_MARGIN + CONTENT_WIDTH - 5, topPos + 24, 0x40FFF9EC);
+        g.fill(leftPos + SIDE_MARGIN + 5, topPos + 24, leftPos + SIDE_MARGIN + CONTENT_WIDTH - 5, topPos + 25, GOLD);
+        g.renderItem(ModContent.ME_CHALICE_ITEM.toStack(), leftPos + SIDE_MARGIN + 5, topPos + 9);
+        g.blit(AQUAMARINE, leftPos + 224, topPos + 9, 0, 0, 16, 16, 16, 16);
 
         drawChalice(g);
-        inset(g, leftPos + 76, topPos + 30, 180, 78);
-        g.fill(leftPos + 80, topPos + 31, leftPos + 252, topPos + 49, 0x508BD2DD);
-        g.fill(leftPos + 82, topPos + 49, leftPos + 250, topPos + 50, GOLD_SHADE);
+        inset(g, leftPos + 76, topPos + 30, SIDE_MARGIN + CONTENT_WIDTH - 76, 78);
+        g.fill(leftPos + 80, topPos + 31, leftPos + 248, topPos + 49, 0x508BD2DD);
+        g.fill(leftPos + 82, topPos + 49, leftPos + 246, topPos + 50, GOLD_SHADE);
         drawFluid(g, selectedStack(), leftPos + 83, topPos + 32, 16, 16);
         drawTankBar(g);
         inset(g, leftPos + 108, topPos + 91, 65, 16);
@@ -247,7 +250,7 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
         g.fill(leftPos + 111, topPos + 93, leftPos + 170, topPos + 105, 0xA033291B);
         if (target.isFocused()) g.renderOutline(leftPos + 108, topPos + 91, 65, 16, AQUA);
 
-        inset(g, leftPos + 12, topPos + 154, 171, 80);
+        inset(g, leftPos + SIDE_MARGIN, topPos + 154, 171, 80);
         g.fill(leftPos + 18, topPos + 211, leftPos + 178, topPos + 212, GOLD_SHADE);
         g.fill(leftPos + 18, topPos + 212, leftPos + 178, topPos + 213, GOLD);
         for (var slot : menu.slots) drawSlot(g, leftPos + slot.x, topPos + slot.y);
@@ -261,7 +264,7 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
 
     private void drawChalice(GuiGraphics g) {
         int x = leftPos, y = topPos;
-        inset(g, x + 12, y + 31, 56, 76);
+        inset(g, x + SIDE_MARGIN, y + 31, 56, 76);
         tile(g, SOOTY, x + 17, y + 41, 46, 54);
         g.fill(x + 17, y + 41, x + 63, y + 95, 0x60405459);
         // A suspended cube of fluid above a stepped marble cup and narrow stem.
@@ -314,24 +317,24 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
 
     private void drawTankBar(GuiGraphics g) {
         int x = leftPos + 80, y = topPos + 64;
-        g.fill(x, y, x + 172, y + 6, 0xFF777568);
-        g.fill(x + 1, y + 1, x + 171, y + 5, 0xFFACA99A);
-        int fill = 170 * Math.clamp(menu.getStoredAmount(), 0, CAPACITY) / CAPACITY;
+        g.fill(x, y, x + 168, y + 6, 0xFF777568);
+        g.fill(x + 1, y + 1, x + 167, y + 5, 0xFFACA99A);
+        int fill = 166 * Math.clamp(menu.getStoredAmount(), 0, CAPACITY) / CAPACITY;
         if (fill > 0) {
             g.fill(x + 1, y + 1, x + 1 + fill, y + 5, fluidColor(menu.getStoredFluid()));
             drawFluid(g, menu.getStoredFluid(), x + 1, y + 1, fill, 4);
             g.fill(x + 1, y + 1, x + 1 + fill, y + 2, 0x66FFFFFF);
         }
-        int marker = x + 1 + 169 * Math.clamp(getDisplayedPullTarget(), 0, CAPACITY) / CAPACITY;
+        int marker = x + 1 + 165 * Math.clamp(getDisplayedPullTarget(), 0, CAPACITY) / CAPACITY;
         g.fill(marker - 1, y - 1, marker + 2, y + 7, GOLD_SHADE);
         g.fill(marker, y - 1, marker + 1, y + 6, GOLD);
     }
 
     @Override protected void renderLabels(GuiGraphics g, int mx, int my) {
-        fitted(g, title, 32, 13, 184, INK);
-        fitted(g, selectedName(), 103, 36, 146, INK);
-        fitted(g, tr("stored", menu.getStoredAmount()), 80, 53, 172, INK);
-        fitted(g, storedName(), 80, 75, 172, MUTED);
+        fitted(g, title, SIDE_MARGIN + 25, 13, 174, INK);
+        fitted(g, selectedName(), 103, 36, 142, INK);
+        fitted(g, tr("stored", menu.getStoredAmount()), 80, 53, 168, INK);
+        fitted(g, storedName(), 80, 75, 168, MUTED);
         fitted(g, tr("target"), 80, 95, 27, MUTED);
         fitted(g, tr("network"), 194, 160, 53, MUTED);
         fitted(g, tr(menu.value(6) == 1 ? "online" : "offline"), 204, 176, 43, INK);
@@ -341,8 +344,12 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
     }
 
     private void fitted(GuiGraphics g, Component text, int x, int y, int width, int color) {
+        if (width <= 0) return;
         String label = text.getString();
-        if (font.width(label) > width) label = font.plainSubstrByWidth(label, width - font.width("…")) + "…";
+        if (font.width(label) > width) {
+            int ellipsisWidth = font.width("…");
+            label = width < ellipsisWidth ? "" : font.plainSubstrByWidth(label, width - ellipsisWidth) + "…";
+        }
         g.drawString(font, label, x, y, color, false);
     }
 
@@ -392,7 +399,7 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
         private final int dataIndex;
 
         private ChaliceButton(int x, int y, int width, Component label, int dataIndex, OnPress press) {
-            super(x, y, width, 20, label, press, DEFAULT_NARRATION);
+            super(x, y, width, BUTTON_HEIGHT, label, press, DEFAULT_NARRATION);
             this.label = label;
             this.dataIndex = dataIndex;
         }
@@ -402,29 +409,33 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
         }
 
         @Override protected void renderWidget(GuiGraphics g, int mx, int my, float tick) {
-            int x = getX(), y = getY(), w = getWidth();
+            int x = getX(), y = getY(), w = getWidth(), h = getHeight();
+            int textY = y + (h - font.lineHeight) / 2;
             boolean hover = active && isHoveredOrFocused();
             int border = hover ? AQUA : GOLD_SHADE;
-            g.fill(x + 1, y + 1, x + w - 1, y + 20, 0xFF98907C);
-            g.fill(x, y + 1, x + w, y + 18, border);
-            g.fill(x + 1, y, x + w - 1, y + 19, border);
-            tile(g, WOOD, x + 1, y + 1, w - 2, 17);
-            tile(g, MARBLE, x + 3, y + 2, w - 6, 15);
-            g.fill(x + 3, y + 2, x + w - 3, y + 17, hover ? 0x605FCBDC : 0x58FFF9E8);
+            // Keep the frame, shadow and hit box within the same bounds.
+            g.fill(x + 1, y + 1, x + w - 1, y + h, 0xFF98907C);
+            g.fill(x, y + 1, x + w, y + h - 2, border);
+            g.fill(x + 1, y, x + w - 1, y + h - 1, border);
+            tile(g, WOOD, x + 1, y + 1, w - 2, h - 3);
+            tile(g, MARBLE, x + 3, y + 2, w - 6, h - 5);
+            g.fill(x + 3, y + 2, x + w - 3, y + h - 3, hover ? 0x605FCBDC : 0x58FFF9E8);
             g.fill(x + 2, y + 1, x + w - 2, y + 2, 0xFFFFF2BF);
-            g.fill(x + 2, y + 17, x + w - 2, y + 18, GOLD);
+            g.fill(x + 2, y + h - 3, x + w - 2, y + h - 2, GOLD);
             if (dataIndex >= 0) {
                 boolean on = menu.value(dataIndex) == 1;
-                int pillWidth = Math.max(29, font.width(tr("off")) + 14);
+                Component state = tr(on ? "on" : "off");
+                int pillWidth = Math.min(w - 28,
+                        Math.max(29, Math.max(font.width(tr("on")), font.width(tr("off"))) + 14));
                 int pillX = x + w - pillWidth - 5;
-                g.fill(pillX, y + 4, x + w - 5, y + 15, on ? 0xFFD1E6E1 : 0xFFDED9CA);
-                g.fill(pillX, y + 14, x + w - 5, y + 15, on ? AQUA : EDGE);
-                lamp(g, pillX + 3, y + 7, on ? AQUA : 0xFF9C9685);
-                g.drawString(font, tr(on ? "on" : "off"), pillX + 10, y + 6, on ? INK : MUTED, false);
-                fitted(g, label, x + 7, y + 6, w - pillWidth - 18, INK);
+                g.fill(pillX, y + 3, x + w - 5, y + h - 3, on ? 0xFFD1E6E1 : 0xFFDED9CA);
+                g.fill(pillX, y + h - 4, x + w - 5, y + h - 3, on ? AQUA : EDGE);
+                lamp(g, pillX + 3, y + (h - 4) / 2, on ? AQUA : 0xFF9C9685);
+                fitted(g, state, pillX + 10, textY, pillWidth - 14, on ? INK : MUTED);
+                fitted(g, label, x + 7, textY, w - pillWidth - 18, INK);
             } else {
                 String text = font.plainSubstrByWidth(label.getString(), w - 6);
-                g.drawString(font, text, x + (w - font.width(text)) / 2, y + 6, active ? INK : 0xFF91897A, false);
+                g.drawString(font, text, x + (w - font.width(text)) / 2, textY, active ? INK : 0xFF91897A, false);
             }
         }
     }
