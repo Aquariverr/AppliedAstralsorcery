@@ -1,6 +1,6 @@
 # Applied Astralsorcery
 
-<img src="src/main/resources/logo.png" alt="Applied Astralsorcery logo" width="160">
+<img src="src/main/resources/logo.png" alt="Applied Astralsorcery logo" width="400">
 
 An addon for **Astral Sorcery** and **Applied Energistics 2 (AE2)** that lets ME networks store and transfer lumen and automate Astral Sorcery devices.
 
@@ -17,7 +17,7 @@ An addon for **Astral Sorcery** and **Applied Energistics 2 (AE2)** that lets ME
 - **Aberrant Crystal**: Form a five-stage cluster from Stardust, a Singularity and a Fluix Crystal in Liquid Starlight. Harvest crystals with Astral Sorcery's Size, Purity and Cut attributes, then grow, merge or split them.
 - **Aberrant Processor and Lumen Processor**: Obtain their Inscriber Presses from a Starlight Mysterious Cube and use them to process Aberrant Crystals or Lumen Crystals. Aberrant Crystal Size determines the number of circuit boards produced.
 - **Constellation Core**: Combine crystals attuned to all 12 constellations on an Iridescent Crafting Altar. Each constellation accepts either a rock or celestial crystal.
-- **Altar Automation Interface**: Connect an ME Pattern Provider to the nearest loaded altar within 16 blocks. Processing patterns supply the item ingredients; products and container returns go back to the provider. Astral Sorcery's altar conditions still apply.
+- **Altar Automation Interface**: Connect an ME Pattern Provider to the nearest loaded altar within 16 blocks. Processing patterns supply items, additional fluids and lumen, with JEI transfers including all three. The interface buffers fluids and lumen; products and container returns go back to the provider. Astral Sorcery's altar conditions still apply.
 - **Automatic Starmetal Chisel**: Process crystals, Starmetal Ingots and artifacts from item slots or adjacent dropped items. Each operation takes 2 seconds and 25 Lm of Evorsio and follows Astral Sorcery's processing rules. Supports side configuration, automatic item transfers, enchantments, lumen relays and ME Export Buses.
 - **Non-Empty Annihilation Plane**: Collect blocks like AE2's Annihilation Plane, but leave a block intact if its loot contains no items. Fluid and dropped-item collection work as usual.
 

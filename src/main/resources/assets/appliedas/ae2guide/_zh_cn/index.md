@@ -27,6 +27,7 @@ navigation:
 - [制作异辉处理器](processor.md)
 - [制作流明处理器](lumen_processor.md)
 - [制作存储元件](storage.md)
+- [稳定遗物](artifact.md)
 - [容量强化](enhancement.md)
 - [用总线搬运流明](buses.md)
 - [使用 ME 流明丝结](filament.md)

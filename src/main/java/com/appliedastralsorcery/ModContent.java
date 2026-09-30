@@ -80,6 +80,8 @@ public final class ModContent {
     public static final DeferredBlock<AutoChiselBlock> AUTO_CHISEL = BLOCKS.register("auto_starmetal_chisel", AutoChiselBlock::new);
     public static final DeferredItem<AutoChiselItem> AUTO_CHISEL_ITEM = ITEMS.register("auto_starmetal_chisel",
             () -> new AutoChiselItem(AUTO_CHISEL.get()));
+    // No DFU schema is registered for these mod block entities; the builder accepts a null data type.
+    //noinspection DataFlowIssue
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AutoChiselBlockEntity>> AUTO_CHISEL_ENTITY =
             BLOCK_ENTITIES.register("auto_starmetal_chisel", () -> BlockEntityType.Builder.of(
                     AutoChiselBlockEntity::new, AUTO_CHISEL.get()).build(null));
@@ -97,6 +99,7 @@ public final class ModContent {
     public static final DeferredBlock<AltarAutomationBlock> ALTAR_AUTOMATION =
             BLOCKS.register("altar_automation_interface", AltarAutomationBlock::new);
     public static final DeferredItem<BlockItem> ALTAR_AUTOMATION_ITEM = ITEMS.registerSimpleBlockItem(ALTAR_AUTOMATION);
+    //noinspection DataFlowIssue
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AltarAutomationBlockEntity>> ALTAR_AUTOMATION_ENTITY =
             BLOCK_ENTITIES.register("altar_automation_interface", () -> BlockEntityType.Builder.of(
                     AltarAutomationBlockEntity::new, ALTAR_AUTOMATION.get()).build(null));
@@ -113,6 +116,7 @@ public final class ModContent {
             BLOCKS.register("astral_fluix_cluster", AstralFluixClusterBlock::new);
     public static final DeferredItem<CelestialCrystalClusterBlockItem> ASTRAL_FLUIX_CLUSTER_ITEM =
             ITEMS.register("astral_fluix_cluster", () -> new CelestialCrystalClusterBlockItem(ASTRAL_FLUIX_CLUSTER.get()));
+    //noinspection DataFlowIssue
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AstralFluixClusterBlockEntity>> ASTRAL_FLUIX_CLUSTER_ENTITY =
             BLOCK_ENTITIES.register("astral_fluix_cluster", () -> BlockEntityType.Builder.of(
                     AstralFluixClusterBlockEntity::new, ASTRAL_FLUIX_CLUSTER.get()).build(null));
@@ -130,11 +134,13 @@ public final class ModContent {
                     com.appliedastralsorcery.wand.MEResonatingWandMenu::new, FeatureFlags.VANILLA_SET));
     public static final DeferredBlock<MEChaliceBlock> ME_CHALICE = BLOCKS.register("me_chalice", MEChaliceBlock::new);
     public static final DeferredItem<BlockItem> ME_CHALICE_ITEM = ITEMS.registerSimpleBlockItem(ME_CHALICE);
+    //noinspection DataFlowIssue
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MEChaliceBlockEntity>> CHALICE_ENTITY =
             BLOCK_ENTITIES.register("me_chalice", () -> BlockEntityType.Builder.of(
                     MEChaliceBlockEntity::new, ME_CHALICE.get()).build(null));
     public static final DeferredBlock<MELumenArrayBlock> ME_LUMEN_ARRAY = BLOCKS.register("me_lumen_array", MELumenArrayBlock::new);
     public static final DeferredItem<BlockItem> ME_LUMEN_ARRAY_ITEM = ITEMS.registerSimpleBlockItem(ME_LUMEN_ARRAY);
+    //noinspection DataFlowIssue
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MELumenArrayBlockEntity>> ARRAY_ENTITY =
             BLOCK_ENTITIES.register("me_lumen_array", () -> BlockEntityType.Builder.of(
                     MELumenArrayBlockEntity::new, ME_LUMEN_ARRAY.get()).build(null));
@@ -173,6 +179,7 @@ public final class ModContent {
             BLOCK_ENTITIES.register("me_lumen_filament", ModContent::createFilamentType);
 
     private static BlockEntityType<MELumenFilamentBlockEntity> createFilamentType() {
+        //noinspection DataFlowIssue
         var type = BlockEntityType.Builder.of(ModContent::newFilament, ME_LUMEN_FILAMENT.get()).build(null);
         AEBaseBlockEntity.registerBlockEntityItem(type, ME_LUMEN_FILAMENT_ITEM.get());
         ME_LUMEN_FILAMENT.get().setBlockEntity(MELumenFilamentBlockEntity.class, type, null,
@@ -194,7 +201,7 @@ public final class ModContent {
         KEY_TYPES.register("lumen", () -> LumenKeyType.INSTANCE);
         TABS.register("main", () -> CreativeModeTab.builder()
                 .title(Component.translatable("itemGroup.appliedas"))
-                .icon(() -> LUMEN_CELL.toStack())
+                .icon(LUMEN_CELL::toStack)
                 .displayItems((parameters, output) -> {
                     output.accept(LUMEN_CELL_HOUSING);
                     LUMEN_COMPONENTS.forEach(output::accept);
@@ -238,12 +245,16 @@ public final class ModContent {
                         (entity, context) -> entity));
         bus.addListener((net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent event) -> {
             event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.ItemHandler.BLOCK,
-                    AUTO_CHISEL_ENTITY.get(), (entity, side) -> entity.getItemHandler(side));
+                    AUTO_CHISEL_ENTITY.get(), AutoChiselBlockEntity::getItemHandler);
             event.registerBlockEntity(hellfirepvp.astralsorcery.common.lumen.ILumenHandler.BLOCK,
                     AUTO_CHISEL_ENTITY.get(), (entity, side) -> entity.getLumenHandler());
             event.registerBlockEntity(AECapabilities.CRAFTING_MACHINE, ALTAR_AUTOMATION_ENTITY.get(), (entity, side) -> entity);
             event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.ItemHandler.BLOCK,
                     ALTAR_AUTOMATION_ENTITY.get(), (entity, side) -> entity.getOutput());
+            event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK,
+                    ALTAR_AUTOMATION_ENTITY.get(), (entity, side) -> entity.getFluidHandler());
+            event.registerBlockEntity(hellfirepvp.astralsorcery.common.lumen.ILumenHandler.BLOCK,
+                    ALTAR_AUTOMATION_ENTITY.get(), (entity, side) -> entity.getLumenHandler());
             event.registerBlockEntity(AECapabilities.IN_WORLD_GRID_NODE_HOST, CHALICE_ENTITY.get(), (entity, context) -> entity);
             event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK, CHALICE_ENTITY.get(),
                     (entity, side) -> side == null || side == net.minecraft.core.Direction.DOWN ? entity.getTankView() : null);

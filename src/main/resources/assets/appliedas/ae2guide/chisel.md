@@ -27,7 +27,7 @@ The machine stores **2,000 Lm**. Supply Evorsio through an ME export bus on any 
 
 - **Crystals** split using Astral Sorcery's rules. Both crystals enter the output slots. Crystals with fewer than two attribute tiers cannot split.
 - **Starmetal ingots** produce one stardust. Without enchantments, each operation has a **90%** chance to consume the ingot.
-- **Artifacts** produce their matching shard. Without enchantments, each operation has a **40%** chance to consume the artifact.
+- **[Artifacts](artifact.md)** produce their matching shard. Without enchantments, each operation has a **40%** chance to consume the artifact.
 
 Any retained material also enters the output slots. Leave **two empty output slots** before processing. Work pauses when lumen or output space runs out.
 

@@ -27,6 +27,7 @@ Applied Astralsorcery connects AE2 with Astral Sorcery, allowing ME networks to 
 - [Crafting Aberrant Processors](processor.md)
 - [Crafting Lumen Processors](lumen_processor.md)
 - [Crafting storage cells](storage.md)
+- [Stabilizing artifacts](artifact.md)
 - [Capacity enhancement](enhancement.md)
 - [Transferring lumen with buses](buses.md)
 - [Using ME Lumen Filaments](filament.md)

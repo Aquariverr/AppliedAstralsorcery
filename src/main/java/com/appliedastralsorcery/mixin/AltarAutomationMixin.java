@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = TileAltar.class, remap = false)
 public abstract class AltarAutomationMixin {
     @Inject(method = "doCraftingCycle", at = @At("HEAD"), cancellable = true)
-    private void appliedas$pauseUnloadedInterface(ServerLevel level, CallbackInfo ci) {
+    private void appliedas$pauseAutomationJob(ServerLevel level, CallbackInfo ci) {
         if (AltarAutomationBlockEntity.shouldPause((TileAltar) (Object) this)) ci.cancel();
     }
 

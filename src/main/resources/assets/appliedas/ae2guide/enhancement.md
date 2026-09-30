@@ -19,7 +19,7 @@ Use the recipe below for every enhancement. It uses the same materials as Astral
 
 1. Build an **Iridescent Crafting Altar** and place the cell in its center slot.
 2. Place **4 Stardust and 2 Resonating Gems** on the surrounding Focus Relays as shown.
-3. Prepare **1 stable artifact, two portions of 1,000 mB Liquid Starlight, and 600 Lm of Prismatic lumen**.
+3. Prepare **1 [stable artifact](artifact.md), two portions of 1,000 mB Liquid Starlight, and 600 Lm of Prismatic lumen**.
 4. Start crafting at **night** with a Resonating Wand, then drop the stable artifact near the altar for it to consume. Crafting takes **5 seconds** once the materials are available.
 
 The cell keeps its stored lumen, partition settings, upgrade cards, and name. Existing enhancement levels also carry over: a cell with **7 enhancements** can receive **3 more**. **Disassembling a cell removes all enhancements.**

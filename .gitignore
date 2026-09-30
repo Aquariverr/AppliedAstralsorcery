@@ -4,7 +4,16 @@ run/
 run-client/
 run-server/
 run-data/
-.idea/
+# Keep local IDE state ignored; share only the GuideME inspection settings.
+.idea/*
+!.idea/inspectionProfiles/
+.idea/inspectionProfiles/*
+!.idea/inspectionProfiles/Project_Default.xml
+!.idea/inspectionProfiles/profiles_settings.xml
+!.idea/scopes/
+.idea/scopes/*
+!.idea/scopes/AE2_GuideME.xml
+!.idea/scopes/AE2_GuideME_Indexes.xml
 *.iml
 *.ipr
 *.iws
