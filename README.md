@@ -36,12 +36,3 @@ Minecraft **1.21.1**, NeoForge **21.1.238 or later**, and **Java 21**, with comp
 | [Curios API](https://www.curseforge.com/minecraft/mc-mods/curios) | 9.5.1 or later |
 
 JEI, Jade and AE2 JEI Integration are optional.
-
-## Development
-
-```sh
-./gradlew build
-./gradlew -PwandGameTests runGameTestServer
-```
-
-The build produces the release JAR in `build/libs`. GameTests use a separate world in `build/wand-gametest-run`; test classes and templates are excluded from normal builds.
