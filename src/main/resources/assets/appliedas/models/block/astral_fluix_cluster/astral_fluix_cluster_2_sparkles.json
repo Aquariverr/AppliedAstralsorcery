@@ -1,0 +1,287 @@
+{
+  "__comment": "Floating starlight motes (animated twinkle), world only.",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "mote": "appliedas:block/astral_fluix_cluster_mote",
+    "particle": "appliedas:block/astral_fluix_cluster_shell"
+  },
+  "elements": [
+    {
+      "from": [
+        0.85,
+        9.65,
+        7
+      ],
+      "to": [
+        2.35,
+        11.15,
+        7
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          1.6,
+          10.4,
+          7
+        ]
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "texture": "#mote",
+          "uv": [
+            0.0,
+            0.0,
+            3,
+            3
+          ]
+        },
+        "south": {
+          "texture": "#mote",
+          "uv": [
+            0.0,
+            0.0,
+            3,
+            3
+          ]
+        }
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    },
+    {
+      "from": [
+        1.6,
+        9.65,
+        6.25
+      ],
+      "to": [
+        1.6,
+        11.15,
+        7.75
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          1.6,
+          10.4,
+          7
+        ]
+      },
+      "shade": false,
+      "faces": {
+        "west": {
+          "texture": "#mote",
+          "uv": [
+            0.0,
+            0.0,
+            3,
+            3
+          ]
+        },
+        "east": {
+          "texture": "#mote",
+          "uv": [
+            0.0,
+            0.0,
+            3,
+            3
+          ]
+        }
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    },
+    {
+      "from": [
+        10.65,
+        8.25,
+        14.2
+      ],
+      "to": [
+        12.15,
+        9.75,
+        14.2
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          11.4,
+          9,
+          14.2
+        ]
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "texture": "#mote",
+          "uv": [
+            6,
+            0.0,
+            9,
+            3
+          ]
+        },
+        "south": {
+          "texture": "#mote",
+          "uv": [
+            6,
+            0.0,
+            9,
+            3
+          ]
+        }
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    },
+    {
+      "from": [
+        11.4,
+        8.25,
+        13.45
+      ],
+      "to": [
+        11.4,
+        9.75,
+        14.95
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          11.4,
+          9,
+          14.2
+        ]
+      },
+      "shade": false,
+      "faces": {
+        "west": {
+          "texture": "#mote",
+          "uv": [
+            6,
+            0.0,
+            9,
+            3
+          ]
+        },
+        "east": {
+          "texture": "#mote",
+          "uv": [
+            6,
+            0.0,
+            9,
+            3
+          ]
+        }
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    },
+    {
+      "from": [
+        9.45,
+        11.45,
+        7.4
+      ],
+      "to": [
+        10.95,
+        12.95,
+        7.4
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          10.2,
+          12.2,
+          7.4
+        ]
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "texture": "#mote",
+          "uv": [
+            3,
+            0.0,
+            6,
+            3
+          ]
+        },
+        "south": {
+          "texture": "#mote",
+          "uv": [
+            3,
+            0.0,
+            6,
+            3
+          ]
+        }
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    },
+    {
+      "from": [
+        10.2,
+        11.45,
+        6.65
+      ],
+      "to": [
+        10.2,
+        12.95,
+        8.15
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          10.2,
+          12.2,
+          7.4
+        ]
+      },
+      "shade": false,
+      "faces": {
+        "west": {
+          "texture": "#mote",
+          "uv": [
+            3,
+            0.0,
+            6,
+            3
+          ]
+        },
+        "east": {
+          "texture": "#mote",
+          "uv": [
+            3,
+            0.0,
+            6,
+            3
+          ]
+        }
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    }
+  ]
+}

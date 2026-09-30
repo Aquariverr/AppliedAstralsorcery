@@ -1,8 +1,12 @@
 {
   "replace": false,
   "values": [
+    "appliedas:auto_starmetal_chisel",
+    "appliedas:altar_automation_interface",
     "appliedas:me_lumen_filament",
     "appliedas:me_lumen_array",
-    "appliedas:me_chalice"
+    "appliedas:me_chalice",
+    "appliedas:astral_fluix_cluster",
+    "appliedas:starlight_mysterious_cube"
   ]
 }

@@ -1,0 +1,103 @@
+{
+  "__comment": "Floating starlight motes (animated twinkle), world only.",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "mote": "appliedas:block/astral_fluix_cluster_mote",
+    "particle": "appliedas:block/astral_fluix_cluster_shell"
+  },
+  "elements": [
+    {
+      "from": [
+        3.45,
+        6.65,
+        8.6
+      ],
+      "to": [
+        4.95,
+        8.15,
+        8.6
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          4.2,
+          7.4,
+          8.6
+        ]
+      },
+      "shade": false,
+      "faces": {
+        "north": {
+          "texture": "#mote",
+          "uv": [
+            0.0,
+            0.0,
+            3,
+            3
+          ]
+        },
+        "south": {
+          "texture": "#mote",
+          "uv": [
+            0.0,
+            0.0,
+            3,
+            3
+          ]
+        }
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    },
+    {
+      "from": [
+        4.2,
+        6.65,
+        7.85
+      ],
+      "to": [
+        4.2,
+        8.15,
+        9.35
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          4.2,
+          7.4,
+          8.6
+        ]
+      },
+      "shade": false,
+      "faces": {
+        "west": {
+          "texture": "#mote",
+          "uv": [
+            0.0,
+            0.0,
+            3,
+            3
+          ]
+        },
+        "east": {
+          "texture": "#mote",
+          "uv": [
+            0.0,
+            0.0,
+            3,
+            3
+          ]
+        }
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    }
+  ]
+}

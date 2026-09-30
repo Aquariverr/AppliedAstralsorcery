@@ -55,7 +55,7 @@
       "K": {
         "type": "item",
         "ingredient": {
-          "item": "ae2:cell_component_1k"
+          "item": "appliedas:lumen_processor"
         }
       }
     },

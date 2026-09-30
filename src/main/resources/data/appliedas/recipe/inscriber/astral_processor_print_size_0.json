@@ -1,0 +1,17 @@
+{
+  "type": "ae2:inscriber",
+  "ingredients": {
+    "top": {
+      "item": "appliedas:astral_processor_press"
+    },
+    "middle": {
+      "size": 0,
+      "type": "appliedas:crystal_size"
+    }
+  },
+  "mode": "inscribe",
+  "result": {
+    "count": 1,
+    "id": "appliedas:printed_astral_processor"
+  }
+}

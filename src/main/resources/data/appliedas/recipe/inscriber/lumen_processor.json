@@ -1,0 +1,10 @@
+{
+  "type": "ae2:inscriber",
+  "ingredients": {
+    "top": { "item": "appliedas:printed_lumen_processor" },
+    "middle": { "item": "minecraft:redstone" },
+    "bottom": { "item": "ae2:printed_silicon" }
+  },
+  "mode": "press",
+  "result": { "id": "appliedas:lumen_processor", "count": 1 }
+}

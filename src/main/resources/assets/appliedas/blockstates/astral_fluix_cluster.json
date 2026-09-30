@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "stage=0": {
+      "model": "appliedas:block/astral_fluix_cluster/astral_fluix_cluster_0"
+    },
+    "stage=1": {
+      "model": "appliedas:block/astral_fluix_cluster/astral_fluix_cluster_1"
+    },
+    "stage=2": {
+      "model": "appliedas:block/astral_fluix_cluster/astral_fluix_cluster_2"
+    },
+    "stage=3": {
+      "model": "appliedas:block/astral_fluix_cluster/astral_fluix_cluster_3"
+    },
+    "stage=4": {
+      "model": "appliedas:block/astral_fluix_cluster/astral_fluix_cluster_4"
+    }
+  }
+}

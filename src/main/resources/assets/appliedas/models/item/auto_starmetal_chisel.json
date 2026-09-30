@@ -1,0 +1,557 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "astralsorcery:block/marble_raw",
+    "chisel": "appliedas:block/auto_starmetal_chisel",
+    "glow": "appliedas:block/auto_starmetal_chisel_glow"
+  },
+  "elements": [
+    {
+      "name": "foundation",
+      "from": [0,0,0],
+      "to": [16,2,16],
+      "faces": {
+        "down": {
+          "uv": [0,0,4,4],
+          "texture": "#chisel",
+          "cullface": "down"
+        },
+        "up": {
+          "uv": [0,0,4,4],
+          "texture": "#chisel"
+        },
+        "north": {
+          "uv": [3.5,6,7.5,6.5],
+          "texture": "#chisel",
+          "cullface": "north"
+        },
+        "south": {
+          "uv": [3.5,6,7.5,6.5],
+          "texture": "#chisel",
+          "cullface": "south"
+        },
+        "west": {
+          "uv": [3.5,6,7.5,6.5],
+          "texture": "#chisel",
+          "cullface": "west"
+        },
+        "east": {
+          "uv": [3.5,6,7.5,6.5],
+          "texture": "#chisel",
+          "cullface": "east"
+        }
+      }
+    },
+    {
+      "name": "plinth",
+      "from": [1,2,1],
+      "to": [15,3,15],
+      "faces": {
+        "up": {
+          "uv": [4.25,0,7.75,3.5],
+          "texture": "#chisel"
+        },
+        "north": {
+          "uv": [8.5,6,12,6.25],
+          "texture": "#chisel"
+        },
+        "south": {
+          "uv": [8.5,6,12,6.25],
+          "texture": "#chisel"
+        },
+        "west": {
+          "uv": [8.5,6,12,6.25],
+          "texture": "#chisel"
+        },
+        "east": {
+          "uv": [8.5,6,12,6.25],
+          "texture": "#chisel"
+        }
+      }
+    },
+    {
+      "name": "west foot",
+      "from": [1,3,5],
+      "to": [6,4,11],
+      "faces": {
+        "up": {
+          "uv": [5.75,4.25,7,5.75],
+          "texture": "#chisel"
+        },
+        "north": {
+          "uv": [1.5,7,2.75,7.25],
+          "texture": "#chisel"
+        },
+        "south": {
+          "uv": [1.5,7,2.75,7.25],
+          "texture": "#chisel"
+        },
+        "west": {
+          "uv": [14,6,15.5,6.25],
+          "texture": "#chisel"
+        },
+        "east": {
+          "uv": [14,6,15.5,6.25],
+          "texture": "#chisel"
+        }
+      }
+    },
+    {
+      "name": "east foot",
+      "from": [10,3,5],
+      "to": [15,4,11],
+      "faces": {
+        "up": {
+          "uv": [5.75,4.25,7,5.75],
+          "texture": "#chisel"
+        },
+        "north": {
+          "uv": [1.5,7,2.75,7.25],
+          "texture": "#chisel"
+        },
+        "south": {
+          "uv": [1.5,7,2.75,7.25],
+          "texture": "#chisel"
+        },
+        "west": {
+          "uv": [14,6,15.5,6.25],
+          "texture": "#chisel"
+        },
+        "east": {
+          "uv": [14,6,15.5,6.25],
+          "texture": "#chisel"
+        }
+      }
+    },
+    {
+      "name": "west pillar",
+      "from": [2,4,6],
+      "to": [5,12,10],
+      "faces": {
+        "north": {
+          "uv": [9.25,0,10,2],
+          "texture": "#chisel"
+        },
+        "south": {
+          "uv": [9.25,0,10,2],
+          "texture": "#chisel"
+        },
+        "west": {
+          "uv": [8,0,9,2],
+          "texture": "#chisel"
+        },
+        "east": {
+          "uv": [8,0,9,2],
+          "texture": "#chisel"
+        }
+      }
+    },
+    {
+      "name": "east pillar",
+      "from": [11,4,6],
+      "to": [14,12,10],
+      "faces": {
+        "north": {
+          "uv": [9.25,0,10,2],
+          "texture": "#chisel"
+        },
+        "south": {
+          "uv": [9.25,0,10,2],
+          "texture": "#chisel"
+        },
+        "west": {
+          "uv": [8,0,9,2],
+          "texture": "#chisel"
+        },
+        "east": {
+          "uv": [8,0,9,2],
+          "texture": "#chisel"
+        }
+      }
+    },
+    {
+      "name": "west capital",
+      "from": [1,12,5],
+      "to": [6,13,11],
+      "faces": {
+        "down": {
+          "uv": [4.25,4.25,5.5,5.75],
+          "texture": "#chisel"
+        },
+        "north": {
+          "uv": [0,7,1.25,7.25],
+          "texture": "#chisel"
+        },
+        "south": {
+          "uv": [0,7,1.25,7.25],
+          "texture": "#chisel"
+        },
+        "west": {
+          "uv": [12.25,6,13.75,6.25],
+          "texture": "#chisel"
+        },
+        "east": {
+          "uv": [12.25,6,13.75,6.25],
+          "texture": "#chisel"
+        }
+      }
+    },
+    {
+      "name": "east capital",
+      "from": [10,12,5],
+      "to": [15,13,11],
+      "faces": {
+        "down": {
+          "uv": [4.25,4.25,5.5,5.75],
+          "texture": "#chisel"
+        },
+        "north": {
+          "uv": [0,7,1.25,7.25],
+          "texture": "#chisel"
+        },
+        "south": {
+          "uv": [0,7,1.25,7.25],
+          "texture": "#chisel"
+        },
+        "west": {
+          "uv": [12.25,6,13.75,6.25],
+          "texture": "#chisel"
+        },
+        "east": {
+          "uv": [12.25,6,13.75,6.25],
+          "texture": "#chisel"
+        }
+      }
+    },
+    {
+      "name": "lintel",
+      "from": [0,13,5],
+      "to": [16,16,11],
+      "faces": {
+        "down": {
+          "uv": [0,4.25,4,5.75],
+          "texture": "#chisel"
+        },
+        "up": {
+          "uv": [10.25,0,14.25,1.5],
+          "texture": "#chisel",
+          "cullface": "up"
+        },
+        "north": {
+          "uv": [9.75,4.25,13.75,5],
+          "texture": "#chisel"
+        },
+        "south": {
+          "uv": [9.75,4.25,13.75,5],
+          "texture": "#chisel"
+        },
+        "west": {
+          "uv": [14,4.25,15.5,5],
+          "texture": "#chisel",
+          "cullface": "west"
+        },
+        "east": {
+          "uv": [14,4.25,15.5,5],
+          "texture": "#chisel",
+          "cullface": "east"
+        }
+      }
+    },
+    {
+      "name": "clamp",
+      "from": [6,12,6],
+      "to": [10,13,10],
+      "faces": {
+        "down": {
+          "uv": [7.25,4.25,8.25,5.25],
+          "texture": "#chisel"
+        },
+        "north": {
+          "uv": [3,7,4,7.25],
+          "texture": "#chisel"
+        },
+        "south": {
+          "uv": [3,7,4,7.25],
+          "texture": "#chisel"
+        },
+        "west": {
+          "uv": [3,7,4,7.25],
+          "texture": "#chisel"
+        },
+        "east": {
+          "uv": [3,7,4,7.25],
+          "texture": "#chisel"
+        }
+      }
+    },
+    {
+      "name": "handle",
+      "from": [7,10,7],
+      "to": [9,12,9],
+      "faces": {
+        "north": {
+          "uv": [7.75,6,8.25,6.5],
+          "texture": "#chisel"
+        },
+        "south": {
+          "uv": [7.75,6,8.25,6.5],
+          "texture": "#chisel"
+        },
+        "west": {
+          "uv": [7.75,6,8.25,6.5],
+          "texture": "#chisel"
+        },
+        "east": {
+          "uv": [7.75,6,8.25,6.5],
+          "texture": "#chisel"
+        }
+      }
+    },
+    {
+      "name": "ferrule",
+      "from": [6.5,9,6.5],
+      "to": [9.5,10,9.5],
+      "faces": {
+        "down": {
+          "uv": [2,6,2.75,6.75],
+          "texture": "#chisel"
+        },
+        "up": {
+          "uv": [1,6,1.75,6.75],
+          "texture": "#chisel"
+        },
+        "north": {
+          "uv": [6.5,7,7.25,7.25],
+          "texture": "#chisel"
+        },
+        "south": {
+          "uv": [6.5,7,7.25,7.25],
+          "texture": "#chisel"
+        },
+        "west": {
+          "uv": [6.5,7,7.25,7.25],
+          "texture": "#chisel"
+        },
+        "east": {
+          "uv": [6.5,7,7.25,7.25],
+          "texture": "#chisel"
+        }
+      }
+    },
+    {
+      "name": "blade",
+      "from": [6.5,6,7.5],
+      "to": [9.5,9,8.5],
+      "faces": {
+        "down": {
+          "uv": [5.5,7,6.25,7.25],
+          "texture": "#chisel"
+        },
+        "north": {
+          "uv": [0,6,0.75,6.75],
+          "texture": "#chisel"
+        },
+        "south": {
+          "uv": [0,6,0.75,6.75],
+          "texture": "#chisel"
+        },
+        "west": {
+          "uv": [3,6,3.25,6.75],
+          "texture": "#chisel"
+        },
+        "east": {
+          "uv": [3,6,3.25,6.75],
+          "texture": "#chisel"
+        }
+      }
+    },
+    {
+      "name": "work plate",
+      "from": [6,3,6],
+      "to": [10,4,10],
+      "faces": {
+        "up": {
+          "uv": [8.5,4.25,9.5,5.25],
+          "texture": "#chisel"
+        },
+        "north": {
+          "uv": [4.25,7,5.25,7.25],
+          "texture": "#chisel"
+        },
+        "south": {
+          "uv": [4.25,7,5.25,7.25],
+          "texture": "#chisel"
+        },
+        "west": {
+          "uv": [4.25,7,5.25,7.25],
+          "texture": "#chisel"
+        },
+        "east": {
+          "uv": [4.25,7,5.25,7.25],
+          "texture": "#chisel"
+        }
+      }
+    },
+    {
+      "name": "west pillar light",
+      "from": [2,4,6],
+      "to": [5,12,10],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [0,0,1.5,4],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [0,0,1.5,4],
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "name": "east pillar light",
+      "from": [11,4,6],
+      "to": [14,12,10],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [0,0,1.5,4],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [0,0,1.5,4],
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "name": "west capital light",
+      "from": [1,12,5],
+      "to": [6,13,11],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [8.5,4.5,11,5],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [8.5,4.5,11,5],
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "name": "east capital light",
+      "from": [10,12,5],
+      "to": [15,13,11],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [8.5,4.5,11,5],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [8.5,4.5,11,5],
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "name": "lintel light",
+      "from": [0,13,5],
+      "to": [16,16,11],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "up": {
+          "uv": [2,0,10,3],
+          "texture": "#glow",
+          "cullface": "up"
+        },
+        "north": {
+          "uv": [0,4.5,8,6],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [0,4.5,8,6],
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "name": "work plate light",
+      "from": [6,3,6],
+      "to": [10,4,10],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "up": {
+          "uv": [10.5,0,12.5,2],
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "name": "tip",
+      "from": [7,5,7.5],
+      "to": [9,6,8.5],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "down": {
+          "uv": [13,4.5,14,5],
+          "texture": "#glow"
+        },
+        "north": {
+          "uv": [11.5,4.5,12.5,5],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [11.5,4.5,12.5,5],
+          "texture": "#glow"
+        },
+        "west": {
+          "uv": [14.5,4.5,15,5],
+          "texture": "#glow"
+        },
+        "east": {
+          "uv": [14.5,4.5,15,5],
+          "texture": "#glow"
+        }
+      }
+    }
+  ]
+}

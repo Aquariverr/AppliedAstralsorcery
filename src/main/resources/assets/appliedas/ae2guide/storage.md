@@ -19,13 +19,17 @@ A Lumen Storage Cell is crafted from a **Lumen Storage Component** and a **Lumen
 
 ## 2. Craft a 1k Lumen Storage Component
 
-Use a **Resonating Crafting Table** and build the altar structure described in the Tome, including the outer ring of Focus Relays.
+Use a **Resonating Crafting Table** and build the altar structure described in the Tome, including the outer ring of Focus Relays. Place a **Lumen Processor** in the center.
 
 The diagram below follows the Tome's recipe layout: the output is at the top, the central nine slots are the table's crafting grid, and the outer ingredients go on **Focus Relays** in the corresponding positions. Hover over ingredients to see their names.
 
 <Recipe id="appliedas:lumen_storage_component_1k" />
 
 Once the ingredients are in place, right-click the table with a **Resonating Wand** at **night** to begin crafting. Drop **2 Aquamarines** near the table for the recipe to consume. Crafting takes **5 seconds** once all conditions are met.
+
+Alternatively, use a **regular crafting table** with AE2's 1k ME Storage Component layout: Redstone in the corners, Certus Quartz at the cardinal positions, and an **Aberrant Processor** in the center. This produces the same 1k Lumen Storage Component.
+
+<Recipe id="appliedas:lumen_storage_component_1k_from_astral_processor" />
 
 ## 3. Craft a 1k ME Lumen Storage Cell
 

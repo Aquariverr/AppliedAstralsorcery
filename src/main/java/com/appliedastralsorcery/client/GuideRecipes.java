@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import com.appliedastralsorcery.ModContent;
+import com.appliedastralsorcery.crystal.FormAstralFluixCluster;
+
 import guideme.color.ConstantColor;
 import guideme.compiler.tags.RecipeTypeMappingSupplier;
 import guideme.document.DefaultStyles;
@@ -15,6 +18,7 @@ import guideme.document.block.LytBox;
 import guideme.document.block.LytHBox;
 import guideme.document.block.LytParagraph;
 import guideme.document.block.LytSlot;
+import guideme.document.block.LytSlotGrid;
 import guideme.document.block.recipes.LytStandardRecipeBox;
 import guideme.layout.LayoutContext;
 import guideme.render.RenderContext;
@@ -25,10 +29,15 @@ import hellfirepvp.astralsorcery.common.ingredient.IngredientBridge;
 import hellfirepvp.astralsorcery.common.ingredient.IsStableArtifactIngredient;
 import hellfirepvp.astralsorcery.common.artifact.ArtifactStability;
 import hellfirepvp.astralsorcery.common.item.ArtifactItem;
+import hellfirepvp.astralsorcery.common.item.block.CelestialCrystalClusterBlockItem;
 import hellfirepvp.astralsorcery.common.lib.DataComponentsAS;
+import hellfirepvp.astralsorcery.common.lib.FluidsAS;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import hellfirepvp.astralsorcery.common.recipe.altar.AltarRecipe;
+import hellfirepvp.astralsorcery.common.recipe.liquid.LiquidStarlightRecipe;
+import hellfirepvp.astralsorcery.common.recipe.liquid.output.LiquidStarlightOutputGrowSize;
+import hellfirepvp.astralsorcery.common.recipe.liquid.output.LiquidStarlightOutputMergeCrystal;
 import hellfirepvp.astralsorcery.common.research.tome.TomePage;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -36,11 +45,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
-/** Adds Astral Sorcery altar recipes to AE2's guide through GuideME's service loader. */
+/** Adds Astral Sorcery recipes to AE2's guide through GuideME's service loader. */
 public final class GuideRecipes implements RecipeTypeMappingSupplier {
     @Override
     public void collect(RecipeTypeMappings mappings) {
         mappings.add(RecipeTypesAS.ALTAR_CRAFTING_TYPE.get(), GuideRecipes::altar);
+        mappings.add(RecipeTypesAS.LIQUID_STARLIGHT_TYPE.get(), GuideRecipes::liquidStarlight);
     }
 
     private static LytBlock altar(RecipeHolder<AltarRecipe> holder) {
@@ -72,6 +82,48 @@ public final class GuideRecipes implements RecipeTypeMappingSupplier {
             box.addBottom(text("guide.appliedas.altar.lumen", lumen.getAmount(), lumen.getLumen().getName()));
         }
         return box.build(holder);
+    }
+
+    private static LytBlock liquidStarlight(RecipeHolder<LiquidStarlightRecipe> holder) {
+        var recipe = holder.value();
+        // These recipes change crystals through modifiers instead of returning a result stack.
+        // Leave other recipes to their own handlers rather than inventing an output for them.
+        if (!holder.id().getNamespace().equals("appliedas") || recipe.getOutputModifiers().size() != 1) {
+            return null;
+        }
+        var modifier = recipe.getOutputModifiers().getFirst();
+        ItemStack result;
+        String description;
+        if (holder.id().getPath().equals("liquid_starlight/form_astral_fluix_cluster")
+                && modifier instanceof FormAstralFluixCluster) {
+            result = ModContent.ASTRAL_FLUIX_CLUSTER_ITEM.toStack();
+            CelestialCrystalClusterBlockItem.setStage(result, 0);
+            description = "guide.appliedas.liquid_starlight.form";
+        } else if (holder.id().getPath().equals("liquid_starlight/grow_astral_fluix_crystal")
+                && modifier instanceof LiquidStarlightOutputGrowSize) {
+            result = ModContent.ASTRAL_FLUIX_CRYSTAL.toStack();
+            description = "guide.appliedas.liquid_starlight.grow";
+        } else if (holder.id().getPath().equals("liquid_starlight/merge_astral_fluix_crystals")
+                && modifier instanceof LiquidStarlightOutputMergeCrystal) {
+            result = ModContent.ASTRAL_FLUIX_CRYSTAL.toStack();
+            description = "guide.appliedas.liquid_starlight.merge";
+        } else {
+            return null;
+        }
+
+        // Display blank crystals: generating gameplay attributes requires server config.
+        var inputs = Stream.concat(Stream.of(recipe.getInput()), recipe.getOtherInputs().stream())
+                .map(input -> Ingredient.of(displayItems(input.ingredient())
+                        .map(stack -> stack.copyWithCount(input.count()))))
+                .toList();
+        return LytStandardRecipeBox.builder()
+                .title(Component.translatable("fluid_type.astralsorcery.liquid_starlight").getString())
+                .icon(FluidsAS.LIQUID_STARLIGHT.getBucket())
+                .input(LytSlotGrid.row(inputs, false))
+                .output(result)
+                .addTop(text("guide.appliedas.liquid_starlight.source"))
+                .addBottom(text(description))
+                .build(holder);
     }
 
     private static Stream<ItemStack> displayItems(Ingredient ingredient) {

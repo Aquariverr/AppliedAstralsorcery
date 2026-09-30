@@ -4,10 +4,8 @@
   "render_type": "minecraft:solid",
   "textures": {
     "particle": "astralsorcery:block/chalice_base",
-    "metal": "ae2:part/interface_sides",
-    "socket": "ae2:block/interface",
-    "underside": "ae2:part/interface_back",
-    "fluix": "ae2:block/fluix_block"
+    "chalice": "appliedas:block/me_chalice",
+    "glow": "appliedas:block/me_chalice_glow"
   },
   "elements": [
     {
@@ -16,28 +14,28 @@
       "to": [14.5,0.3,14.5],
       "faces": {
         "north": {
-          "uv": [5,3,11,4],
-          "texture": "#metal"
+          "uv": [7,6.25,10.25,6.5],
+          "texture": "#chalice"
         },
         "east": {
-          "uv": [5,3,11,4],
-          "texture": "#metal"
+          "uv": [7,6.25,10.25,6.5],
+          "texture": "#chalice"
         },
         "south": {
-          "uv": [5,3,11,4],
-          "texture": "#metal"
+          "uv": [7,6.25,10.25,6.5],
+          "texture": "#chalice"
         },
         "west": {
-          "uv": [5,3,11,4],
-          "texture": "#metal"
+          "uv": [7,6.25,10.25,6.5],
+          "texture": "#chalice"
         },
         "up": {
-          "uv": [5,3,11,4],
-          "texture": "#metal"
+          "uv": [9.75,0,13,3.25],
+          "texture": "#chalice"
         },
         "down": {
-          "uv": [0,0,16,16],
-          "texture": "#underside"
+          "uv": [0,3.5,3.25,6.75],
+          "texture": "#chalice"
         }
       }
     },
@@ -45,30 +43,36 @@
       "name": "Lower recessed Fluix chassis",
       "from": [1.75,0.3,1.75],
       "to": [14.25,1,14.25],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
       "faces": {
         "north": {
-          "uv": [2,6,14,10],
-          "texture": "#fluix"
+          "uv": [0.25,0,12.75,1],
+          "texture": "#glow"
         },
         "east": {
-          "uv": [2,6,14,10],
-          "texture": "#fluix"
+          "uv": [0.25,0,12.75,1],
+          "texture": "#glow"
         },
         "south": {
-          "uv": [2,6,14,10],
-          "texture": "#fluix"
+          "uv": [0.25,0,12.75,1],
+          "texture": "#glow"
         },
         "west": {
-          "uv": [2,6,14,10],
-          "texture": "#fluix"
+          "uv": [0.25,0,12.75,1],
+          "texture": "#glow"
         },
         "up": {
-          "uv": [0,0,16,16],
-          "texture": "#fluix"
+          "uv": [0.25,0,12.75,1],
+          "texture": "#glow"
         },
         "down": {
-          "uv": [0,0,16,16],
-          "texture": "#fluix"
+          "uv": [0.25,0,12.75,1],
+          "texture": "#glow"
         }
       }
     },
@@ -78,28 +82,28 @@
       "to": [14.5,1.3,14.5],
       "faces": {
         "north": {
-          "uv": [5,3,11,4],
-          "texture": "#metal"
+          "uv": [7,6.75,10.25,7],
+          "texture": "#chalice"
         },
         "east": {
-          "uv": [5,3,11,4],
-          "texture": "#metal"
+          "uv": [7,6.75,10.25,7],
+          "texture": "#chalice"
         },
         "south": {
-          "uv": [5,3,11,4],
-          "texture": "#metal"
+          "uv": [7,6.75,10.25,7],
+          "texture": "#chalice"
         },
         "west": {
-          "uv": [5,3,11,4],
-          "texture": "#metal"
+          "uv": [7,6.75,10.25,7],
+          "texture": "#chalice"
         },
         "up": {
-          "uv": [5,3,11,4],
-          "texture": "#metal"
+          "uv": [3.5,3.5,6.75,6.75],
+          "texture": "#chalice"
         },
         "down": {
-          "uv": [5,3,11,4],
-          "texture": "#metal"
+          "uv": [3.5,3.5,6.75,6.75],
+          "texture": "#chalice"
         }
       }
     },
@@ -109,28 +113,28 @@
       "to": [11,0.03,11],
       "faces": {
         "north": {
-          "uv": [5,3,11,4],
-          "texture": "#metal"
+          "uv": [7.875,6.25,9.375,6.5],
+          "texture": "#chalice"
         },
         "east": {
-          "uv": [5,3,11,4],
-          "texture": "#metal"
+          "uv": [7.875,6.25,9.375,6.5],
+          "texture": "#chalice"
         },
         "south": {
-          "uv": [5,3,11,4],
-          "texture": "#metal"
+          "uv": [7.875,6.25,9.375,6.5],
+          "texture": "#chalice"
         },
         "west": {
-          "uv": [5,3,11,4],
-          "texture": "#metal"
+          "uv": [7.875,6.25,9.375,6.5],
+          "texture": "#chalice"
         },
         "up": {
-          "uv": [5,3,11,4],
-          "texture": "#metal"
+          "uv": [7.875,6.25,9.375,6.5],
+          "texture": "#chalice"
         },
         "down": {
-          "uv": [4,4,12,12],
-          "texture": "#socket"
+          "uv": [10.5,3.5,12,5],
+          "texture": "#chalice"
         }
       }
     }

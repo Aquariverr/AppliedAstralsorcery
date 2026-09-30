@@ -32,10 +32,16 @@ public final class LumenClient {
     @SubscribeEvent
     public static void setup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> AEKeyRendering.register(LumenKeyType.INSTANCE, LumenKey.class, new Renderer()));
+        event.enqueueWork(() -> net.minecraft.client.renderer.item.ItemProperties.register(
+                ModContent.ASTRAL_FLUIX_CLUSTER_ITEM.get(),
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("astralsorcery", "stage"),
+                (stack, level, entity, seed) ->
+                        hellfirepvp.astralsorcery.common.item.block.CelestialCrystalClusterBlockItem.getStage(stack) / 5.0F));
     }
 
     @SubscribeEvent
     public static void screens(RegisterMenuScreensEvent event) {
+        event.register(ModContent.AUTO_CHISEL_MENU.get(), AutoChiselScreen::new);
         event.register(ModContent.FILAMENT_MENU.get(), MELumenFilamentScreen::new);
         event.register(ModContent.ARRAY_MENU.get(), MELumenArrayScreen::new);
         event.register(ModContent.CHALICE_MENU.get(), MEChaliceScreen::new);

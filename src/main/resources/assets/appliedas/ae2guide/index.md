@@ -17,12 +17,20 @@ Applied Astralsorcery connects AE2 with Astral Sorcery, allowing ME networks to 
 
 ## Topics
 
+- [Automatically splitting crystals and materials](chisel.md)
+
+- [Automating altar crafting](altar.md)
+- [Crafting a Constellation Core](constellation_core.md)
+- [Crafting ME Lumen Arrays and ME Chalices](machines.md)
+
+- [Growing Aberrant Crystals](crystal.md)
+- [Crafting Aberrant Processors](processor.md)
+- [Crafting Lumen Processors](lumen_processor.md)
 - [Crafting storage cells](storage.md)
 - [Capacity enhancement](enhancement.md)
 - [Transferring lumen with buses](buses.md)
 - [Using ME Lumen Filaments](filament.md)
 - [Building with the ME Resonating Wand](wand.md)
-- [Troubleshooting](troubleshooting.md)
 
 Hover over items in recipe diagrams to see their names.
 

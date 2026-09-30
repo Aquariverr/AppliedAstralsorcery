@@ -70,6 +70,15 @@ final class AstralMachinePreview {
         }
     }
 
+    static void chisel(GuiGraphics graphics, int x, int y) {
+        begin(graphics, x, y, 32F);
+        try {
+            block(graphics, ModContent.AUTO_CHISEL.get().defaultBlockState());
+        } finally {
+            end(graphics);
+        }
+    }
+
     private static void begin(GuiGraphics graphics, int x, int y, float scale) {
         graphics.flush();
         var pose = graphics.pose();

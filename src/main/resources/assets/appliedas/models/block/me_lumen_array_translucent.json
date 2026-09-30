@@ -1,0 +1,87 @@
+{
+  "credit": "Glass panes of the original Astral Sorcery array; Applied Astral Sorcery textures",
+  "ambientocclusion": false,
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "particle": "astralsorcery:block/marble_raw",
+    "array": "appliedas:block/me_lumen_array"
+  },
+  "elements": [
+    {
+      "from": [5,7,11],
+      "to": [11,14,11],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [10,9,9]
+      },
+      "faces": {
+        "north": {
+          "uv": [14,14,15.5,15.75],
+          "texture": "#array"
+        },
+        "south": {
+          "uv": [14,14,15.5,15.75],
+          "texture": "#array"
+        }
+      }
+    },
+    {
+      "from": [11,7,5],
+      "to": [11,14,11],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [9,9,7]
+      },
+      "faces": {
+        "east": {
+          "uv": [14,14,15.5,15.75],
+          "texture": "#array"
+        },
+        "west": {
+          "uv": [14,14,15.5,15.75],
+          "texture": "#array"
+        }
+      }
+    },
+    {
+      "from": [5,7,5],
+      "to": [11,14,5],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [10,9,3]
+      },
+      "faces": {
+        "north": {
+          "uv": [14,14,15.5,15.75],
+          "texture": "#array"
+        },
+        "south": {
+          "uv": [14,14,15.5,15.75],
+          "texture": "#array"
+        }
+      }
+    },
+    {
+      "from": [5,7,5],
+      "to": [5,14,11],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [3,9,7]
+      },
+      "faces": {
+        "east": {
+          "uv": [14,14,15.5,15.75],
+          "texture": "#array"
+        },
+        "west": {
+          "uv": [14,14,15.5,15.75],
+          "texture": "#array"
+        }
+      }
+    }
+  ]
+}

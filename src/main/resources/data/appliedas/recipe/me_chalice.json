@@ -1,26 +1,83 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " M ",
-    "CAC",
-    " I "
+  "type": "astralsorcery:altar_crafting",
+  "baseFocusShatterChance": 0.0,
+  "duration": 100,
+  "effects": [
+    "astralsorcery:default_central_beam",
+    "astralsorcery:default_altar_sparkle",
+    "astralsorcery:default_lumen_input",
+    "astralsorcery:default_relay_input"
   ],
-  "key": {
-    "M": {
-      "item": "ae2:fluix_crystal"
+  "grid": {
+    "key": {
+      "A": {
+        "type": "item",
+        "ingredient": {
+          "tag": "c:gems/aquamarine"
+        }
+      },
+      "G": {
+        "type": "item",
+        "ingredient": {
+          "tag": "c:nuggets/gold"
+        }
+      },
+      "M": {
+        "type": "item",
+        "ingredient": {
+          "item": "astralsorcery:marble_runed"
+        }
+      },
+      "R": {
+        "type": "item",
+        "ingredient": {
+          "item": "astralsorcery:chalice"
+        }
+      },
+      "S": {
+        "type": "item",
+        "ingredient": {
+          "item": "astralsorcery:sooty_marble_raw"
+        }
+      },
+      "I": {
+        "type": "item",
+        "ingredient": {
+          "item": "ae2:interface"
+        }
+      },
+      "F": {
+        "type": "item",
+        "ingredient": {
+          "item": "ae2:fluix_block"
+        }
+      }
     },
-    "C": {
-      "item": "ae2:calculation_processor"
-    },
-    "A": {
-      "item": "astralsorcery:chalice"
-    },
-    "I": {
-      "item": "ae2:interface"
-    }
+    "pattern": [
+      " I ",
+      " R ",
+      "GSG"
+    ],
+    "relayPattern": [
+      "     ",
+      "     ",
+      "     ",
+      " MFM ",
+      "GGGGG"
+    ]
   },
-  "result": {
-    "id": "appliedas:me_chalice",
-    "count": 1
-  }
+  "mayChain": false,
+  "onlyNight": true,
+  "outputModifiers": [],
+  "outputs": [
+    {
+      "id": "appliedas:me_chalice",
+      "count": 1
+    }
+  ],
+  "requiredAdditionalInputs": [],
+  "requiredFluid": [],
+  "requiredLumen": [],
+  "requiredStarlight": [],
+  "requiredType": "resonance"
 }

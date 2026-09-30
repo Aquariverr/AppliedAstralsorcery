@@ -1,6 +1,15 @@
 package com.appliedastralsorcery;
 
 import java.util.List;
+import com.appliedastralsorcery.chisel.AutoChiselBlock;
+import com.appliedastralsorcery.chisel.AutoChiselBlockEntity;
+import com.appliedastralsorcery.chisel.AutoChiselMenu;
+import com.appliedastralsorcery.chisel.AutoChiselItem;
+
+import com.appliedastralsorcery.parts.NonEmptyAnnihilationPlaneItem;
+
+import com.appliedastralsorcery.altar.AltarAutomationBlock;
+import com.appliedastralsorcery.altar.AltarAutomationBlockEntity;
 
 import appeng.api.stacks.AEKeyType;
 import appeng.items.storage.BasicStorageCell;
@@ -19,6 +28,15 @@ import com.appliedastralsorcery.chalice.MEChaliceBlock;
 import com.appliedastralsorcery.chalice.MEChaliceBlockEntity;
 import com.appliedastralsorcery.chalice.MEChaliceMenu;
 import com.appliedastralsorcery.wand.MEResonatingWandItem;
+import com.appliedastralsorcery.crystal.AstralFluixCrystalItem;
+import com.appliedastralsorcery.crystal.AstralFluixClusterBlock;
+import com.appliedastralsorcery.crystal.AstralFluixClusterBlockEntity;
+import com.appliedastralsorcery.crystal.FormAstralFluixCluster;
+import com.appliedastralsorcery.crystal.CrystalSizeIngredient;
+import com.appliedastralsorcery.crystal.LumenCrystalIngredient;
+import hellfirepvp.astralsorcery.common.item.block.CelestialCrystalClusterBlockItem;
+import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
+import hellfirepvp.astralsorcery.common.recipe.liquid.output.LiquidStarlightRecipeOutputModifier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.flag.FeatureFlags;
@@ -26,6 +44,10 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
@@ -33,6 +55,8 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.neoforged.neoforge.common.crafting.IngredientType;
 
 public final class ModContent {
     public static final int LUMEN_CELL_TYPES = 5;
@@ -46,6 +70,54 @@ public final class ModContent {
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, AppliedAstralsorcery.MOD_ID);
     private static final DeferredRegister<MenuType<?>> MENUS =
             DeferredRegister.create(Registries.MENU, AppliedAstralsorcery.MOD_ID);
+    private static final DeferredRegister<LiquidStarlightRecipeOutputModifier.Type<?>> LIQUID_OUTPUTS =
+            DeferredRegister.create(RegistriesAS.KEY_LIQUID_STARLIGHT_OUTPUT_MODIFIER_TYPES, AppliedAstralsorcery.MOD_ID);
+    private static final DeferredRegister<IngredientType<?>> INGREDIENT_TYPES =
+            DeferredRegister.create(NeoForgeRegistries.INGREDIENT_TYPES, AppliedAstralsorcery.MOD_ID);
+
+    public static final DeferredHolder<IngredientType<?>, IngredientType<CrystalSizeIngredient>> CRYSTAL_SIZE_INGREDIENT =
+            INGREDIENT_TYPES.register("crystal_size", () -> new IngredientType<>(CrystalSizeIngredient.CODEC));
+    public static final DeferredBlock<AutoChiselBlock> AUTO_CHISEL = BLOCKS.register("auto_starmetal_chisel", AutoChiselBlock::new);
+    public static final DeferredItem<AutoChiselItem> AUTO_CHISEL_ITEM = ITEMS.register("auto_starmetal_chisel",
+            () -> new AutoChiselItem(AUTO_CHISEL.get()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AutoChiselBlockEntity>> AUTO_CHISEL_ENTITY =
+            BLOCK_ENTITIES.register("auto_starmetal_chisel", () -> BlockEntityType.Builder.of(
+                    AutoChiselBlockEntity::new, AUTO_CHISEL.get()).build(null));
+    public static final DeferredHolder<MenuType<?>, MenuType<AutoChiselMenu>> AUTO_CHISEL_MENU =
+            MENUS.register("auto_starmetal_chisel", () -> new MenuType<>(AutoChiselMenu::new, FeatureFlags.VANILLA_SET));
+    public static final DeferredItem<Item> ASTRAL_PROCESSOR_PRESS = ITEMS.registerSimpleItem("astral_processor_press");
+    public static final DeferredItem<Item> PRINTED_ASTRAL_PROCESSOR = ITEMS.registerSimpleItem("printed_astral_processor");
+    public static final DeferredItem<Item> ASTRAL_PROCESSOR = ITEMS.registerSimpleItem("astral_processor");
+    public static final DeferredItem<Item> CONSTELLATION_CORE = ITEMS.registerSimpleItem("constellation_core");
+    public static final DeferredHolder<IngredientType<?>, IngredientType<LumenCrystalIngredient>> LUMEN_CRYSTAL_INGREDIENT =
+            INGREDIENT_TYPES.register("lumen_crystal", () -> new IngredientType<>(LumenCrystalIngredient.CODEC));
+    public static final DeferredItem<Item> LUMEN_PROCESSOR_PRESS = ITEMS.registerSimpleItem("lumen_processor_press");
+    public static final DeferredItem<Item> PRINTED_LUMEN_PROCESSOR = ITEMS.registerSimpleItem("printed_lumen_processor");
+    public static final DeferredItem<Item> LUMEN_PROCESSOR = ITEMS.registerSimpleItem("lumen_processor");
+    public static final DeferredBlock<AltarAutomationBlock> ALTAR_AUTOMATION =
+            BLOCKS.register("altar_automation_interface", AltarAutomationBlock::new);
+    public static final DeferredItem<BlockItem> ALTAR_AUTOMATION_ITEM = ITEMS.registerSimpleBlockItem(ALTAR_AUTOMATION);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AltarAutomationBlockEntity>> ALTAR_AUTOMATION_ENTITY =
+            BLOCK_ENTITIES.register("altar_automation_interface", () -> BlockEntityType.Builder.of(
+                    AltarAutomationBlockEntity::new, ALTAR_AUTOMATION.get()).build(null));
+    public static final DeferredBlock<Block> STARLIGHT_MYSTERIOUS_CUBE = BLOCKS.register("starlight_mysterious_cube",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(10, 1000).sound(SoundType.METAL).requiresCorrectToolForDrops()
+                    .lightLevel(state -> 7).isRedstoneConductor((state, level, pos) -> false)));
+    public static final DeferredItem<BlockItem> STARLIGHT_MYSTERIOUS_CUBE_ITEM =
+            ITEMS.registerSimpleBlockItem(STARLIGHT_MYSTERIOUS_CUBE);
+
+    public static final DeferredItem<AstralFluixCrystalItem> ASTRAL_FLUIX_CRYSTAL =
+            ITEMS.register("astral_fluix_crystal", AstralFluixCrystalItem::new);
+    public static final DeferredBlock<AstralFluixClusterBlock> ASTRAL_FLUIX_CLUSTER =
+            BLOCKS.register("astral_fluix_cluster", AstralFluixClusterBlock::new);
+    public static final DeferredItem<CelestialCrystalClusterBlockItem> ASTRAL_FLUIX_CLUSTER_ITEM =
+            ITEMS.register("astral_fluix_cluster", () -> new CelestialCrystalClusterBlockItem(ASTRAL_FLUIX_CLUSTER.get()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AstralFluixClusterBlockEntity>> ASTRAL_FLUIX_CLUSTER_ENTITY =
+            BLOCK_ENTITIES.register("astral_fluix_cluster", () -> BlockEntityType.Builder.of(
+                    AstralFluixClusterBlockEntity::new, ASTRAL_FLUIX_CLUSTER.get()).build(null));
+    public static final DeferredHolder<LiquidStarlightRecipeOutputModifier.Type<?>, LiquidStarlightRecipeOutputModifier.Type<FormAstralFluixCluster>> FORM_ASTRAL_FLUIX_CLUSTER =
+            LIQUID_OUTPUTS.register("form_astral_fluix_cluster", () -> FormAstralFluixCluster.TYPE);
 
     public static final DeferredHolder<MenuType<?>, MenuType<MELumenFilamentMenu>> FILAMENT_MENU =
             MENUS.register("me_lumen_filament", () -> new MenuType<>(MELumenFilamentMenu::new, FeatureFlags.VANILLA_SET));
@@ -68,6 +140,8 @@ public final class ModContent {
                     MELumenArrayBlockEntity::new, ME_LUMEN_ARRAY.get()).build(null));
 
     public static final DeferredItem<Item> LUMEN_CELL_HOUSING = ITEMS.registerSimpleItem("lumen_cell_housing");
+    public static final DeferredItem<NonEmptyAnnihilationPlaneItem> NON_EMPTY_ANNIHILATION_PLANE =
+            ITEMS.register("non_empty_annihilation_plane", NonEmptyAnnihilationPlaneItem::new);
     public static final DeferredItem<MEResonatingWandItem> ME_RESONATING_WAND =
             ITEMS.register("me_resonating_wand", MEResonatingWandItem::new);
     public static final DeferredItem<Item> LUMEN_COMPONENT = ITEMS.registerSimpleItem("lumen_storage_component_1k");
@@ -128,13 +202,27 @@ public final class ModContent {
                     output.accept(ME_LUMEN_FILAMENT_ITEM);
                     output.accept(ME_LUMEN_ARRAY_ITEM);
                     output.accept(ME_CHALICE_ITEM);
+                    output.accept(ALTAR_AUTOMATION_ITEM);
+                    output.accept(AUTO_CHISEL_ITEM);
                     output.accept(ME_RESONATING_WAND);
+                    output.accept(NON_EMPTY_ANNIHILATION_PLANE);
+                    output.accept(ASTRAL_FLUIX_CRYSTAL);
+                    output.accept(ASTRAL_FLUIX_CLUSTER_ITEM);
+                    output.accept(STARLIGHT_MYSTERIOUS_CUBE_ITEM);
+                    output.accept(ASTRAL_PROCESSOR_PRESS);
+                    output.accept(PRINTED_ASTRAL_PROCESSOR);
+                    output.accept(ASTRAL_PROCESSOR);
+                    output.accept(CONSTELLATION_CORE);
+                    output.accept(LUMEN_PROCESSOR_PRESS);
+                    output.accept(PRINTED_LUMEN_PROCESSOR);
+                    output.accept(LUMEN_PROCESSOR);
                 }).build());
     }
 
     private ModContent() {}
 
     public static void register(IEventBus bus) {
+        com.appliedastralsorcery.parts.NonEmptyAnnihilationPlanePart.registerModels();
         LumenCellEnhancement.register(bus);
         MEResonatingWandItem.registerComponents(bus);
         BLOCKS.register(bus);
@@ -143,10 +231,19 @@ public final class ModContent {
         KEY_TYPES.register(bus);
         TABS.register(bus);
         MENUS.register(bus);
+        LIQUID_OUTPUTS.register(bus);
+        INGREDIENT_TYPES.register(bus);
         bus.addListener((net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent event) ->
                 event.registerBlockEntity(AECapabilities.IN_WORLD_GRID_NODE_HOST, FILAMENT_ENTITY.get(),
                         (entity, context) -> entity));
         bus.addListener((net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent event) -> {
+            event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.ItemHandler.BLOCK,
+                    AUTO_CHISEL_ENTITY.get(), (entity, side) -> entity.getItemHandler(side));
+            event.registerBlockEntity(hellfirepvp.astralsorcery.common.lumen.ILumenHandler.BLOCK,
+                    AUTO_CHISEL_ENTITY.get(), (entity, side) -> entity.getLumenHandler());
+            event.registerBlockEntity(AECapabilities.CRAFTING_MACHINE, ALTAR_AUTOMATION_ENTITY.get(), (entity, side) -> entity);
+            event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.ItemHandler.BLOCK,
+                    ALTAR_AUTOMATION_ENTITY.get(), (entity, side) -> entity.getOutput());
             event.registerBlockEntity(AECapabilities.IN_WORLD_GRID_NODE_HOST, CHALICE_ENTITY.get(), (entity, context) -> entity);
             event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK, CHALICE_ENTITY.get(),
                     (entity, side) -> side == null || side == net.minecraft.core.Direction.DOWN ? entity.getTankView() : null);

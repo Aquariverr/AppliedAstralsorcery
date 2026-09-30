@@ -38,12 +38,6 @@ neoForge {
                 gameDirectory = file('build/wand-gametest-run')
                 systemProperty 'neoforge.enabledGameTestNamespaces', 'appliedas'
             }
-            wandPreviewClient {
-                client()
-                gameDirectory = file('build/wand-preview-run')
-                systemProperty 'appliedas.wandPreview', 'true'
-                programArguments.addAll '--width', '1000', '--height', '780'
-            }
         }
         client {
             client()

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "conditions": [
+        { "condition": "minecraft:block_state_property", "block": "appliedas:astral_fluix_cluster", "properties": { "stage": "4" } }
+      ],
+      "entries": [ { "type": "minecraft:item", "name": "appliedas:astral_fluix_crystal" } ],
+      "functions": [ { "function": "astralsorcery:copy_crystal_properties" }, { "function": "minecraft:explosion_decay" } ]
+    }
+  ]
+}

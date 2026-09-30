@@ -1,31 +1,33 @@
 # Applied Astralsorcery
 
-### Homepage [CurseForge](https://www.curseforge.com/minecraft/mc-mods/appliedas)
-
 <img src="src/main/resources/logo.png" alt="Applied Astralsorcery logo" width="160">
 
-Applied Astralsorcery is an addon for **Astral Sorcery** and **Applied Energistics 2 (AE2)** that lets ME networks store and transfer lumen, and adds ME network support for Lumen Arrays, Lumen Filaments, and Chalices.
+An addon for **Astral Sorcery** and **Applied Energistics 2 (AE2)** that lets ME networks store and transfer lumen and automate Astral Sorcery devices.
 
-For **Minecraft 1.21.1 / NeoForge**.
-
-Licensed under the [MIT License](LICENSE).
+[CurseForge](https://www.curseforge.com/minecraft/mc-mods/appliedas) · [MIT License](LICENSE)
 
 ## Features
 
-- **ME Resonating Wand**: Retains the original wand functions and builds Astral Sorcery multiblocks. Sneak-right-click a Wireless Access Point to bind, then a structure core to build. Right-click air to configure ME or inventory item sourcing, Liquid Starlight pool building, and replacement of existing blocks with recovery into ME.
-- **Lumen storage**: Available in 1k, 4k, 16k, 64k, and 256k capacities, ME Lumen Storage Cells can be installed in an ME Drive or ME Chest, with stored amounts visible in an ME Terminal. Each cell stores up to 5 lumen types by default.
-- **Artifact enhancement**: A 256k cell can be enhanced up to 10 times. Each enhancement doubles its capacity and adds room for one more lumen type, allowing up to 15 types when fully enhanced.
-- **Bus support**: AE2's ME Import Bus, ME Export Bus, and ME Storage Bus support lumen, allowing you to collect lumen, replenish supplies, and connect external storage, respectively.
-- **ME Lumen Filament**: Collects a selected lumen type from Astral Sorcery's lumen network and stores it in ME. Connections can be relayed through regular Lumen Filaments, with a maximum range of 16 blocks per connection and a clear transmission path required.
-- **ME Lumen Array**: Retains lumen generation and can automatically restock Liquid Starlight and catalysts from ME. Set a reserve amount to replenish lumen from the network when it falls below the target, and enable export to return surplus lumen to the network.
-- **ME Chalice**: Retains its 64,000 mB fluid capacity and can draw fluid from ME to maintain a configured reserve or return surplus fluid to the network.
-- **JEI lumen filters**: Drag any lumen ingredient from JEI into ME Import Bus, Export Bus, or Storage Bus filter slots. Works with JEI alone and with AE2 JEI Integration installed.
+- **ME Lumen Storage Cells**: Store up to 5 lumen types in 1k, 4k, 16k, 64k or 256k cells, with contents visible in an ME Terminal. A 256k cell supports up to 10 artifact enhancements, each doubling capacity and adding one lumen type, for a maximum of 15 types.
+- **ME buses**: Import, export and connect external lumen storage using AE2's ME Import Bus, ME Export Bus and ME Storage Bus. Drag lumen ingredients from JEI into their filter slots, with or without AE2 JEI Integration.
+- **ME Lumen Filament**: Collect a selected lumen type from Astral Sorcery's lumen network into ME. Connections can pass through regular Lumen Filaments; each connection requires a clear path and has a 16-block range.
+- **ME Lumen Array**: Generate lumen, restock Liquid Starlight and catalysts from ME, and maintain a lumen reserve by drawing from or returning surplus to the network.
+- **ME Chalice**: Store 64,000 mB of fluid and maintain a configured reserve using ME, with optional surplus export.
+- **ME Resonating Wand**: Build Astral Sorcery multiblocks using materials from ME and your inventory. Supports Liquid Starlight pools and block replacement with recovery into ME, alongside the original wand functions.
+- **Aberrant Crystal**: Form a five-stage cluster from Stardust, a Singularity and a Fluix Crystal in Liquid Starlight. Harvest crystals with Astral Sorcery's Size, Purity and Cut attributes, then grow, merge or split them.
+- **Aberrant Processor and Lumen Processor**: Obtain their Inscriber Presses from a Starlight Mysterious Cube and use them to process Aberrant Crystals or Lumen Crystals. Aberrant Crystal Size determines the number of circuit boards produced.
+- **Constellation Core**: Combine crystals attuned to all 12 constellations on an Iridescent Crafting Altar. Each constellation accepts either a rock or celestial crystal.
+- **Altar Automation Interface**: Connect an ME Pattern Provider to the nearest loaded altar within 16 blocks. Processing patterns supply the item ingredients; products and container returns go back to the provider. Astral Sorcery's altar conditions still apply.
+- **Automatic Starmetal Chisel**: Process crystals, Starmetal Ingots and artifacts from item slots or adjacent dropped items. Each operation takes 2 seconds and 25 Lm of Evorsio and follows Astral Sorcery's processing rules. Supports side configuration, automatic item transfers, enchantments, lumen relays and ME Export Buses.
+- **Non-Empty Annihilation Plane**: Collect blocks like AE2's Annihilation Plane, but leave a block intact if its loot contains no items. Fluid and dropped-item collection work as usual.
+
+Recipes and usage instructions are available in the in-game AE2 guide in English and Chinese, with recipes also viewable in JEI.
 
 ## Requirements
 
-Requires Minecraft **1.21.1**, NeoForge **21.1.238 or later**, and **Java 21**. Install compatible versions of the following mods for this platform:
+Minecraft **1.21.1**, NeoForge **21.1.238 or later**, and **Java 21**, with compatible versions of these mods:
 
-| Required mod | Version requirement |
+| Required mod | Version |
 | --- | --- |
 | [Astral Sorcery](https://www.curseforge.com/minecraft/mc-mods/astral-sorcery) | 2.0.0 or later |
 | [Applied Energistics 2](https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2) | 19.2.17 or later, below 20 |
@@ -33,10 +35,13 @@ Requires Minecraft **1.21.1**, NeoForge **21.1.238 or later**, and **Java 21**. 
 | [ObserverLib](https://www.curseforge.com/minecraft/mc-mods/observerlib) | 1.10.3 or later |
 | [Curios API](https://www.curseforge.com/minecraft/mc-mods/curios) | 9.5.1 or later |
 
-JEI, Jade, and AE2 JEI Integration are optional.
+JEI, Jade and AE2 JEI Integration are optional.
 
-## Development checks
+## Development
 
-Run `./gradlew build` for the release JAR. Run `./gradlew -PwandGameTests runGameTestServer` for the wand's GameTests (materials, fluids, interrupted construction, saved refunds, linking, recipe, and native wand recognition). Tests use an isolated world under `build/wand-gametest-run`; test classes and templates are excluded from normal builds.
+```sh
+./gradlew build
+./gradlew -PwandGameTests runGameTestServer
+```
 
-Run `./gradlew -PwandGameTests runWandPreviewClient` to capture the settings screen in Chinese and English under `build/wand-preview-run/screenshots`, without opening a world.
+The build produces the release JAR in `build/libs`. GameTests use a separate world in `build/wand-gametest-run`; test classes and templates are excluded from normal builds.

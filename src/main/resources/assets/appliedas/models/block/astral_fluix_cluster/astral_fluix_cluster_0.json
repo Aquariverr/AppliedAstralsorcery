@@ -1,0 +1,46 @@
+{
+  "__comment": "Astral fluix cluster stage 0: starfield-cored crystals in a crust of dried liquid starlight.",
+  "parent": "minecraft:block/block",
+  "loader": "neoforge:composite",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "appliedas:block/astral_fluix_cluster_shell"
+  },
+  "children": {
+    "solid": {
+      "render_type": "minecraft:solid",
+      "parent": "appliedas:block/astral_fluix_cluster/astral_fluix_cluster_0_solid"
+    },
+    "shell": {
+      "render_type": "minecraft:translucent",
+      "parent": "appliedas:block/astral_fluix_cluster/astral_fluix_cluster_0_translucent"
+    },
+    "sparkles": {
+      "render_type": "minecraft:translucent",
+      "parent": "appliedas:block/astral_fluix_cluster/astral_fluix_cluster_0_sparkles"
+    }
+  },
+  "item_render_order": [
+    "solid",
+    "shell"
+  ],
+  "display": {
+    "gui": {
+      "rotation": [
+        30,
+        225,
+        0
+      ],
+      "translation": [
+        -1.53,
+        4.34,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    }
+  }
+}

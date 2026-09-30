@@ -1,0 +1,31 @@
+{
+  "type": "astralsorcery:focal_transmutation",
+  "color": -8599297,
+  "duration": 400,
+  "input_display_stacks": [
+    {
+      "item": "ae2:mysterious_cube"
+    },
+    {
+      "item": "ae2:not_so_mysterious_cube"
+    }
+  ],
+  "input_predicates": [
+    {
+      "type": "minecraft:matching_blocks",
+      "blocks": [
+        "ae2:mysterious_cube",
+        "ae2:not_so_mysterious_cube"
+      ]
+    }
+  ],
+  "output_states": [
+    {
+      "weight": 1,
+      "data": {
+        "Name": "appliedas:starlight_mysterious_cube"
+      }
+    }
+  ],
+  "requires_focused_starlight": false
+}

@@ -17,12 +17,20 @@ navigation:
 
 ## 使用说明
 
+- [自动分割水晶与材料](chisel.md)
+
+- [自动化祭坛合成](altar.md)
+- [制作星座核心](constellation_core.md)
+- [制作 ME 流明阵列与 ME 纳星圣杯](machines.md)
+
+- [培育异辉水晶石](crystal.md)
+- [制作异辉处理器](processor.md)
+- [制作流明处理器](lumen_processor.md)
 - [制作存储元件](storage.md)
 - [容量强化](enhancement.md)
 - [用总线搬运流明](buses.md)
 - [使用 ME 流明丝结](filament.md)
 - [使用 ME 共振星杖建造结构](wand.md)
-- [排查问题](troubleshooting.md)
 
 配方图中的物品可悬停查看名称。
 

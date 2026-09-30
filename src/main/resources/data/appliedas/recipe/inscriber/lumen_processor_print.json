@@ -1,0 +1,9 @@
+{
+  "type": "ae2:inscriber",
+  "ingredients": {
+    "middle": { "type": "appliedas:lumen_crystal" },
+    "top": { "item": "appliedas:lumen_processor_press" }
+  },
+  "mode": "inscribe",
+  "result": { "id": "appliedas:printed_lumen_processor", "count": 1 }
+}

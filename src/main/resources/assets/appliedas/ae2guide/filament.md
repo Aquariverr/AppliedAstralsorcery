@@ -13,6 +13,8 @@ An ME Lumen Filament requests a selected lumen type from nearby Lumen Arrays and
 
 ## Crafting
 
+Use a **Resonating Crafting Table** with the Lumen Filament layout: a Lumen Filament in the center, a Lumen Processor above it, and a Fluix Block replacing the bottom Infused Wood. Start at night with a Resonating Wand. Crafting takes **5 seconds** and produces **1 ME Lumen Filament**.
+
 <Recipe id="appliedas:me_lumen_filament" />
 
 ## Connections and setup
@@ -37,4 +39,4 @@ Shift + right-click does not cycle types, and holding a lumen crystal does not d
 
 The filament waits if power is lost, the network cannot accept lumen, or the source array has too little lumen. Lumen already received stays in the filament until it can be stored in the network. Changing the requested type or stopping requests does not discard buffered lumen.
 
-Check the status in the configuration screen and refer to [Troubleshooting](troubleshooting.md) to find the cause.
+Check the status in the configuration screen.

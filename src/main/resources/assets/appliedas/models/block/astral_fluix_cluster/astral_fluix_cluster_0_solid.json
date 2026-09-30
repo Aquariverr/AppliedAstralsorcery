@@ -1,0 +1,324 @@
+{
+  "__comment": "Emissive starfield cores and a crust of crystallised liquid starlight.",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "core": "appliedas:block/astral_fluix_cluster_core",
+    "crust": "appliedas:block/astral_fluix_cluster_crust",
+    "particle": "appliedas:block/astral_fluix_cluster_shell"
+  },
+  "elements": [
+    {
+      "from": [
+        6,
+        0.0,
+        6
+      ],
+      "to": [
+        10,
+        0.75,
+        10
+      ],
+      "faces": {
+        "up": {
+          "texture": "#crust",
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ]
+        },
+        "north": {
+          "texture": "#crust",
+          "uv": [
+            6,
+            15.25,
+            10,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#crust",
+          "uv": [
+            6,
+            15.25,
+            10,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#crust",
+          "uv": [
+            6,
+            15.25,
+            10,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#crust",
+          "uv": [
+            6,
+            15.25,
+            10,
+            16
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        5.4,
+        0.0,
+        4.6
+      ],
+      "to": [
+        7.0858,
+        1.5,
+        8.2
+      ],
+      "faces": {
+        "up": {
+          "texture": "#crust",
+          "uv": [
+            5.4,
+            4.6,
+            7.0858,
+            8.2
+          ]
+        },
+        "north": {
+          "texture": "#crust",
+          "uv": [
+            8.9142,
+            14.5,
+            10.6,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#crust",
+          "uv": [
+            5.4,
+            14.5,
+            7.0858,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#crust",
+          "uv": [
+            4.6,
+            14.5,
+            8.2,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#crust",
+          "uv": [
+            7.8,
+            14.5,
+            11.4,
+            16
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        3.7142,
+        0.0,
+        4.6
+      ],
+      "to": [
+        5.4,
+        0.75,
+        8.2
+      ],
+      "faces": {
+        "up": {
+          "texture": "#crust",
+          "uv": [
+            3.7142,
+            4.6,
+            5.4,
+            8.2
+          ]
+        },
+        "north": {
+          "texture": "#crust",
+          "uv": [
+            10.6,
+            15.25,
+            12.2858,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#crust",
+          "uv": [
+            3.7142,
+            15.25,
+            5.4,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#crust",
+          "uv": [
+            4.6,
+            15.25,
+            8.2,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#crust",
+          "uv": [
+            7.8,
+            15.25,
+            11.4,
+            16
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        6.6,
+        0.0,
+        6.6
+      ],
+      "to": [
+        9.4,
+        4,
+        9.4
+      ],
+      "faces": {
+        "north": {
+          "texture": "#core",
+          "uv": [
+            2.1,
+            12,
+            4.9,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#core",
+          "uv": [
+            7.1,
+            12,
+            9.9,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#core",
+          "uv": [
+            12.1,
+            12,
+            14.9,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#core",
+          "uv": [
+            3.1,
+            12,
+            5.9,
+            16
+          ]
+        },
+        "up": {
+          "texture": "#core",
+          "uv": [
+            1.1,
+            1.1,
+            3.9,
+            3.9
+          ]
+        }
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    },
+    {
+      "from": [
+        4,
+        0.6,
+        5
+      ],
+      "to": [
+        6.8,
+        2,
+        7.8
+      ],
+      "rotation": {
+        "angle": 22.5,
+        "axis": "z",
+        "origin": [
+          5.4,
+          0.6,
+          6.4
+        ]
+      },
+      "faces": {
+        "north": {
+          "texture": "#core",
+          "uv": [
+            9.1,
+            14.6,
+            11.9,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#core",
+          "uv": [
+            0.1,
+            14.6,
+            2.9,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#core",
+          "uv": [
+            5.1,
+            14.6,
+            7.9,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#core",
+          "uv": [
+            10.1,
+            14.6,
+            12.9,
+            16
+          ]
+        },
+        "up": {
+          "texture": "#core",
+          "uv": [
+            11.1,
+            5.1,
+            13.9,
+            7.9
+          ]
+        }
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    }
+  ]
+}

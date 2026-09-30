@@ -1,0 +1,66 @@
+{
+  "type": "astralsorcery:altar_crafting",
+  "baseFocusShatterChance": 0.0,
+  "duration": 100,
+  "effects": [
+    "astralsorcery:default_central_beam",
+    "astralsorcery:default_altar_sparkle",
+    "astralsorcery:default_lumen_input",
+    "astralsorcery:default_relay_input"
+  ],
+  "grid": {
+    "key": {
+      "M": {
+        "type": "item",
+        "ingredient": {"item": "astralsorcery:marble_runed"}
+      },
+      "C": {
+        "type": "item",
+        "ingredient": {"item": "astralsorcery:chisel"}
+      },
+      "I": {
+        "type": "item",
+        "ingredient": {"item": "astralsorcery:starmetal_ingot"}
+      },
+      "P": {
+        "type": "item",
+        "ingredient": {"item": "appliedas:lumen_processor"}
+      },
+      "W": {
+        "type": "item",
+        "ingredient": {"item": "astralsorcery:infused_wood"}
+      },
+      "G": {
+        "type": "item",
+        "ingredient": {"tag": "c:nuggets/gold"}
+      },
+      "E": {
+        "type": "item",
+        "ingredient": {"item": "astralsorcery:infused_wood_enriched"}
+      },
+      "V": {
+        "type": "item",
+        "ingredient": {"item": "astralsorcery:infused_wood_infused"}
+      }
+    },
+    "pattern": ["MCM", "IPI", "MWM"],
+    "relayPattern": [
+      "     ",
+      "     ",
+      "     ",
+      " GEG ",
+      "GEVEG"
+    ]
+  },
+  "mayChain": false,
+  "onlyNight": true,
+  "outputModifiers": [],
+  "outputs": [
+    {"id": "appliedas:auto_starmetal_chisel", "count": 1}
+  ],
+  "requiredAdditionalInputs": [],
+  "requiredFluid": [],
+  "requiredLumen": [],
+  "requiredStarlight": [],
+  "requiredType": "resonance"
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "RQR",
+    "QPQ",
+    "RQR"
+  ],
+  "key": {
+    "R": {
+      "tag": "c:dusts/redstone"
+    },
+    "Q": {
+      "tag": "ae2:all_certus_quartz"
+    },
+    "P": {
+      "item": "appliedas:astral_processor"
+    }
+  },
+  "result": {
+    "id": "appliedas:lumen_storage_component_1k",
+    "count": 1
+  }
+}

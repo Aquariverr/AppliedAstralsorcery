@@ -1,0 +1,7 @@
+{
+  "parent": "ae2:block/mysterious_cube",
+  "textures": {
+    "particle": "appliedas:block/astral_fluix_cluster_core",
+    "core": "appliedas:block/astral_fluix_cluster_core"
+  }
+}

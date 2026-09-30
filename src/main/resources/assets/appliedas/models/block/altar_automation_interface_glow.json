@@ -1,0 +1,54 @@
+{
+  "ambientocclusion": false,
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "appliedas:block/altar_automation_interface_side",
+    "side": "appliedas:block/altar_automation_interface_side_glow",
+    "top": "appliedas:block/altar_automation_interface_top_glow",
+    "bottom": "appliedas:block/altar_automation_interface_bottom_glow"
+  },
+  "elements": [
+    {
+      "from": [0,0,0],
+      "to": [16,16,16],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "down": {
+          "uv": [0,0,16,16],
+          "texture": "#bottom",
+          "cullface": "down"
+        },
+        "up": {
+          "uv": [0,0,16,16],
+          "texture": "#top",
+          "cullface": "up"
+        },
+        "north": {
+          "uv": [0,0,16,16],
+          "texture": "#side",
+          "cullface": "north"
+        },
+        "east": {
+          "uv": [0,0,16,16],
+          "texture": "#side",
+          "cullface": "east"
+        },
+        "south": {
+          "uv": [0,0,16,16],
+          "texture": "#side",
+          "cullface": "south"
+        },
+        "west": {
+          "uv": [0,0,16,16],
+          "texture": "#side",
+          "cullface": "west"
+        }
+      }
+    }
+  ]
+}

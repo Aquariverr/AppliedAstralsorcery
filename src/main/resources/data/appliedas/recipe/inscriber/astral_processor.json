@@ -1,0 +1,19 @@
+{
+  "type": "ae2:inscriber",
+  "ingredients": {
+    "middle": {
+      "item": "minecraft:redstone"
+    },
+    "bottom": {
+      "item": "ae2:printed_silicon"
+    },
+    "top": {
+      "item": "appliedas:printed_astral_processor"
+    }
+  },
+  "mode": "press",
+  "result": {
+    "count": 1,
+    "id": "appliedas:astral_processor"
+  }
+}

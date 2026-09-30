@@ -1,3 +1,299 @@
 {
-  "parent": "astralsorcery:block/chalice"
+  "__comment": "Designed by Wiiv with Cubik Studio - https://cubik.studio",
+  "credit": "Original Astral Sorcery chalice designed by Wiiv; Applied Astral Sorcery textures",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": true,
+  "render_type": "minecraft:solid",
+  "textures": {
+    "particle": "astralsorcery:block/chalice_base",
+    "chalice": "appliedas:block/me_chalice",
+    "glow": "appliedas:block/me_chalice_glow"
+  },
+  "elements": [
+    {
+      "__comment": "base",
+      "from": [2,0,2],
+      "to": [14,2,14],
+      "faces": {
+        "down": {
+          "uv": [6.5,0,9.5,3],
+          "texture": "#chalice"
+        },
+        "up": {
+          "uv": [3.25,0,6.25,3],
+          "texture": "#chalice"
+        },
+        "north": {
+          "uv": [7,4.75,10,5.25],
+          "texture": "#chalice"
+        },
+        "south": {
+          "uv": [7,4.75,10,5.25],
+          "texture": "#chalice"
+        },
+        "west": {
+          "uv": [7,4.75,10,5.25],
+          "texture": "#chalice"
+        },
+        "east": {
+          "uv": [7,4.75,10,5.25],
+          "texture": "#chalice"
+        }
+      }
+    },
+    {
+      "__comment": "stem",
+      "from": [6,2,6],
+      "to": [10,8,10],
+      "faces": {
+        "down": {
+          "uv": [13.75,0.5,14.75,1.5],
+          "texture": "#chalice"
+        },
+        "up": {
+          "uv": [13.75,0.5,14.75,1.5],
+          "texture": "#chalice"
+        },
+        "north": {
+          "uv": [13.25,2.25,14.25,3.75],
+          "texture": "#chalice"
+        },
+        "south": {
+          "uv": [13.25,2.25,14.25,3.75],
+          "texture": "#chalice"
+        },
+        "west": {
+          "uv": [13.25,2.25,14.25,3.75],
+          "texture": "#chalice"
+        },
+        "east": {
+          "uv": [13.25,2.25,14.25,3.75],
+          "texture": "#chalice"
+        }
+      }
+    },
+    {
+      "__comment": "bowl_b",
+      "from": [4,8,4],
+      "to": [12,10,12],
+      "faces": {
+        "down": {
+          "uv": [13.25,0,15.25,2],
+          "texture": "#chalice"
+        },
+        "up": {
+          "uv": [13.25,0,15.25,2],
+          "texture": "#chalice"
+        },
+        "north": {
+          "uv": [7,5.5,9,6],
+          "texture": "#chalice"
+        },
+        "south": {
+          "uv": [7,5.5,9,6],
+          "texture": "#chalice"
+        },
+        "west": {
+          "uv": [7,5.5,9,6],
+          "texture": "#chalice"
+        },
+        "east": {
+          "uv": [7,5.5,9,6],
+          "texture": "#chalice"
+        }
+      }
+    },
+    {
+      "__comment": "bowl_t",
+      "from": [2,10,2],
+      "to": [14,14,14],
+      "faces": {
+        "down": {
+          "uv": [6.5,0,9.5,3],
+          "texture": "#chalice"
+        },
+        "up": {
+          "uv": [0,0,3,3],
+          "texture": "#chalice"
+        },
+        "north": {
+          "uv": [7,3.5,10,4.5],
+          "texture": "#chalice"
+        },
+        "south": {
+          "uv": [7,3.5,10,4.5],
+          "texture": "#chalice"
+        },
+        "west": {
+          "uv": [7,3.5,10,4.5],
+          "texture": "#chalice"
+        },
+        "east": {
+          "uv": [7,3.5,10,4.5],
+          "texture": "#chalice"
+        }
+      }
+    },
+    {
+      "__comment": "detail_b",
+      "from": [7,14,7],
+      "to": [9,16,9],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "down": {
+          "uv": [0,2,2,4],
+          "texture": "#glow"
+        },
+        "up": {
+          "uv": [3,2,5,4],
+          "texture": "#glow"
+        },
+        "north": {
+          "uv": [0,2,2,4],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [0,2,2,4],
+          "texture": "#glow"
+        },
+        "west": {
+          "uv": [0,2,2,4],
+          "texture": "#glow"
+        },
+        "east": {
+          "uv": [0,2,2,4],
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "__comment": "detail_1",
+      "from": [3,2,11],
+      "to": [5,4,13],
+      "faces": {
+        "down": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        },
+        "up": {
+          "uv": [13,4,13.5,4.5],
+          "texture": "#chalice"
+        },
+        "north": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        },
+        "south": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        },
+        "west": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        },
+        "east": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        }
+      }
+    },
+    {
+      "__comment": "detail_2",
+      "from": [11,2,11],
+      "to": [13,4,13],
+      "faces": {
+        "down": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        },
+        "up": {
+          "uv": [13,4,13.5,4.5],
+          "texture": "#chalice"
+        },
+        "north": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        },
+        "south": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        },
+        "west": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        },
+        "east": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        }
+      }
+    },
+    {
+      "__comment": "detail_3",
+      "from": [11,2,3],
+      "to": [13,4,5],
+      "faces": {
+        "down": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        },
+        "up": {
+          "uv": [13,4,13.5,4.5],
+          "texture": "#chalice"
+        },
+        "north": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        },
+        "south": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        },
+        "west": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        },
+        "east": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        }
+      }
+    },
+    {
+      "__comment": "detail_4",
+      "from": [3,2,3],
+      "to": [5,4,5],
+      "faces": {
+        "down": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        },
+        "up": {
+          "uv": [13,4,13.5,4.5],
+          "texture": "#chalice"
+        },
+        "north": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        },
+        "south": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        },
+        "west": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        },
+        "east": {
+          "uv": [12.25,4,12.75,4.5],
+          "texture": "#chalice"
+        }
+      }
+    }
+  ]
 }

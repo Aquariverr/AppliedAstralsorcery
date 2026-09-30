@@ -1,0 +1,11 @@
+{
+  "parent": "ae2:item/part_base",
+  "loader": "neoforge:composite",
+  "textures": {
+    "particle": "ae2:part/annihilation_plane"
+  },
+  "children": {
+    "plane": { "parent": "ae2:item/annihilation_plane" },
+    "accents": { "parent": "appliedas:item/non_empty_annihilation_plane_accents" }
+  }
+}

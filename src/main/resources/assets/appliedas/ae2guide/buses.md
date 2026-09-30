@@ -27,4 +27,4 @@ An ME Export Bus needs a filter specifying which lumen to export. Left-clicking 
 
 Normally, an array stops allowing extraction when it contains less than **2,000 Lm**. For example, if extracting 500 Lm leaves 1,500 Lm, further transfers will stop. This is the array's extraction rule, not a bus malfunction.
 
-Make sure the network is powered, the bus has an available channel, and the destination has storage space. ME Import and Export Buses accept Acceleration Cards to increase transfer speed. See [Troubleshooting](troubleshooting.md) if transfers do not work.
+Make sure the network is powered, the bus has an available channel, and the destination has storage space. ME Import and Export Buses accept Acceleration Cards to increase transfer speed.
