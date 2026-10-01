@@ -17,6 +17,7 @@ import appeng.core.definitions.AEItems;
 import appeng.crafting.pattern.AEProcessingPattern;
 import com.appliedastralsorcery.ModContent;
 import com.appliedastralsorcery.lumen.LumenKey;
+import com.appliedastralsorcery.lumen.LumenCellEnhancement;
 import hellfirepvp.astralsorcery.common.ingredient.IngredientBridge;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.lib.LumenAS;
@@ -27,12 +28,16 @@ import hellfirepvp.astralsorcery.common.tile.TileAltar;
 import hellfirepvp.astralsorcery.common.tile.TileChalice;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Blocks;
@@ -65,13 +70,18 @@ public final class AltarAutomationGameTests {
     }
 
     @GameTest(template = "wand_empty")
-    public static void wrongOutputExtraInputsAndPartialInventoryInsertionAreRejected(GameTestHelper helper) {
+    public static void wrongInputsExtraInputsAndPartialInventoryInsertionAreRejected(GameTestHelper helper) {
         var machine = setup(helper);
         var inputs = marbleInputs(3);
+        inputs[0].add(AEItemKey.of(Items.BEDROCK), 1);
         helper.assertTrue(!machine.pushPattern(pillarPattern(), inputs, Direction.WEST), "Extra inputs must not disappear");
-        helper.assertTrue(inputs[0].get(marbleKey()) == 3, "Extra-input rejection must be atomic");
-        var wrong = pattern(List.of(new GenericStack(marbleKey(), 2)), new ItemStack(Items.DIAMOND));
-        helper.assertTrue(!machine.pushPattern(wrong, marbleInputs(2), Direction.WEST), "Output disambiguates recipes sharing ingredients");
+        helper.assertTrue(inputs[0].get(marbleKey()) == 3 && inputs[0].get(AEItemKey.of(Items.BEDROCK)) == 1,
+                "Extra-input rejection must be atomic");
+        var wrong = new KeyCounter();
+        wrong.add(AEItemKey.of(Items.BEDROCK), 2);
+        helper.assertTrue(!machine.pushPattern(pillarPattern(), new KeyCounter[]{wrong}, Direction.WEST)
+                        && wrong.get(AEItemKey.of(Items.BEDROCK)) == 2,
+                "Unmatched inputs must still be rejected without taking ownership");
         var incoming = new ItemStack(Items.DIAMOND);
         helper.assertTrue(machine.getOutput().insertItem(0, incoming, false).getCount() == 1,
                 "Generic insertion must not accept partial batches when busy");
@@ -84,18 +94,19 @@ public final class AltarAutomationGameTests {
     public static void nativeCraftBuffersReturnsAndRestoresSavedJob(GameTestHelper helper) {
         var machine = setup(helper);
         var inputs = marbleInputs(2);
-        helper.assertTrue(machine.pushPattern(pillarPattern(), inputs, Direction.WEST), "Native pillar craft must be accepted");
+        helper.assertTrue(machine.pushPattern(pillarPattern(), inputs, Direction.WEST), "Matching marble craft must be accepted");
         helper.assertTrue(inputs[0].isEmpty() && !machine.acceptsPlans(), "Exactly one batch is transferred");
         var altar = (TileAltar) helper.getBlockEntity(ALTAR);
         helper.assertTrue(altar.getTileData().getAltarInventory().getStackInSlot(1).is(BlocksAS.MARBLE_RAW.get().asItem())
-                && altar.getTileData().getAltarInventory().getStackInSlot(4).getCount() == 1, "Grid must be arranged by recipe");
+                && altar.getTileData().getAltarInventory().getStackInSlot(4).getCount() == 1,
+                "Pattern output must select pillars instead of the earlier matching arch recipe");
         var saved = machine.saveWithoutMetadata(helper.getLevel().registryAccess());
         machine.loadWithComponents(saved, helper.getLevel().registryAccess());
         helper.assertTrue(!machine.acceptsPlans(), "Reload must preserve the reservation");
         helper.succeedWhen(() -> {
             var output = machine.getOutput().getStackInSlot(0);
             helper.assertTrue(output.is(BlocksAS.MARBLE_PILLAR.get().asItem()) && output.getCount() == 2,
-                    "Native completion must return exactly two pillars without a world drop");
+                    "Native completion must return two pillars selected by the pattern");
             var again = machine.saveWithoutMetadata(helper.getLevel().registryAccess());
             machine.loadWithComponents(again, helper.getLevel().registryAccess());
             helper.assertTrue(machine.getOutput().getStackInSlot(0).getCount() == 2, "Blocked output must survive save/load");
@@ -121,7 +132,7 @@ public final class AltarAutomationGameTests {
                 var stack = inventory.getStack(i);
                 if (stack != null && stack.what().equals(AEItemKey.of(BlocksAS.MARBLE_PILLAR.get().asItem()))) total += stack.amount();
             }
-            helper.assertTrue(total == 2, "Disconnected AE2 provider must buffer both returned pillars");
+            helper.assertTrue(total == 2, "Disconnected AE2 provider must buffer both requested pillars");
             helper.assertTrue(machine.acceptsPlans(), "Interface must unlock after returning the result");
         });
     }
@@ -205,7 +216,6 @@ public final class AltarAutomationGameTests {
         counter.add(AEItemKey.of(Items.DIAMOND), 3);
         var plan = AltarRecipePlan.create(altar,
                 new RecipeHolder<>(ResourceLocation.parse("appliedas:test_overlap"), recipe),
-                pattern(List.of(new GenericStack(AEItemKey.of(Items.DIAMOND), 3)), new ItemStack(Items.STICK)),
                 new KeyCounter[]{counter});
         helper.assertTrue(plan != null && plan.grid().get(0).is(Items.BIRCH_PLANKS)
                 && plan.grid().get(1).is(Items.OAK_PLANKS), "Broad ingredient must not consume the specific ingredient's item");
@@ -220,24 +230,24 @@ public final class AltarAutomationGameTests {
         var altar = (TileAltar) helper.getBlockEntity(ALTAR);
         var holder = duplicateResourceRecipe(helper);
         var supplied = resourceInputs(1000, 300);
-        helper.assertTrue(AltarRecipePlan.create(altar, holder, resourcePattern(), supplied) != null,
+        helper.assertTrue(AltarRecipePlan.create(altar, holder, supplied) != null,
                 "Duplicate fluid and lumen requirements must accept their summed amounts");
         assertResourceInputs(helper, supplied, 1000, 300);
         var partial = resourceInputs(999, 299);
-        helper.assertTrue(AltarRecipePlan.create(altar, holder, resourcePattern(), partial) != null,
+        helper.assertTrue(AltarRecipePlan.create(altar, holder, partial) != null,
                 "A partial resource delivery may supplement existing cache or native resources");
         assertResourceInputs(helper, partial, 999, 299);
         var extraFluid = resourceInputs(1001, 300);
-        helper.assertTrue(AltarRecipePlan.create(altar, holder, resourcePattern(), extraFluid) == null,
+        helper.assertTrue(AltarRecipePlan.create(altar, holder, extraFluid) == null,
                 "A pattern cannot hide fluid exceeding the recipe's combined requirements");
         assertResourceInputs(helper, extraFluid, 1001, 300);
         var extraLumen = resourceInputs(1000, 301);
-        helper.assertTrue(AltarRecipePlan.create(altar, holder, resourcePattern(), extraLumen) == null,
+        helper.assertTrue(AltarRecipePlan.create(altar, holder, extraLumen) == null,
                 "A pattern cannot hide lumen exceeding the recipe's combined requirements");
         assertResourceInputs(helper, extraLumen, 1000, 301);
         var unrelated = resourceInputs(1000, 300);
         unrelated[0].add(AEFluidKey.of(Fluids.LAVA), 1);
-        helper.assertTrue(AltarRecipePlan.create(altar, holder, resourcePattern(), unrelated) == null,
+        helper.assertTrue(AltarRecipePlan.create(altar, holder, unrelated) == null,
                 "Unrelated resources must remain owned by the provider");
         assertResourceInputs(helper, unrelated, 1000, 300);
         helper.assertTrue(unrelated[0].get(AEFluidKey.of(Fluids.LAVA)) == 1, "Rejection must preserve unrelated fluid");
@@ -385,6 +395,144 @@ public final class AltarAutomationGameTests {
                     "Manual resource craft must wait for its own native resource sources");
             helper.succeed();
         });
+    }
+
+    @GameTest(template = "wand_empty", timeoutTicks = 240)
+    public static void ambiguousRecipesMatchOutputTypeIgnoringComponentsAndCount(GameTestHelper helper) {
+        var machine = setup(helper);
+        var sample = marked(BlocksAS.MARBLE_RAW.toStack(), "pattern input");
+        var first = marked(BlocksAS.MARBLE_RAW.toStack(), "actual input one");
+        var second = marked(BlocksAS.MARBLE_RAW.toStack(), "actual input two");
+        var expected = BlocksAS.MARBLE_PILLAR.toStack(2);
+        var encoded = pattern(List.of(new GenericStack(AEItemKey.of(sample), 2)),
+                marked(BlocksAS.MARBLE_PILLAR.toStack(64), "pattern output"));
+        var supplied = new KeyCounter();
+        supplied.add(AEItemKey.of(first), 1);
+        supplied.add(AEItemKey.of(second), 1);
+        helper.assertTrue(machine.pushPattern(encoded, new KeyCounter[]{supplied}, Direction.WEST),
+                "Output type must select pillars while sample components/NBT and count remain ignored");
+        helper.assertTrue(supplied.isEmpty(), "Successful push must take the supplied batch exactly once");
+        var altar = (TileAltar) helper.getBlockEntity(ALTAR);
+        var placed = new KeyCounter();
+        for (int slot : new int[]{1, 4}) {
+            placed.add(AEItemKey.of(altar.getTileData().getAltarInventory().getStackInSlot(slot)), 1);
+        }
+        helper.assertTrue(placed.get(AEItemKey.of(first)) == 1 && placed.get(AEItemKey.of(second)) == 1,
+                "Placing inputs must preserve their real components/NBT");
+        var saved = machine.saveWithoutMetadata(helper.getLevel().registryAccess());
+        machine.loadWithComponents(saved, helper.getLevel().registryAccess());
+        helper.succeedWhen(() -> helper.assertTrue(ItemStack.matches(machine.getOutput().getStackInSlot(0), expected),
+                "Completion must return the native item, count and components rather than the pattern output"));
+    }
+
+    @GameTest(template = "wand_empty")
+    public static void patternOutputCountsAndComponentsDoNotRestrictPlanning(GameTestHelper helper) {
+        setup(helper);
+        var altar = (TileAltar) helper.getBlockEntity(ALTAR);
+        var nativeRecipe = pillarRecipe(helper).value();
+        var first = marked(BlocksAS.MARBLE_PILLAR.toStack(), "native one");
+        var second = marked(BlocksAS.MARBLE_PILLAR.toStack(2), "native two");
+        var holder = new RecipeHolder<>(ResourceLocation.parse("appliedas:test_output_components"),
+                new AltarRecipe(nativeRecipe.getRequiredType(), nativeRecipe.getGrid(), List.of(first, second),
+                        Optional.empty(), 0, 20, false, false, Set.of(), List.of(), List.of(), List.of(), Set.of(), List.of()));
+        var definition = AEItems.PROCESSING_PATTERN.stack();
+        var inputs = List.of(new GenericStack(marbleKey(), 2));
+        var outputOne = AEItemKey.of(marked(BlocksAS.MARBLE_PILLAR.toStack(), "sample one"));
+        var outputTwo = AEItemKey.of(marked(BlocksAS.MARBLE_PILLAR.toStack(), "sample two"));
+        AEProcessingPattern.encode(definition, inputs,
+                List.of(new GenericStack(outputOne, 2), new GenericStack(outputTwo, 1)));
+        var supplied = marbleInputs(2);
+        var plan = AltarRecipePlan.create(altar, holder, supplied);
+        helper.assertTrue(plan != null && AltarRecipePlan.select(altar, List.of(plan),
+                        new AEProcessingPattern(AEItemKey.of(definition))) == plan,
+                "Output components must not restrict input-based planning");
+        AEProcessingPattern.encode(definition, inputs,
+                List.of(new GenericStack(outputOne, 2), new GenericStack(outputTwo, 2)));
+        helper.assertTrue(AltarRecipePlan.select(altar, List.of(plan),
+                        new AEProcessingPattern(AEItemKey.of(definition))) == plan,
+                "Pattern output counts must not restrict input-based planning");
+        var unrelated = pattern(inputs, new ItemStack(Items.DIAMOND, 64));
+        var firstPlan = AltarRecipePlan.create(altar, holder, supplied);
+        var secondPlan = AltarRecipePlan.create(altar, pillarRecipe(helper), supplied);
+        helper.assertTrue(AltarRecipePlan.select(altar, List.of(firstPlan, secondPlan), unrelated) == firstPlan,
+                "Multiple recipes producing the same item type must ignore outputs despite different counts/components");
+        helper.assertTrue(supplied[0].get(marbleKey()) == 2
+                        && ItemStack.matches(holder.value().getOutputs().get(0), first)
+                        && ItemStack.matches(holder.value().getOutputs().get(1), second),
+                "Comparison must not change provider inputs or native output components");
+        helper.succeed();
+    }
+
+    @GameTest(template = "wand_empty", timeoutTicks = 240)
+    public static void uniqueRecipeIgnoresUnrelatedPatternOutput(GameTestHelper helper) {
+        var machine = setup(helper);
+        var encoded = pattern(List.of(new GenericStack(AEItemKey.of(Items.DIAMOND), 1),
+                new GenericStack(AEFluidKey.of(Fluids.WATER), 1000),
+                new GenericStack(LumenKey.of(LumenAS.AEVITAS.get()), 300)),
+                marked(new ItemStack(Items.BEDROCK, 64), "unrelated output"));
+        var supplied = resourceInputs(1000, 300);
+        helper.assertTrue(machine.pushPattern(encoded, supplied, Direction.WEST),
+                "A single executable recipe must ignore unrelated pattern output types and counts");
+        helper.assertTrue(supplied[0].isEmpty(), "Accepted unique recipe must take the batch once");
+        helper.succeedWhen(() -> helper.assertTrue(ItemStack.matches(
+                machine.getOutput().getStackInSlot(0), new ItemStack(Items.SLIME_BALL)),
+                "Unique recipe must return its real output, not the sample output"));
+    }
+
+    @GameTest(template = "wand_empty")
+    public static void ambiguousRecipesRejectUnrelatedOutputWithoutTakingInputs(GameTestHelper helper) {
+        var machine = setup(helper);
+        var supplied = marbleInputs(2);
+        var unrelated = pattern(List.of(new GenericStack(marbleKey(), 2)), new ItemStack(Items.DIAMOND));
+        helper.assertTrue(!machine.pushPattern(unrelated, supplied, Direction.WEST),
+                "Multiple possible product types require a matching pattern output");
+        var altar = (TileAltar) helper.getBlockEntity(ALTAR);
+        helper.assertTrue(supplied[0].get(marbleKey()) == 2 && machine.acceptsPlans()
+                        && altar.getTileData().getActiveRecipe().isEmpty(),
+                "Failed disambiguation must not take inputs or reserve the altar");
+        for (int slot = 0; slot < 9; slot++) {
+            helper.assertTrue(altar.getTileData().getAltarInventory().getStackInSlot(slot).isEmpty(),
+                    "Failed disambiguation must not place any ingredients");
+        }
+        helper.succeed();
+    }
+
+    @GameTest(template = "wand_empty")
+    public static void nativeComponentRequirementsStillRestrictPatternInputs(GameTestHelper helper) {
+        setup(helper);
+        var altar = (TileAltar) helper.getBlockEntity(ALTAR);
+        var enhancement = (AltarRecipe) helper.getLevel().getRecipeManager().byKey(ResourceLocation.parse(
+                "appliedas:lumen_storage_cell_256k_artifact_enhance")).orElseThrow().value();
+        var grid = AltarRecipeGrid.create(Map.of('E', enhancement.getGrid().getInputs().get(4)),
+                List.of("   ", " E ", "   "), List.of("     ", "     ", "     ", "     ", "     "));
+        var holder = new RecipeHolder<>(ResourceLocation.parse("appliedas:test_native_component_condition"),
+                new AltarRecipe(TileAltar.AltarType.ILLUMINATION, grid, List.of(new ItemStack(Items.STICK)),
+                        Optional.empty(), 0, 20, false, false, Set.of(), List.of(), List.of(), List.of(), Set.of(), List.of()));
+        var pattern = pattern(List.of(new GenericStack(AEItemKey.of(ModContent.LUMEN_CELL_256K.get()), 1)),
+                marked(new ItemStack(Items.STICK), "output sample"));
+        var cell = marked(ModContent.LUMEN_CELL_256K.toStack(), "actual cell");
+        cell.set(LumenCellEnhancement.LEVEL, 7);
+        var supplied = new KeyCounter();
+        supplied.add(AEItemKey.of(cell), 1);
+        var plan = AltarRecipePlan.create(altar, holder, new KeyCounter[]{supplied});
+        helper.assertTrue(plan != null && ItemStack.matches(plan.grid().get(4), cell)
+                        && AltarRecipePlan.select(altar, List.of(plan), pattern) == plan,
+                "Valid cells may differ from sample components while retaining their actual enhancement level");
+        cell.set(LumenCellEnhancement.LEVEL, LumenCellEnhancement.MAX_LEVEL);
+        supplied.clear();
+        supplied.add(AEItemKey.of(cell), 1);
+        helper.assertTrue(AltarRecipePlan.create(altar, holder, new KeyCounter[]{supplied}) == null
+                        && supplied.get(AEItemKey.of(cell)) == 1,
+                "Ignoring sample components must not bypass native enhancement limits or consume rejected inputs");
+        helper.succeed();
+    }
+
+    private static ItemStack marked(ItemStack stack, String marker) {
+        stack.set(DataComponents.CUSTOM_NAME, Component.literal(marker));
+        var data = new CompoundTag();
+        data.putString("marker", marker);
+        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(data));
+        return stack;
     }
 
     private static AltarAutomationBlockEntity setup(GameTestHelper helper) {

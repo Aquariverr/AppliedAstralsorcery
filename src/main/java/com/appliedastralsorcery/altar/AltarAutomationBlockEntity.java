@@ -135,55 +135,58 @@ public final class AltarAutomationBlockEntity extends BlockEntity implements ICr
                 || hasReservation(altar)) return false;
         var candidates = new ArrayList<>(server.getRecipeManager().getAllRecipesFor(RecipeTypesAS.ALTAR_CRAFTING_TYPE.get()));
         candidates.sort(Comparator.comparing(holder -> holder.id().toString()));
+        var plans = new ArrayList<AltarRecipePlan>();
         for (var holder : candidates) {
-            var plan = AltarRecipePlan.create(altar, holder, pattern, inputs);
+            var plan = AltarRecipePlan.create(altar, holder, inputs);
             if (plan == null || !canPlace(server, altar, plan) || !resources.canInsert(plan.resources())) continue;
             // Time restrictions must hold before taking the materials; focus and tier were checked by the planner.
             if (holder.value().isOnlyNight()
                     && !hellfirepvp.astralsorcery.common.util.level.DayTimeHelper.isNight(server)) continue;
-            altarPos = altar.getBlockPos().immutable();
-            jobId = UUID.randomUUID();
-            recipeId = holder.id();
-            returnSide = side;
-            completed = false;
-            gridMask = relayMask = 0;
-            var link = new CompoundTag();
-            link.putLong("interface", worldPosition.asLong());
-            link.putUUID("job", jobId);
-            altar.getPersistentData().put(LINK_TAG, link);
-            resources.insertAll(plan.resources());
-            for (int i = 0; i < 9; i++) {
-                var stack = plan.grid().get(i);
-                if (!stack.isEmpty()) {
-                    altar.getTileData().getAltarInventory().setStackInSlot(i, stack.copy());
-                    gridMask |= 1 << i;
-                }
-            }
-            for (int i = 0; i < 25; i++) {
-                var stack = plan.relays().get(i);
-                if (!stack.isEmpty()) {
-                    // canPlace checked every required relay before accepting any inputs.
-                    var target = Objects.requireNonNull(relay(server, altar, i), "Validated altar relay");
-                    target.getTileData().getInventory().setStackInSlot(0, stack.copy());
-                    relayMask |= 1 << i;
-                }
-            }
-            for (var stack : plan.additional()) {
-                var item = new ItemEntity(server, altarPos.getX() + 0.5, altarPos.getY() + 1.2,
-                        altarPos.getZ() + 0.5, stack.copy());
-                item.setDeltaMovement(Vec3.ZERO);
-                item.setNoGravity(true);
-                item.setUnlimitedLifetime();
-                item.setNoPickUpDelay();
-                server.addFreshEntity(item);
-            }
-            altar.startCrafting(holder, jobId);
-            altar.setChanged();
-            for (var counter : inputs) counter.clear();
-            setChanged();
-            return true;
+            plans.add(plan);
         }
-        return false;
+        var plan = AltarRecipePlan.select(altar, plans, pattern);
+        if (plan == null) return false;
+        altarPos = altar.getBlockPos().immutable();
+        jobId = UUID.randomUUID();
+        recipeId = plan.recipe().id();
+        returnSide = side;
+        completed = false;
+        gridMask = relayMask = 0;
+        var link = new CompoundTag();
+        link.putLong("interface", worldPosition.asLong());
+        link.putUUID("job", jobId);
+        altar.getPersistentData().put(LINK_TAG, link);
+        resources.insertAll(plan.resources());
+        for (int i = 0; i < 9; i++) {
+            var stack = plan.grid().get(i);
+            if (!stack.isEmpty()) {
+                altar.getTileData().getAltarInventory().setStackInSlot(i, stack.copy());
+                gridMask |= 1 << i;
+            }
+        }
+        for (int i = 0; i < 25; i++) {
+            var stack = plan.relays().get(i);
+            if (!stack.isEmpty()) {
+                // canPlace checked every required relay before accepting any inputs.
+                var target = Objects.requireNonNull(relay(server, altar, i), "Validated altar relay");
+                target.getTileData().getInventory().setStackInSlot(0, stack.copy());
+                relayMask |= 1 << i;
+            }
+        }
+        for (var stack : plan.additional()) {
+            var item = new ItemEntity(server, altarPos.getX() + 0.5, altarPos.getY() + 1.2,
+                    altarPos.getZ() + 0.5, stack.copy());
+            item.setDeltaMovement(Vec3.ZERO);
+            item.setNoGravity(true);
+            item.setUnlimitedLifetime();
+            item.setNoPickUpDelay();
+            server.addFreshEntity(item);
+        }
+        altar.startCrafting(plan.recipe(), jobId);
+        altar.setChanged();
+        for (var counter : inputs) counter.clear();
+        setChanged();
+        return true;
     }
 
     private static boolean canPlace(ServerLevel server, TileAltar altar, AltarRecipePlan plan) {

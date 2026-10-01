@@ -2,7 +2,9 @@ package com.appliedastralsorcery.altar;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import appeng.api.crafting.IPatternDetails;
@@ -15,6 +17,8 @@ import hellfirepvp.astralsorcery.common.recipe.altar.AltarCraftingInput;
 import hellfirepvp.astralsorcery.common.recipe.altar.AltarRecipe;
 import hellfirepvp.astralsorcery.common.recipe.altar.output.AltarOutputSetBlock;
 import hellfirepvp.astralsorcery.common.tile.TileAltar;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
@@ -24,7 +28,7 @@ public record AltarRecipePlan(RecipeHolder<AltarRecipe> recipe, List<ItemStack> 
     private record Requirement(int index, int count, Predicate<ItemStack> matches) {}
 
     public static AltarRecipePlan create(TileAltar altar, RecipeHolder<AltarRecipe> holder,
-            IPatternDetails pattern, KeyCounter[] supplied) {
+            KeyCounter[] supplied) {
         var level = altar.getLevel();
         if (level == null) return null;
         var recipe = holder.value();
@@ -66,6 +70,7 @@ public record AltarRecipePlan(RecipeHolder<AltarRecipe> recipe, List<ItemStack> 
             pool.add(item.toStack((int) entry.getLongValue()));
         }
         List<Requirement> requirements = new ArrayList<>();
+        // Match the supplied stacks against native recipe conditions, not the pattern's sample components.
         for (int i = 0; i < 9; i++) {
             var ingredient = recipe.getGrid().getInputs().get(i);
             if (!ingredient.isEmpty()) requirements.add(new Requirement(i, 1, ingredient::test));
@@ -84,31 +89,49 @@ public record AltarRecipePlan(RecipeHolder<AltarRecipe> recipe, List<ItemStack> 
         List<ItemStack> assigned = new ArrayList<>();
         for (int i = 0; i < 34 + recipe.getRequiredAdditionalInputs().size(); i++) assigned.add(ItemStack.EMPTY);
         if (!assign(requirements, 0, pool, assigned, new int[]{10000})) return null;
-        var plan = new AltarRecipePlan(holder, List.copyOf(assigned.subList(0, 9)),
+        // Output disambiguation happens after all executable input matches have been collected.
+        return new AltarRecipePlan(holder, List.copyOf(assigned.subList(0, 9)),
                 List.copyOf(assigned.subList(9, 34)), List.copyOf(assigned.subList(34, assigned.size())),
                 List.copyOf(resources));
-        var display = AltarCraftingInput.createDisplay(altar.getTileData().getFocusedConstellation().orElse(null),
-                plan.grid(), plan.relays());
-        var outputs = new KeyCounter();
-        for (var stack : recipe.getOutputsForDisplay(display, level.registryAccess())) {
-            var key = AEItemKey.of(stack);
-            if (key != null) outputs.add(key, stack.getCount());
-        }
-        // Container returns may also be listed on a processing pattern.
-        for (var stack : assigned.subList(0, 34)) {
-            if (!stack.isEmpty()) {
-                var remainder = stack.getCraftingRemainingItem();
-                var key = AEItemKey.of(remainder);
-                if (key != null) outputs.add(key, remainder.getCount());
-            }
-        }
-        if (pattern.getOutputs().isEmpty()) return null;
+    }
+
+    /** Only distinct product types need a pattern output to disambiguate them. Plans are in recipe ID order. */
+    public static AltarRecipePlan select(TileAltar altar, List<AltarRecipePlan> plans, IPatternDetails pattern) {
+        var level = altar.getLevel();
+        if (level == null || plans.isEmpty()) return null;
+        if (plans.size() == 1) return plans.getFirst();
+        var registries = level.registryAccess();
+        var productTypes = plans.stream().map(plan -> plan.productTypes(altar, registries)).toList();
+        if (productTypes.stream().allMatch(productTypes.getFirst()::equals)) return plans.getFirst();
+        var requested = new HashSet<Item>();
         for (var output : pattern.getOutputs()) {
-            if (!(output.what() instanceof AEItemKey) || output.amount() <= 0
-                    || outputs.get(output.what()) < output.amount()) return null;
-            outputs.remove(output.what(), output.amount());
+            if (!(output.what() instanceof AEItemKey item)) return null;
+            requested.add(item.getItem());
         }
-        return plan;
+        if (requested.isEmpty()) return null;
+        for (int i = 0; i < plans.size(); i++) {
+            var available = new HashSet<>(productTypes.get(i));
+            // Patterns may include returned containers in addition to the recipe's products.
+            for (var stack : plans.get(i).grid()) addRemainderType(available, stack);
+            for (var stack : plans.get(i).relays()) addRemainderType(available, stack);
+            if (available.containsAll(requested)) return plans.get(i);
+        }
+        return null;
+    }
+
+    private Set<Item> productTypes(TileAltar altar, HolderLookup.Provider registries) {
+        var input = AltarCraftingInput.createDisplay(altar.getTileData().getFocusedConstellation().orElse(null), grid, relays);
+        var types = new HashSet<Item>();
+        for (var stack : recipe.value().getOutputsForDisplay(input, registries)) {
+            if (!stack.isEmpty()) types.add(stack.getItem());
+        }
+        return types;
+    }
+
+    private static void addRemainderType(Set<Item> types, ItemStack stack) {
+        if (stack.isEmpty()) return;
+        var remainder = stack.getCraftingRemainingItem();
+        if (!remainder.isEmpty()) types.add(remainder.getItem());
     }
 
     private static boolean assign(List<Requirement> requirements, int index, List<ItemStack> pool,
