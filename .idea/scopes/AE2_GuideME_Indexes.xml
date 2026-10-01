@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="AE2 GuideME Indexes" pattern="file:src/main/resources/assets/appliedas/ae2guide/index.md||file:src/main/resources/assets/appliedas/ae2guide/_zh_cn/index.md" />
+</component>

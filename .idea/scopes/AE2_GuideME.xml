@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="AE2 GuideME" pattern="file:src/main/resources/assets/appliedas/ae2guide//*" />
+</component>

@@ -1,0 +1,16 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <!-- GuideME uses MDX components, not browser HTML. Keep HTML inspections elsewhere. -->
+    <inspection_tool class="CheckEmptyScriptTag" enabled="true" level="WARNING" enabled_by_default="true">
+      <scope name="AE2 GuideME" level="WARNING" enabled="false" />
+    </inspection_tool>
+    <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
+      <scope name="AE2 GuideME" level="WARNING" enabled="false" />
+    </inspection_tool>
+    <!-- The index pages link to ae2:index.md, a resource in the AE2 dependency. -->
+    <inspection_tool class="MarkdownUnresolvedFileReference" enabled="true" level="WARNING" enabled_by_default="true">
+      <scope name="AE2 GuideME Indexes" level="WARNING" enabled="false" />
+    </inspection_tool>
+  </profile>
+</component>
