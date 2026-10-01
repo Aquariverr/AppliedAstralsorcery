@@ -17,12 +17,15 @@ Applied Astralsorcery connects AE2 with Astral Sorcery, allowing ME networks to 
 
 ## Topics
 
+- [Entering spatial cells with an ME Celestial Gateway](gateway.md)
+
 - [Automating starlight item transmutation](transmutation.md)
 - [Automatically splitting crystals and materials](chisel.md)
 
 - [Automating altar crafting](altar.md)
 - [Crafting a Constellation Core](constellation_core.md)
 - [Crafting ME Lumen Arrays and ME Chalices](machines.md)
+- [Automating lumen combination with ME Lumen Alchemy Arrays](alchemy_array.md)
 
 - [Growing Aberrant Crystals](crystal.md)
 - [Crafting Aberrant Processors](processor.md)

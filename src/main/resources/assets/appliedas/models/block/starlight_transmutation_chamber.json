@@ -2,7 +2,7 @@
   "parent": "minecraft:block/block",
   "loader": "neoforge:composite",
   "textures": {
-    "particle": "astralsorcery:block/marble_raw"
+    "particle": "appliedas:block/starlight_transmutation_chamber"
   },
   "children": {
     "frame": {

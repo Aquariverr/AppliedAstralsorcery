@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/block",
+  "loader": "neoforge:composite",
+  "textures": {"particle": "appliedas:block/me_celestial_gateway"},
+  "children": {
+    "frame": {"render_type": "minecraft:solid", "parent": "appliedas:block/me_celestial_gateway_frame"},
+    "glass": {"render_type": "minecraft:translucent", "parent": "appliedas:block/me_celestial_gateway_glass"}
+  },
+  "item_render_order": ["frame", "glass"]
+}

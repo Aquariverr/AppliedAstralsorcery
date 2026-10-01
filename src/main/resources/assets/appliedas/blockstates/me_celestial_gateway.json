@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "active=false": {"model": "appliedas:block/me_celestial_gateway_inactive"},
+    "active=true": {"model": "appliedas:block/me_celestial_gateway"}
+  }
+}

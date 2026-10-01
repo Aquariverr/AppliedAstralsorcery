@@ -1,0 +1,40 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "appliedas:block/me_lumen_alchemy_array_frame"
+      }
+    },
+    {
+      "apply": {
+        "model": "appliedas:block/me_lumen_alchemy_array_glass"
+      }
+    },
+    {
+      "when": {
+        "working": "true"
+      },
+      "apply": {
+        "model": "appliedas:block/me_lumen_alchemy_array_starlight"
+      }
+    },
+    {
+      "when": {
+        "lit": "true",
+        "working": "false"
+      },
+      "apply": {
+        "model": "appliedas:block/me_lumen_alchemy_array_starlight_steady"
+      }
+    },
+    {
+      "when": {
+        "lit": "false",
+        "working": "false"
+      },
+      "apply": {
+        "model": "appliedas:block/me_lumen_alchemy_array_starlight_off"
+      }
+    }
+  ]
+}

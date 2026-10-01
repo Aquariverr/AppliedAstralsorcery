@@ -1,0 +1,6 @@
+{
+  "parent": "appliedas:block/auto_starmetal_chisel_glow",
+  "textures": {
+    "glow": "appliedas:block/auto_starmetal_chisel_glow_steady"
+  }
+}

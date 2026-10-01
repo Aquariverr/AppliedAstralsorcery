@@ -8,10 +8,13 @@ An addon for **Astral Sorcery** and **Applied Energistics 2 (AE2)** that lets ME
 
 ## Features
 
+- **ME Celestial Gateway**: Travel through the original gateway star interface to ordinary gateways or inserted AE2 Spatial Storage Cells. Ordinary gateways can also enter cells directly; each cell star uses the cell's name. Every stored dimension must exceed 5 blocks, and unformatted 16³/128³ cells are formatted automatically. A compact return portal leads back to the associated ME gateway without requiring a multiblock. ME gateway blocks themselves are not destinations.
+
 - **ME Lumen Storage Cells**: Store up to 5 lumen types in 1k, 4k, 16k, 64k or 256k cells, with contents visible in an ME Terminal. A 256k cell supports up to 10 artifact enhancements, each doubling capacity and adding one lumen type, for a maximum of 15 types.
 - **ME buses**: Import, export and connect external lumen storage using AE2's ME Import Bus, ME Export Bus and ME Storage Bus. Drag lumen ingredients from JEI into their filter slots, with or without AE2 JEI Integration.
 - **ME Lumen Filament**: Collect a selected lumen type from Astral Sorcery's lumen network into ME. Connections can pass through regular Lumen Filaments; each connection requires a clear path and has a 16-block range.
 - **ME Lumen Array**: Generate lumen, restock Liquid Starlight and catalysts from ME, and maintain a lumen reserve by drawing from or returning surplus to the network.
+- **ME Lumen Alchemy Array**: Automate native combination recipes using catalysts, Liquid Starlight and ingredient lumen from ME. Retains the original 4,000 Lm / 2,000 mB capacities, with a configurable output reserve and ME filament interaction. Provides lumen to Astral Sorcery consumers without requesting it from other sources.
 - **ME Chalice**: Store 64,000 mB of fluid and maintain a configured reserve using ME, with optional surplus export.
 - **ME Resonating Wand**: Build Astral Sorcery multiblocks using materials from ME and your inventory. Supports Liquid Starlight pools and block replacement with recovery into ME, alongside the original wand functions.
 - **Aberrant Crystal**: Form a five-stage cluster from Stardust, a Singularity and a Fluix Crystal in Liquid Starlight. Harvest crystals with Astral Sorcery's Size, Purity and Cut attributes, then grow, merge or split them.

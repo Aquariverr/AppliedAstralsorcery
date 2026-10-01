@@ -30,6 +30,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public final class StarlightTransmutationBlock extends BaseTickTileBlock<StarlightTransmutationBlockEntity> {
     public static final MapCodec<StarlightTransmutationBlock> CODEC = simpleCodec(StarlightTransmutationBlock::new);
     public static final BooleanProperty WORKING = BooleanProperty.create("working");
+    public static final BooleanProperty LIT = BooleanProperty.create("lit");
     private static final VoxelShape SHAPE = Shapes.or(box(0, 0, 0, 16, 3, 16),
             box(1, 3, 1, 15, 14, 15), box(0, 14, 0, 16, 16, 16));
 
@@ -39,10 +40,10 @@ public final class StarlightTransmutationBlock extends BaseTickTileBlock<Starlig
     }
     private StarlightTransmutationBlock(Properties properties) {
         super(properties, new TileRegistryObject<>(ModContent.TRANSMUTATION_ENTITY));
-        registerDefaultState(stateDefinition.any().setValue(WORKING, false));
+        registerDefaultState(stateDefinition.any().setValue(WORKING, false).setValue(LIT, false));
     }
     @Override protected MapCodec<? extends BaseEntityBlock> codec() { return CODEC; }
-    @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) { builder.add(WORKING); }
+    @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) { builder.add(WORKING, LIT); }
     @Override protected RenderShape getRenderShape(BlockState state) { return RenderShape.MODEL; }
     @Override protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) { return SHAPE; }
     @Override protected BlockEntityTicker<StarlightTransmutationBlockEntity> createTicker() { return ticker(); }

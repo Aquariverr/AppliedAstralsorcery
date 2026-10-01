@@ -9,16 +9,21 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 
 public final class AutoChiselBlock extends BaseEntityBlock {
+    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
+    public static final BooleanProperty LIT = BooleanProperty.create("lit");
     public static final MapCodec<AutoChiselBlock> CODEC = simpleCodec(AutoChiselBlock::new);
     // Plinth, feet and work plate; pillars and capitals; lintel; the chisel hanging from it.
     private static final net.minecraft.world.phys.shapes.VoxelShape SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
@@ -32,7 +37,13 @@ public final class AutoChiselBlock extends BaseEntityBlock {
         this(Properties.of().mapColor(MapColor.QUARTZ).strength(3.5F).sound(SoundType.METAL)
                 .requiresCorrectToolForDrops().noOcclusion());
     }
-    private AutoChiselBlock(Properties properties) { super(properties); }
+    private AutoChiselBlock(Properties properties) {
+        super(properties);
+        registerDefaultState(defaultBlockState().setValue(ACTIVE, false).setValue(LIT, false));
+    }
+    @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(ACTIVE, LIT);
+    }
     @Override protected MapCodec<? extends BaseEntityBlock> codec() { return CODEC; }
     @Override protected RenderShape getRenderShape(BlockState state) { return RenderShape.MODEL; }
     @Override protected net.minecraft.world.phys.shapes.VoxelShape getShape(BlockState state,

@@ -69,6 +69,6 @@ Flowers, leaves and logs may be consumed. Replace them before the next round.
 
 ## Uses
 
-Stable artifacts are used for [capacity enhancement](enhancement.md) and crafting an [Altar Automation Interface](altar.md). An [Automatic Starmetal Chisel](chisel.md) produces shards from artifacts, but may consume the artifact.
+Stable artifacts are used for crafting an [Altar Automation Interface](altar.md). An [Automatic Starmetal Chisel](chisel.md) produces shards from artifacts, but may consume the artifact. Artifact shards of any type can be used for [capacity enhancement](enhancement.md).
 
 [Back to Applied Astralsorcery](index.md)

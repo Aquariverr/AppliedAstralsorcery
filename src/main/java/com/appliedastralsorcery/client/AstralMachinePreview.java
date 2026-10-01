@@ -27,20 +27,26 @@ final class AstralMachinePreview {
     private AstralMachinePreview() {}
 
     static void array(GuiGraphics graphics, int x, int y, int starlight) {
+        array(graphics, x, y, starlight, false);
+    }
+
+    static void array(GuiGraphics graphics, int x, int y, int starlight, boolean alchemy) {
         begin(graphics, x, y, 32F);
         try {
             float fill = Math.clamp(starlight / 2000F, 0F, 1F);
             if (fill > 0F) {
                 var pose = graphics.pose();
                 pose.pushPose();
-                pose.translate(0.5F, (6F + 3.5F * fill) / 16F, 0.5F);
-                pose.scale(6F / 16F, 7F * fill / 16F, 6F / 16F);
+                float tankSize = alchemy ? 8F : 6F;
+                float tankHeight = alchemy ? 9.5F : 7F;
+                pose.translate(0.5F, (6F + tankHeight * fill / 2F) / 16F, 0.5F);
+                pose.scale(tankSize / 16F, tankHeight * fill / 16F, tankSize / 16F);
                 fluidCube(graphics, new FluidStack(FluidsAS.LIQUID_STARLIGHT.getSource().get(), starlight), 1F, 204);
                 pose.popPose();
                 // Draw the liquid before the model's translucent glass walls.
                 graphics.flush();
             }
-            block(graphics, ModContent.ME_LUMEN_ARRAY.get().defaultBlockState());
+            block(graphics, (alchemy ? ModContent.ME_LUMEN_ALCHEMY_ARRAY.get() : ModContent.ME_LUMEN_ARRAY.get()).defaultBlockState());
         } finally {
             end(graphics);
         }

@@ -1,1 +1,45 @@
-{"multipart":[{"apply":{"model":"appliedas:block/me_lumen_array_solid"}},{"apply":{"model":"appliedas:block/me_lumen_array_translucent"}},{"apply":{"model":"appliedas:block/me_lumen_array_base"}}]}
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "appliedas:block/me_lumen_array_solid"
+      }
+    },
+    {
+      "apply": {
+        "model": "appliedas:block/me_lumen_array_translucent"
+      }
+    },
+    {
+      "apply": {
+        "model": "appliedas:block/me_lumen_array_base"
+      }
+    },
+    {
+      "when": {
+        "working": "true"
+      },
+      "apply": {
+        "model": "appliedas:block/me_lumen_array_glow"
+      }
+    },
+    {
+      "when": {
+        "lit": "true",
+        "working": "false"
+      },
+      "apply": {
+        "model": "appliedas:block/me_lumen_array_glow_steady"
+      }
+    },
+    {
+      "when": {
+        "lit": "false",
+        "working": "false"
+      },
+      "apply": {
+        "model": "appliedas:block/me_lumen_array_glow_off"
+      }
+    }
+  ]
+}

@@ -1,8 +1,0 @@
-{
-  "type": "astralsorcery:focal_combine",
-  "color": -15269633,
-  "duration": 80,
-  "required_constellation": "astralsorcery:mineralis",
-  "inputs": [{"item": "minecraft:echo_shard"}],
-  "outputs": [{"id": "minecraft:gold_nugget", "count": 1}]
-}

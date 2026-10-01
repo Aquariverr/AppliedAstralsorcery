@@ -1,10 +1,35 @@
 {
-  "variants": {
-    "working=true": {
-      "model": "appliedas:block/starlight_transmutation_chamber_active"
+  "multipart": [
+    {
+      "apply": {
+        "model": "appliedas:block/starlight_transmutation_chamber"
+      }
     },
-    "working=false": {
-      "model": "appliedas:block/starlight_transmutation_chamber"
+    {
+      "when": {
+        "working": "true"
+      },
+      "apply": {
+        "model": "appliedas:block/starlight_transmutation_chamber_starlight"
+      }
+    },
+    {
+      "when": {
+        "lit": "true",
+        "working": "false"
+      },
+      "apply": {
+        "model": "appliedas:block/starlight_transmutation_chamber_starlight_steady"
+      }
+    },
+    {
+      "when": {
+        "lit": "false",
+        "working": "false"
+      },
+      "apply": {
+        "model": "appliedas:block/starlight_transmutation_chamber_starlight_off"
+      }
     }
-  }
+  ]
 }

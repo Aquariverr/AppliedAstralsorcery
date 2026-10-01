@@ -57,7 +57,7 @@ public final class StarlightTransmutationBlockEntity
         extends TileEntityNetwork<ForwardingStarlightReceiverNode, TileEntityNetwork.Data>
         implements ForwardingStarlightReceiverNode.ReceiverTile, IGridConnectedBlockEntity {
     public static final int INPUT_SLOTS = 9, OUTPUT_SLOTS = 9;
-    public static final int OVERCLOCK_LUMEN_COST = 25, OVERCLOCK_DURATION = 20;
+    public static final int OVERCLOCK_LUMEN_COST = 5, OVERCLOCK_DURATION = 20;
     // Transmission is live light, not a stored energy resource. Allow the network's tick ordering.
     private static final int STARLIGHT_TIMEOUT = 2;
     public enum Status { IDLE, MISSING_INPUTS, NO_STARLIGHT, WRONG_CONSTELLATION, OFFLINE, OUTPUT_BLOCKED, RUNNING }
@@ -150,9 +150,12 @@ public final class StarlightTransmutationBlockEntity
         readDisplayState(packet.getTag(), registries);
     }
     private void readDisplayState(CompoundTag tag, HolderLookup.Provider registries) {
+        var previousConstellation = displayConstellation;
         displayItem = ItemStack.parseOptional(registries, tag.getCompound("preview"));
         var constellationId = ResourceLocation.tryParse(tag.getString("displayConstellation"));
         displayConstellation = constellationId == null ? null : RegistriesAS.REGISTRY_CONSTELLATIONS.get(constellationId);
+        if (level != null && level.isClientSide && previousConstellation != displayConstellation)
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
     }
 
     public boolean accepts(ItemStack stack) {
@@ -198,8 +201,9 @@ public final class StarlightTransmutationBlockEntity
         process(server);
         var state = getBlockState();
         boolean working = status == Status.RUNNING;
-        if (state.getValue(StarlightTransmutationBlock.WORKING) != working)
-            server.setBlock(worldPosition, state.setValue(StarlightTransmutationBlock.WORKING, working), Block.UPDATE_CLIENTS);
+        var next = state.setValue(StarlightTransmutationBlock.WORKING, working)
+                .setValue(StarlightTransmutationBlock.LIT, hasStarlight());
+        if (state != next) server.setBlock(worldPosition, next, Block.UPDATE_CLIENTS);
         // World renderers also need the selected recipe's constellation when no GUI is open.
         if (previousConstellation != displayConstellation) markForUpdate(false);
     }

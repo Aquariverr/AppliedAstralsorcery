@@ -51,9 +51,6 @@
       "slot_type": "altar_grid"
     },
     {
-      "type": "astralsorcery:generate_identifier"
-    },
-    {
       "type": "appliedas:enhance_lumen_cell"
     },
     {
@@ -80,7 +77,7 @@
     {
       "count": 1,
       "ingredient": {
-        "type": "astralsorcery:is_stable_artifact"
+        "item": "astralsorcery:artifact_shard"
       }
     }
   ],
@@ -96,7 +93,7 @@
   ],
   "requiredLumen": [
     {
-      "amount": 600,
+      "amount": 200,
       "lumen": "astralsorcery:prismatic"
     }
   ],

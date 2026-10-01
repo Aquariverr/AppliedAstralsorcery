@@ -1,0 +1,104 @@
+{
+  "type": "astralsorcery:altar_crafting",
+  "baseFocusShatterChance": 0.0,
+  "duration": 100,
+  "effects": [
+    "astralsorcery:default_central_beam",
+    "astralsorcery:default_altar_sparkle",
+    "astralsorcery:default_lumen_input",
+    "astralsorcery:default_relay_input"
+  ],
+  "grid": {
+    "key": {
+      "C": {
+        "type": "item",
+        "ingredient": {
+          "item": "astralsorcery:celestial_gateway"
+        }
+      },
+      "D": {
+        "type": "item",
+        "ingredient": {
+          "item": "appliedas:astral_processor"
+        }
+      },
+      "E": {
+        "type": "item",
+        "ingredient": {
+          "item": "ae2:spatial_cell_component_128"
+        }
+      },
+      "G": {
+        "type": "item",
+        "ingredient": {
+          "tag": "c:ingots/gold"
+        }
+      },
+      "L": {
+        "type": "item",
+        "ingredient": {
+          "item": "ae2:fluix_block"
+        }
+      },
+      "N": {
+        "type": "item",
+        "ingredient": {
+          "item": "astralsorcery:nocturnal_powder"
+        }
+      },
+      "R": {
+        "type": "item",
+        "ingredient": {
+          "item": "astralsorcery:marble_runed"
+        }
+      }
+    },
+    "pattern": [
+      " E ",
+      "LCL",
+      "RRR"
+    ],
+    "relayPattern": [
+      "D   D",
+      " NNN ",
+      " N N ",
+      "G   G",
+      "DG GD"
+    ]
+  },
+  "mayChain": false,
+  "onlyNight": true,
+  "outputModifiers": [],
+  "outputs": [
+    {
+      "count": 1,
+      "id": "appliedas:me_celestial_gateway"
+    }
+  ],
+  "requiredAdditionalInputs": [
+    {
+      "count": 1,
+      "ingredient": {
+        "item": "appliedas:astral_processor"
+      }
+    }
+  ],
+  "requiredFluid": [
+    {
+      "amount": 1000,
+      "id": "astralsorcery:liquid_starlight"
+    },
+    {
+      "amount": 1000,
+      "id": "astralsorcery:liquid_starlight"
+    }
+  ],
+  "requiredLumen": [
+    {
+      "lumen": "astralsorcery:vicio",
+      "amount": 200
+    }
+  ],
+  "requiredStarlight": [],
+  "requiredType": "resonance"
+}

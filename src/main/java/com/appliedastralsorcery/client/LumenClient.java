@@ -41,10 +41,12 @@ public final class LumenClient {
 
     @SubscribeEvent
     public static void screens(RegisterMenuScreensEvent event) {
+        event.register(ModContent.GATEWAY_MENU.get(), MECelestialGatewayScreen::new);
         event.register(ModContent.AUTO_CHISEL_MENU.get(), AutoChiselScreen::new);
         event.register(ModContent.TRANSMUTATION_MENU.get(), StarlightTransmutationScreen::new);
         event.register(ModContent.FILAMENT_MENU.get(), MELumenFilamentScreen::new);
         event.register(ModContent.ARRAY_MENU.get(), MELumenArrayScreen::new);
+        event.register(ModContent.ALCHEMY_ARRAY_MENU.get(), MELumenArrayScreen::new);
         event.register(ModContent.CHALICE_MENU.get(), MEChaliceScreen::new);
         event.register(ModContent.WAND_MENU.get(), MEResonatingWandScreen::new);
     }
@@ -54,8 +56,23 @@ public final class LumenClient {
         event.registerBlockEntityRenderer(ModContent.TRANSMUTATION_ENTITY.get(), StarlightTransmutationRenderer::new);
         event.registerBlockEntityRenderer(ModContent.ARRAY_ENTITY.get(), context ->
                 new hellfirepvp.astralsorcery.client.tile.TileLumenArrayRenderer(context.getItemRenderer()));
+        event.registerBlockEntityRenderer(ModContent.ALCHEMY_ARRAY_ENTITY.get(), context ->
+                new hellfirepvp.astralsorcery.client.tile.TileLumenAlchemyArrayRenderer(context.getItemRenderer()));
         event.registerBlockEntityRenderer(ModContent.CHALICE_ENTITY.get(), context ->
                 new hellfirepvp.astralsorcery.client.tile.TileChaliceRenderer());
+    }
+
+    @SubscribeEvent
+    public static void blockColors(RegisterColorHandlersEvent.Block event) {
+        event.register((state, level, pos, tintIndex) -> {
+            if (tintIndex == 1) return 0xFF303030;
+            if (tintIndex == 0 && level != null && pos != null
+                    && level.getBlockEntity(pos) instanceof com.appliedastralsorcery.transmutation.StarlightTransmutationBlockEntity chamber
+                    && chamber.getDisplayConstellation() != null)
+                return chamber.getDisplayConstellation().getConstellationColor().getColor();
+            return 0xFFFFFFFF;
+        }, ModContent.STARLIGHT_TRANSMUTATION_CHAMBER.get(), ModContent.AUTO_CHISEL.get(),
+                ModContent.ME_LUMEN_ARRAY.get(), ModContent.ME_LUMEN_ALCHEMY_ARRAY.get());
     }
 
     @SubscribeEvent

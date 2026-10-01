@@ -1,0 +1,293 @@
+{
+  "ambientocclusion": true,
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "astralsorcery:block/marble_raw",
+    "glow": "appliedas:block/auto_starmetal_chisel_glow_steady"
+  },
+  "elements": [
+    {
+      "name": "west pillar light",
+      "from": [
+        2,
+        4,
+        6
+      ],
+      "to": [
+        5,
+        12,
+        10
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            1.5,
+            4
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1.5,
+            4
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "east pillar light",
+      "from": [
+        11,
+        4,
+        6
+      ],
+      "to": [
+        14,
+        12,
+        10
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            1.5,
+            4
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1.5,
+            4
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "west capital light",
+      "from": [
+        1,
+        12,
+        5
+      ],
+      "to": [
+        6,
+        13,
+        11
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            8.5,
+            4.5,
+            11,
+            5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            8.5,
+            4.5,
+            11,
+            5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "east capital light",
+      "from": [
+        10,
+        12,
+        5
+      ],
+      "to": [
+        15,
+        13,
+        11
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            8.5,
+            4.5,
+            11,
+            5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            8.5,
+            4.5,
+            11,
+            5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "lintel light",
+      "from": [
+        0,
+        13,
+        5
+      ],
+      "to": [
+        16,
+        16,
+        11
+      ],
+      "shade": true,
+      "faces": {
+        "up": {
+          "uv": [
+            2,
+            0,
+            10,
+            3
+          ],
+          "texture": "#glow",
+          "cullface": "up",
+          "tintindex": 1
+        },
+        "north": {
+          "uv": [
+            0,
+            4.5,
+            8,
+            6
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            0,
+            4.5,
+            8,
+            6
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "work plate light",
+      "from": [
+        6,
+        3,
+        6
+      ],
+      "to": [
+        10,
+        4,
+        10
+      ],
+      "shade": true,
+      "faces": {
+        "up": {
+          "uv": [
+            10.5,
+            0,
+            12.5,
+            2
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "tip",
+      "from": [
+        7,
+        5,
+        7.5
+      ],
+      "to": [
+        9,
+        6,
+        8.5
+      ],
+      "shade": true,
+      "faces": {
+        "down": {
+          "uv": [
+            13,
+            4.5,
+            14,
+            5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "north": {
+          "uv": [
+            11.5,
+            4.5,
+            12.5,
+            5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            11.5,
+            4.5,
+            12.5,
+            5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            14.5,
+            4.5,
+            15,
+            5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            14.5,
+            4.5,
+            15,
+            5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,1104 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:cutout",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "appliedas:block/me_celestial_gateway",
+    "glow": "appliedas:block/me_celestial_gateway_glow"
+  },
+  "elements": [
+    {
+      "name": "platform glow",
+      "from": [
+        3,
+        0,
+        1
+      ],
+      "to": [
+        13,
+        1,
+        15
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            1.5,
+            0.5,
+            6.5,
+            7.5
+          ],
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "name": "west platform glow",
+      "from": [
+        1,
+        0,
+        3
+      ],
+      "to": [
+        3,
+        1,
+        13
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            0.5,
+            1.5,
+            1.5,
+            6.5
+          ],
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "name": "east platform glow",
+      "from": [
+        13,
+        0,
+        3
+      ],
+      "to": [
+        15,
+        1,
+        13
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            6.5,
+            1.5,
+            7.5,
+            6.5
+          ],
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "name": "orb socket glow",
+      "from": [
+        3,
+        1,
+        3
+      ],
+      "to": [
+        13,
+        2,
+        13
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            8.0,
+            4.0,
+            13.0,
+            4.5
+          ],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [
+            8.0,
+            4.0,
+            13.0,
+            4.5
+          ],
+          "texture": "#glow"
+        },
+        "west": {
+          "uv": [
+            8.0,
+            4.0,
+            13.0,
+            4.5
+          ],
+          "texture": "#glow"
+        },
+        "east": {
+          "uv": [
+            8.0,
+            4.0,
+            13.0,
+            4.5
+          ],
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "name": "north-west pylon shaft glow",
+      "from": [
+        0.5,
+        2,
+        0.5
+      ],
+      "to": [
+        2.5,
+        8,
+        2.5
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            12.0,
+            0.0,
+            13.0,
+            3.0
+          ],
+          "texture": "#glow"
+        },
+        "west": {
+          "uv": [
+            13.0,
+            0.0,
+            12.0,
+            3.0
+          ],
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "name": "north-west crystal",
+      "from": [
+        0.75,
+        9,
+        0.75
+      ],
+      "to": [
+        2.25,
+        11,
+        2.25
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        },
+        "west": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        },
+        "east": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        },
+        "up": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        }
+      },
+      "rotation": {
+        "origin": [
+          1.5,
+          9,
+          1.5
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "north-west crystal tip",
+      "from": [
+        1.125,
+        11,
+        1.125
+      ],
+      "to": [
+        1.875,
+        12,
+        1.875
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        },
+        "west": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        },
+        "east": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        },
+        "up": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        }
+      },
+      "rotation": {
+        "origin": [
+          1.5,
+          9,
+          1.5
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "north-east pylon shaft glow",
+      "from": [
+        13.5,
+        2,
+        0.5
+      ],
+      "to": [
+        15.5,
+        8,
+        2.5
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            13.0,
+            0.0,
+            12.0,
+            3.0
+          ],
+          "texture": "#glow"
+        },
+        "east": {
+          "uv": [
+            12.0,
+            0.0,
+            13.0,
+            3.0
+          ],
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "name": "north-east crystal",
+      "from": [
+        13.75,
+        9,
+        0.75
+      ],
+      "to": [
+        15.25,
+        11,
+        2.25
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        },
+        "west": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        },
+        "east": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        },
+        "up": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        }
+      },
+      "rotation": {
+        "origin": [
+          14.5,
+          9,
+          1.5
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "north-east crystal tip",
+      "from": [
+        14.125,
+        11,
+        1.125
+      ],
+      "to": [
+        14.875,
+        12,
+        1.875
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        },
+        "west": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        },
+        "east": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        },
+        "up": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        }
+      },
+      "rotation": {
+        "origin": [
+          14.5,
+          9,
+          1.5
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "south-west pylon shaft glow",
+      "from": [
+        0.5,
+        2,
+        13.5
+      ],
+      "to": [
+        2.5,
+        8,
+        15.5
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "south": {
+          "uv": [
+            13.0,
+            0.0,
+            12.0,
+            3.0
+          ],
+          "texture": "#glow"
+        },
+        "west": {
+          "uv": [
+            12.0,
+            0.0,
+            13.0,
+            3.0
+          ],
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "name": "south-west crystal",
+      "from": [
+        0.75,
+        9,
+        13.75
+      ],
+      "to": [
+        2.25,
+        11,
+        15.25
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        },
+        "west": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        },
+        "east": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        },
+        "up": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        }
+      },
+      "rotation": {
+        "origin": [
+          1.5,
+          9,
+          14.5
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "south-west crystal tip",
+      "from": [
+        1.125,
+        11,
+        14.125
+      ],
+      "to": [
+        1.875,
+        12,
+        14.875
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        },
+        "west": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        },
+        "east": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        },
+        "up": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        }
+      },
+      "rotation": {
+        "origin": [
+          1.5,
+          9,
+          14.5
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "south-east pylon shaft glow",
+      "from": [
+        13.5,
+        2,
+        13.5
+      ],
+      "to": [
+        15.5,
+        8,
+        15.5
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "south": {
+          "uv": [
+            12.0,
+            0.0,
+            13.0,
+            3.0
+          ],
+          "texture": "#glow"
+        },
+        "east": {
+          "uv": [
+            13.0,
+            0.0,
+            12.0,
+            3.0
+          ],
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "name": "south-east crystal",
+      "from": [
+        13.75,
+        9,
+        13.75
+      ],
+      "to": [
+        15.25,
+        11,
+        15.25
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        },
+        "west": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        },
+        "east": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        },
+        "up": {
+          "uv": [
+            15.0,
+            0.0,
+            16.0,
+            1.0
+          ],
+          "texture": "#glow"
+        }
+      },
+      "rotation": {
+        "origin": [
+          14.5,
+          9,
+          14.5
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "south-east crystal tip",
+      "from": [
+        14.125,
+        11,
+        14.125
+      ],
+      "to": [
+        14.875,
+        12,
+        14.875
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        },
+        "west": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        },
+        "east": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        },
+        "up": {
+          "uv": [
+            15.0,
+            1.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#glow"
+        }
+      },
+      "rotation": {
+        "origin": [
+          14.5,
+          9,
+          14.5
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "north port glow",
+      "from": [
+        6,
+        0,
+        0
+      ],
+      "to": [
+        10,
+        2,
+        1
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            13.0,
+            0.0,
+            15.0,
+            1.0
+          ],
+          "texture": "#glow",
+          "cullface": "north"
+        }
+      }
+    },
+    {
+      "name": "south port glow",
+      "from": [
+        6,
+        0,
+        15
+      ],
+      "to": [
+        10,
+        2,
+        16
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "south": {
+          "uv": [
+            13.0,
+            0.0,
+            15.0,
+            1.0
+          ],
+          "texture": "#glow",
+          "cullface": "south"
+        }
+      }
+    },
+    {
+      "name": "west port glow",
+      "from": [
+        0,
+        0,
+        6
+      ],
+      "to": [
+        1,
+        2,
+        10
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "west": {
+          "uv": [
+            13.0,
+            0.0,
+            15.0,
+            1.0
+          ],
+          "texture": "#glow",
+          "cullface": "west"
+        }
+      }
+    },
+    {
+      "name": "east port glow",
+      "from": [
+        15,
+        0,
+        6
+      ],
+      "to": [
+        16,
+        2,
+        10
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            13.0,
+            0.0,
+            15.0,
+            1.0
+          ],
+          "texture": "#glow",
+          "cullface": "east"
+        }
+      }
+    },
+    {
+      "name": "star orb",
+      "from": [
+        4,
+        2,
+        4
+      ],
+      "to": [
+        12,
+        8,
+        12
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0.0,
+            8.0,
+            4.0,
+            11.0
+          ],
+          "texture": "#glow"
+        },
+        "east": {
+          "uv": [
+            4.0,
+            8.0,
+            8.0,
+            11.0
+          ],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [
+            8.0,
+            8.0,
+            12.0,
+            11.0
+          ],
+          "texture": "#glow"
+        },
+        "west": {
+          "uv": [
+            12.0,
+            8.0,
+            16.0,
+            11.0
+          ],
+          "texture": "#glow"
+        },
+        "up": {
+          "uv": [
+            8.0,
+            0.0,
+            12.0,
+            4.0
+          ],
+          "texture": "#glow"
+        }
+      }
+    }
+  ]
+}

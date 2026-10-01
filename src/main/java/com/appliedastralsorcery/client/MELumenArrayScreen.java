@@ -8,7 +8,6 @@ import com.appliedastralsorcery.lumen.MELumenArrayMenu;
 import hellfirepvp.astralsorcery.client.ClientProxy;
 import hellfirepvp.astralsorcery.client.lib.TexturesAS;
 import hellfirepvp.astralsorcery.common.lumen.Lumen;
-import hellfirepvp.astralsorcery.common.util.RecipeFinder;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -42,7 +41,7 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
     private final ReserveMarkerDrag reserveDrag = new ReserveMarkerDrag();
     private int lastTarget = -1;
     private ItemStack catalystMarker = ItemStack.EMPTY;
-    private ArrayButton apply, previous, next, export, supply, filaments;
+    private ArrayButton apply, previous, next, export, supply, filaments, redstone;
 
     public MELumenArrayScreen(MELumenArrayMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
@@ -51,6 +50,8 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
     }
 
     private Component tr(String key, Object... args) {
+        if (menu.isAlchemyArray() && key.equals("network_offline"))
+            return Component.translatable("gui.appliedas.alchemy_array." + key, args);
         return Component.translatable("gui.appliedas.array." + key, args);
     }
 
@@ -74,10 +75,13 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
         next.setTooltip(Tooltip.create(tr("next")));
         export = addButton(SIDE_MARGIN, 110, 116, tr("export"), 4, b -> send(1));
         supply = addButton(136, 110, 116, tr("supply"), 5, b -> send(2));
-        filaments = addButton(SIDE_MARGIN, 132, CONTENT_WIDTH, tr("filaments"), 6, b -> send(3));
+        filaments = addButton(SIDE_MARGIN, 132, 116, tr("filaments"), 6, b -> send(3));
+        redstone = addButton(136, 132, 116, tr("redstone"), MELumenArrayMenu.REDSTONE_DATA,
+                b -> send(MELumenArrayMenu.REDSTONE_BUTTON));
         export.setTooltip(Tooltip.create(tr("export_hint")));
         supply.setTooltip(Tooltip.create(tr("supply_hint")));
         filaments.setTooltip(Tooltip.create(tr("filaments_hint")));
+        redstone.setTooltip(Tooltip.create(tr("redstone_hint")));
     }
 
     private ArrayButton addButton(int x, int y, int width, Component label, int dataIndex, Button.OnPress press) {
@@ -193,6 +197,7 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
         export.updateMessage();
         supply.updateMessage();
         filaments.updateMessage();
+        redstone.updateMessage();
         super.render(g, mx, my, tick);
         renderTooltip(g, mx, my);
         if (isHovering(102, 30, 124, 20, mx, my)) {
@@ -229,7 +234,11 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
         Lumen selected = menu.getSelectedLumen();
         if (selected == null || minecraft == null || minecraft.level == null || menu.getSlot(0).hasItem()) return;
         // Follow the selected recipe even while the array is draining its previous lumen.
-        RecipeFinder.of(minecraft.level).findLumenGenerationRecipeByOutput(selected).ifPresent(recipe -> {
+        minecraft.level.getRecipeManager().getAllRecipesFor(
+                hellfirepvp.astralsorcery.common.lib.RecipeTypesAS.LUMEN_GENERATION_TYPE.get()).stream()
+                .filter(recipe -> recipe.value().getProducedLumen() == selected
+                        && menu.isAlchemyArray() != recipe.value().getLumenCombinationInputs().isEmpty())
+                .findFirst().ifPresent(recipe -> {
             ItemStack[] alternatives = recipe.value().getInput().getItems();
             if (alternatives.length > 0) {
                 catalystMarker = alternatives[(int) ((Util.getMillis() / 1000L) % alternatives.length)].copyWithCount(1);
@@ -259,8 +268,9 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
         plate(g, leftPos + SIDE_MARGIN + 4, topPos + 9, CONTENT_WIDTH - 8, 16);
         g.fill(leftPos + SIDE_MARGIN + 5, topPos + 10, leftPos + SIDE_MARGIN + CONTENT_WIDTH - 5, topPos + 24, 0x40FFF9EC);
         g.fill(leftPos + SIDE_MARGIN + 5, topPos + 24, leftPos + SIDE_MARGIN + CONTENT_WIDTH - 5, topPos + 25, GOLD);
-        g.renderItem(ModContent.ME_LUMEN_ARRAY_ITEM.toStack(), leftPos + SIDE_MARGIN + 5, topPos + 9);
-        drawConstellation(g, leftPos + 219, topPos + 12);
+        g.renderItem((menu.isAlchemyArray() ? ModContent.ME_LUMEN_ALCHEMY_ARRAY_ITEM : ModContent.ME_LUMEN_ARRAY_ITEM).toStack(),
+                leftPos + SIDE_MARGIN + 5, topPos + 9);
+        g.blit(AQUAMARINE, leftPos + 224, topPos + 9, 0, 0, 16, 16, 16, 16);
 
         drawBasin(g);
         inset(g, leftPos + 76, topPos + 30, SIDE_MARGIN + CONTENT_WIDTH - 76, 78);
@@ -297,7 +307,7 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
         int x = leftPos, y = topPos;
         inset(g, x + SIDE_MARGIN, y + 31, 56, 76);
         g.fillGradient(x + 16, y + 35, x + 64, y + 81, 0x60455965, 0x183B6670);
-        AstralMachinePreview.array(g, x + 40, y + 57, menu.value(3));
+        AstralMachinePreview.array(g, x + 40, y + 57, menu.value(3), menu.isAlchemyArray());
         // Keep the marker and catalyst below the miniature so the original silhouette stays visible.
         g.fill(x + 19, y + 84, x + 37, y + 102, 0xFF304A53);
         g.renderOutline(x + 19, y + 84, 18, 18, GOLD);
@@ -399,13 +409,6 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
         g.fill(x, y, x + 4, y + 4, color);
         g.fill(x, y, x + 3, y + 1, 0xBBE7FFFF);
         g.fill(x + 3, y + 1, x + 4, y + 4, 0x550D3844);
-    }
-
-    private static void drawConstellation(GuiGraphics g, int x, int y) {
-        g.fill(x - 4, y + 4, x + 23, y + 5, GOLD_SHADE);
-        g.fill(x - 2, y + 2, x - 1, y + 7, GOLD_SHADE);
-        g.fill(x - 4, y + 4, x + 1, y + 5, GOLD);
-        g.blit(AQUAMARINE, x + 5, y - 3, 0, 0, 16, 16, 16, 16);
     }
 
     private final class ArrayButton extends Button {

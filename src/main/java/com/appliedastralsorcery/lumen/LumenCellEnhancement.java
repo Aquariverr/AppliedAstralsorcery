@@ -6,6 +6,7 @@ import com.appliedastralsorcery.AppliedAstralsorcery;
 import com.appliedastralsorcery.ModContent;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import hellfirepvp.astralsorcery.common.lib.DataComponentsAS;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
 import hellfirepvp.astralsorcery.common.recipe.altar.AltarCraftingInput;
 import hellfirepvp.astralsorcery.common.recipe.altar.output.AltarRecipeOutputModifier;
@@ -83,6 +84,8 @@ public final class LumenCellEnhancement {
         public ItemStack modifyOutput(ItemStack output, AltarCraftingInput input, HolderLookup.Provider registries) {
             if (UpgradeableCell.INSTANCE.test(output)) {
                 output.set(LEVEL, ArtifactLumenStorageCell.getEnhancementLevel(output) + 1);
+                // Older recipes assigned random artifact IDs, breaking AE2 output matching.
+                output.remove(DataComponentsAS.IDENTIFIER);
             }
             return output;
         }

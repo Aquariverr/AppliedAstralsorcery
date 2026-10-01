@@ -1,375 +1,496 @@
 {
-  "render_type": "minecraft:translucent",
   "parent": "minecraft:block/block",
+  "render_type": "minecraft:cutout",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "appliedas:block/starlight_transmutation_chamber",
+    "glow": "appliedas:block/starlight_transmutation_chamber_glow_tint"
+  },
   "elements": [
     {
-      "name": "stellar filament",
+      "name": "starlit foundation glow",
       "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        3,
+        16
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0.0,
+            0.0,
+            8.0,
+            1.5
+          ],
+          "texture": "#glow",
+          "cullface": "north",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [
+            0.0,
+            0.0,
+            8.0,
+            1.5
+          ],
+          "texture": "#glow",
+          "cullface": "south",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            0.0,
+            0.0,
+            8.0,
+            1.5
+          ],
+          "texture": "#glow",
+          "cullface": "west",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            0.0,
+            0.0,
+            8.0,
+            1.5
+          ],
+          "texture": "#glow",
+          "cullface": "east",
+          "tintindex": 0
+        },
+        "up": {
+          "uv": [
+            0.0,
+            2.0,
+            8.0,
+            10.0
+          ],
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "name": "north-west pillar shaft glow",
+      "from": [
+        0.75,
         4,
-        5,
-        4
+        0.75
       ],
       "to": [
-        4.2,
-        12,
-        4.2
+        3.75,
+        13,
+        3.75
       ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
       "faces": {
-        "down": {
-          "uv": [
-            4,
-            4,
-            4.2,
-            4.2
-          ],
-          "texture": "#lens"
-        },
-        "up": {
-          "uv": [
-            4,
-            4,
-            4.2,
-            4.2
-          ],
-          "texture": "#lens"
-        },
         "north": {
           "uv": [
-            4,
-            4,
-            4.2,
-            11
+            8.0,
+            2.0,
+            9.5,
+            6.5
           ],
-          "texture": "#lens"
+          "texture": "#glow",
+          "tintindex": 0
         },
         "south": {
           "uv": [
-            4,
-            4,
-            4.2,
-            11
+            8.0,
+            2.0,
+            9.5,
+            6.5
           ],
-          "texture": "#lens"
+          "texture": "#glow",
+          "tintindex": 0
         },
         "west": {
           "uv": [
-            4,
-            4,
-            4.2,
-            11
+            8.0,
+            2.0,
+            9.5,
+            6.5
           ],
-          "texture": "#lens"
+          "texture": "#glow",
+          "tintindex": 0
         },
         "east": {
           "uv": [
-            4,
-            4,
-            4.2,
-            11
+            8.0,
+            2.0,
+            9.5,
+            6.5
           ],
-          "texture": "#lens"
+          "texture": "#glow",
+          "tintindex": 0
         }
-      },
-      "neoforge_data": {
-        "sky_light": 15,
-        "block_light": 15
       }
     },
     {
-      "name": "stellar filament",
+      "name": "north-east pillar shaft glow",
       "from": [
-        11.8,
-        5,
-        11.8
-      ],
-      "to": [
-        12,
-        12,
-        12
-      ],
-      "faces": {
-        "down": {
-          "uv": [
-            11.8,
-            11.8,
-            12,
-            12
-          ],
-          "texture": "#lens"
-        },
-        "up": {
-          "uv": [
-            11.8,
-            11.8,
-            12,
-            12
-          ],
-          "texture": "#lens"
-        },
-        "north": {
-          "uv": [
-            11.8,
-            4,
-            12,
-            11
-          ],
-          "texture": "#lens"
-        },
-        "south": {
-          "uv": [
-            11.8,
-            4,
-            12,
-            11
-          ],
-          "texture": "#lens"
-        },
-        "west": {
-          "uv": [
-            11.8,
-            4,
-            12,
-            11
-          ],
-          "texture": "#lens"
-        },
-        "east": {
-          "uv": [
-            11.8,
-            4,
-            12,
-            11
-          ],
-          "texture": "#lens"
-        }
-      },
-      "neoforge_data": {
-        "sky_light": 15,
-        "block_light": 15
-      }
-    },
-    {
-      "name": "stellar filament",
-      "from": [
+        12.25,
         4,
-        5,
-        11.8
+        0.75
       ],
       "to": [
-        4.2,
-        12,
-        12
+        15.25,
+        13,
+        3.75
       ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
       "faces": {
-        "down": {
-          "uv": [
-            4,
-            11.8,
-            4.2,
-            12
-          ],
-          "texture": "#lens"
-        },
-        "up": {
-          "uv": [
-            4,
-            11.8,
-            4.2,
-            12
-          ],
-          "texture": "#lens"
-        },
         "north": {
           "uv": [
-            4,
-            4,
-            4.2,
-            11
+            8.0,
+            2.0,
+            9.5,
+            6.5
           ],
-          "texture": "#lens"
+          "texture": "#glow",
+          "tintindex": 0
         },
         "south": {
           "uv": [
-            4,
-            4,
-            4.2,
-            11
+            8.0,
+            2.0,
+            9.5,
+            6.5
           ],
-          "texture": "#lens"
+          "texture": "#glow",
+          "tintindex": 0
         },
         "west": {
           "uv": [
-            11.8,
-            4,
-            12,
-            11
+            8.0,
+            2.0,
+            9.5,
+            6.5
           ],
-          "texture": "#lens"
+          "texture": "#glow",
+          "tintindex": 0
         },
         "east": {
           "uv": [
-            11.8,
-            4,
-            12,
-            11
+            8.0,
+            2.0,
+            9.5,
+            6.5
           ],
-          "texture": "#lens"
+          "texture": "#glow",
+          "tintindex": 0
         }
-      },
-      "neoforge_data": {
-        "sky_light": 15,
-        "block_light": 15
       }
     },
     {
-      "name": "stellar filament",
+      "name": "south-west pillar shaft glow",
       "from": [
-        11.8,
-        5,
-        4
-      ],
-      "to": [
-        12,
-        12,
-        4.2
-      ],
-      "faces": {
-        "down": {
-          "uv": [
-            11.8,
-            4,
-            12,
-            4.2
-          ],
-          "texture": "#lens"
-        },
-        "up": {
-          "uv": [
-            11.8,
-            4,
-            12,
-            4.2
-          ],
-          "texture": "#lens"
-        },
-        "north": {
-          "uv": [
-            11.8,
-            4,
-            12,
-            11
-          ],
-          "texture": "#lens"
-        },
-        "south": {
-          "uv": [
-            11.8,
-            4,
-            12,
-            11
-          ],
-          "texture": "#lens"
-        },
-        "west": {
-          "uv": [
-            4,
-            4,
-            4.2,
-            11
-          ],
-          "texture": "#lens"
-        },
-        "east": {
-          "uv": [
-            4,
-            4,
-            4.2,
-            11
-          ],
-          "texture": "#lens"
-        }
-      },
-      "neoforge_data": {
-        "sky_light": 15,
-        "block_light": 15
-      }
-    },
-    {
-      "name": "stellar filament",
-      "from": [
+        0.75,
         4,
-        5,
-        4
+        12.25
       ],
       "to": [
-        4.2,
-        12,
-        4.2
+        3.75,
+        13,
+        15.25
       ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
       "faces": {
-        "down": {
-          "uv": [
-            4,
-            4,
-            4.2,
-            4.2
-          ],
-          "texture": "#lens"
-        },
-        "up": {
-          "uv": [
-            4,
-            4,
-            4.2,
-            4.2
-          ],
-          "texture": "#lens"
-        },
         "north": {
           "uv": [
-            4,
-            4,
-            4.2,
-            11
+            8.0,
+            2.0,
+            9.5,
+            6.5
           ],
-          "texture": "#lens"
+          "texture": "#glow",
+          "tintindex": 0
         },
         "south": {
           "uv": [
-            4,
-            4,
-            4.2,
-            11
+            8.0,
+            2.0,
+            9.5,
+            6.5
           ],
-          "texture": "#lens"
+          "texture": "#glow",
+          "tintindex": 0
         },
         "west": {
           "uv": [
-            4,
-            4,
-            4.2,
-            11
+            8.0,
+            2.0,
+            9.5,
+            6.5
           ],
-          "texture": "#lens"
+          "texture": "#glow",
+          "tintindex": 0
         },
         "east": {
           "uv": [
-            4,
-            4,
-            4.2,
-            11
+            8.0,
+            2.0,
+            9.5,
+            6.5
           ],
-          "texture": "#lens"
+          "texture": "#glow",
+          "tintindex": 0
         }
-      },
+      }
+    },
+    {
+      "name": "south-east pillar shaft glow",
+      "from": [
+        12.25,
+        4,
+        12.25
+      ],
+      "to": [
+        15.25,
+        13,
+        15.25
+      ],
+      "shade": false,
       "neoforge_data": {
+        "block_light": 15,
         "sky_light": 15,
-        "block_light": 15
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            8.0,
+            2.0,
+            9.5,
+            6.5
+          ],
+          "texture": "#glow",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [
+            8.0,
+            2.0,
+            9.5,
+            6.5
+          ],
+          "texture": "#glow",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            8.0,
+            2.0,
+            9.5,
+            6.5
+          ],
+          "texture": "#glow",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            8.0,
+            2.0,
+            9.5,
+            6.5
+          ],
+          "texture": "#glow",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "pedestal crown glow",
+      "from": [
+        5,
+        4,
+        5
+      ],
+      "to": [
+        11,
+        5,
+        11
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            10.0,
+            2.0,
+            13.0,
+            5.0
+          ],
+          "texture": "#glow"
+        }
+      }
+    },
+    {
+      "name": "starlight collector glow",
+      "from": [
+        6,
+        14,
+        6
+      ],
+      "to": [
+        10,
+        16,
+        10
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            8.0,
+            7.0,
+            10.0,
+            8.0
+          ],
+          "texture": "#glow",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [
+            8.0,
+            7.0,
+            10.0,
+            8.0
+          ],
+          "texture": "#glow",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            8.0,
+            7.0,
+            10.0,
+            8.0
+          ],
+          "texture": "#glow",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            8.0,
+            7.0,
+            10.0,
+            8.0
+          ],
+          "texture": "#glow",
+          "tintindex": 0
+        },
+        "up": {
+          "uv": [
+            13.5,
+            2.0,
+            15.5,
+            4.0
+          ],
+          "texture": "#glow",
+          "cullface": "up",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "name": "focus crystal glow",
+      "from": [
+        7.25,
+        11.75,
+        7.25
+      ],
+      "to": [
+        8.75,
+        13,
+        8.75
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            10.5,
+            7.0,
+            11.5,
+            8.0
+          ],
+          "texture": "#glow",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [
+            10.5,
+            7.0,
+            11.5,
+            8.0
+          ],
+          "texture": "#glow",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            10.5,
+            7.0,
+            11.5,
+            8.0
+          ],
+          "texture": "#glow",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            10.5,
+            7.0,
+            11.5,
+            8.0
+          ],
+          "texture": "#glow",
+          "tintindex": 0
+        }
       },
       "rotation": {
         "origin": [
           8,
-          8,
+          12,
           8
         ],
         "axis": "y",
@@ -378,247 +499,79 @@
       }
     },
     {
-      "name": "stellar filament",
+      "name": "focus crystal tip glow",
       "from": [
-        11.8,
-        5,
-        11.8
+        7.6,
+        11,
+        7.6
       ],
       "to": [
-        12,
-        12,
-        12
+        8.4,
+        11.75,
+        8.4
       ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      },
       "faces": {
-        "down": {
-          "uv": [
-            11.8,
-            11.8,
-            12,
-            12
-          ],
-          "texture": "#lens"
-        },
-        "up": {
-          "uv": [
-            11.8,
-            11.8,
-            12,
-            12
-          ],
-          "texture": "#lens"
-        },
         "north": {
           "uv": [
-            11.8,
-            4,
-            12,
-            11
+            12.0,
+            7.0,
+            13.0,
+            8.0
           ],
-          "texture": "#lens"
+          "texture": "#glow",
+          "tintindex": 0
         },
         "south": {
           "uv": [
-            11.8,
-            4,
-            12,
-            11
+            12.0,
+            7.0,
+            13.0,
+            8.0
           ],
-          "texture": "#lens"
+          "texture": "#glow",
+          "tintindex": 0
         },
         "west": {
           "uv": [
-            11.8,
-            4,
-            12,
-            11
+            12.0,
+            7.0,
+            13.0,
+            8.0
           ],
-          "texture": "#lens"
+          "texture": "#glow",
+          "tintindex": 0
         },
         "east": {
           "uv": [
-            11.8,
-            4,
-            12,
-            11
+            12.0,
+            7.0,
+            13.0,
+            8.0
           ],
-          "texture": "#lens"
+          "texture": "#glow",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [
+            12.0,
+            7.0,
+            13.0,
+            8.0
+          ],
+          "texture": "#glow",
+          "tintindex": 0
         }
-      },
-      "neoforge_data": {
-        "sky_light": 15,
-        "block_light": 15
       },
       "rotation": {
         "origin": [
           8,
-          8,
-          8
-        ],
-        "axis": "y",
-        "angle": 45,
-        "rescale": false
-      }
-    },
-    {
-      "name": "stellar filament",
-      "from": [
-        4,
-        5,
-        11.8
-      ],
-      "to": [
-        4.2,
-        12,
-        12
-      ],
-      "faces": {
-        "down": {
-          "uv": [
-            4,
-            11.8,
-            4.2,
-            12
-          ],
-          "texture": "#lens"
-        },
-        "up": {
-          "uv": [
-            4,
-            11.8,
-            4.2,
-            12
-          ],
-          "texture": "#lens"
-        },
-        "north": {
-          "uv": [
-            4,
-            4,
-            4.2,
-            11
-          ],
-          "texture": "#lens"
-        },
-        "south": {
-          "uv": [
-            4,
-            4,
-            4.2,
-            11
-          ],
-          "texture": "#lens"
-        },
-        "west": {
-          "uv": [
-            11.8,
-            4,
-            12,
-            11
-          ],
-          "texture": "#lens"
-        },
-        "east": {
-          "uv": [
-            11.8,
-            4,
-            12,
-            11
-          ],
-          "texture": "#lens"
-        }
-      },
-      "neoforge_data": {
-        "sky_light": 15,
-        "block_light": 15
-      },
-      "rotation": {
-        "origin": [
-          8,
-          8,
-          8
-        ],
-        "axis": "y",
-        "angle": 45,
-        "rescale": false
-      }
-    },
-    {
-      "name": "stellar filament",
-      "from": [
-        11.8,
-        5,
-        4
-      ],
-      "to": [
-        12,
-        12,
-        4.2
-      ],
-      "faces": {
-        "down": {
-          "uv": [
-            11.8,
-            4,
-            12,
-            4.2
-          ],
-          "texture": "#lens"
-        },
-        "up": {
-          "uv": [
-            11.8,
-            4,
-            12,
-            4.2
-          ],
-          "texture": "#lens"
-        },
-        "north": {
-          "uv": [
-            11.8,
-            4,
-            12,
-            11
-          ],
-          "texture": "#lens"
-        },
-        "south": {
-          "uv": [
-            11.8,
-            4,
-            12,
-            11
-          ],
-          "texture": "#lens"
-        },
-        "west": {
-          "uv": [
-            4,
-            4,
-            4.2,
-            11
-          ],
-          "texture": "#lens"
-        },
-        "east": {
-          "uv": [
-            4,
-            4,
-            4.2,
-            11
-          ],
-          "texture": "#lens"
-        }
-      },
-      "neoforge_data": {
-        "sky_light": 15,
-        "block_light": 15
-      },
-      "rotation": {
-        "origin": [
-          8,
-          8,
+          12,
           8
         ],
         "axis": "y",
@@ -626,18 +579,5 @@
         "rescale": false
       }
     }
-  ],
-  "ambientocclusion": false,
-  "textures": {
-    "particle": "astralsorcery:block/marble_raw",
-    "marble": "astralsorcery:block/marble_raw",
-    "pillar": "astralsorcery:block/marble_pillar",
-    "rune": "astralsorcery:block/marble_runed",
-    "gold": "minecraft:block/gold_block",
-    "dark": "astralsorcery:block/sooty_marble_raw",
-    "glass": "ae2:block/glass/quartz_glass_a",
-    "lens": "astralsorcery:block/focus_relay/focus_relay_glass",
-    "port": "ae2:block/molecular_assembler",
-    "crystal": "minecraft:block/diamond_block"
-  }
+  ]
 }

@@ -1138,48 +1138,6 @@
       }
     },
     {
-      "name": "Crown ME node",
-      "from": [2.2,16,2.2],
-      "to": [3.8,16.12,3.8],
-      "rotation": {
-        "angle": 45,
-        "axis": "y",
-        "origin": [3,0,3]
-      },
-      "shade": false,
-      "neoforge_data": {
-        "block_light": 15,
-        "sky_light": 15,
-        "ambient_occlusion": false
-      },
-      "faces": {
-        "north": {
-          "uv": [3,0,5,1],
-          "texture": "#glow"
-        },
-        "east": {
-          "uv": [3,0,5,1],
-          "texture": "#glow"
-        },
-        "south": {
-          "uv": [3,0,5,1],
-          "texture": "#glow"
-        },
-        "west": {
-          "uv": [3,0,5,1],
-          "texture": "#glow"
-        },
-        "up": {
-          "uv": [0,0,2,2],
-          "texture": "#glow"
-        },
-        "down": {
-          "uv": [0,0,2,2],
-          "texture": "#glow"
-        }
-      }
-    },
-    {
       "name": "Pillar machined collar",
       "from": [1.3,5.2,11.3],
       "to": [4.7,5.5,14.7],
@@ -1248,48 +1206,6 @@
         "down": {
           "uv": [14.5,4,15.5,5],
           "texture": "#array"
-        }
-      }
-    },
-    {
-      "name": "Crown ME node",
-      "from": [2.2,16,12.2],
-      "to": [3.8,16.12,13.8],
-      "rotation": {
-        "angle": 45,
-        "axis": "y",
-        "origin": [3,0,13]
-      },
-      "shade": false,
-      "neoforge_data": {
-        "block_light": 15,
-        "sky_light": 15,
-        "ambient_occlusion": false
-      },
-      "faces": {
-        "north": {
-          "uv": [3,0,5,1],
-          "texture": "#glow"
-        },
-        "east": {
-          "uv": [3,0,5,1],
-          "texture": "#glow"
-        },
-        "south": {
-          "uv": [3,0,5,1],
-          "texture": "#glow"
-        },
-        "west": {
-          "uv": [3,0,5,1],
-          "texture": "#glow"
-        },
-        "up": {
-          "uv": [0,0,2,2],
-          "texture": "#glow"
-        },
-        "down": {
-          "uv": [0,0,2,2],
-          "texture": "#glow"
         }
       }
     },
@@ -1366,48 +1282,6 @@
       }
     },
     {
-      "name": "Crown ME node",
-      "from": [12.2,16,2.2],
-      "to": [13.8,16.12,3.8],
-      "rotation": {
-        "angle": 45,
-        "axis": "y",
-        "origin": [13,0,3]
-      },
-      "shade": false,
-      "neoforge_data": {
-        "block_light": 15,
-        "sky_light": 15,
-        "ambient_occlusion": false
-      },
-      "faces": {
-        "north": {
-          "uv": [3,0,5,1],
-          "texture": "#glow"
-        },
-        "east": {
-          "uv": [3,0,5,1],
-          "texture": "#glow"
-        },
-        "south": {
-          "uv": [3,0,5,1],
-          "texture": "#glow"
-        },
-        "west": {
-          "uv": [3,0,5,1],
-          "texture": "#glow"
-        },
-        "up": {
-          "uv": [0,0,2,2],
-          "texture": "#glow"
-        },
-        "down": {
-          "uv": [0,0,2,2],
-          "texture": "#glow"
-        }
-      }
-    },
-    {
       "name": "Pillar machined collar",
       "from": [11.3,5.2,11.3],
       "to": [14.7,5.5,14.7],
@@ -1476,48 +1350,6 @@
         "down": {
           "uv": [14.5,4,15.5,5],
           "texture": "#array"
-        }
-      }
-    },
-    {
-      "name": "Crown ME node",
-      "from": [12.2,16,12.2],
-      "to": [13.8,16.12,13.8],
-      "rotation": {
-        "angle": 45,
-        "axis": "y",
-        "origin": [13,0,13]
-      },
-      "shade": false,
-      "neoforge_data": {
-        "block_light": 15,
-        "sky_light": 15,
-        "ambient_occlusion": false
-      },
-      "faces": {
-        "north": {
-          "uv": [3,0,5,1],
-          "texture": "#glow"
-        },
-        "east": {
-          "uv": [3,0,5,1],
-          "texture": "#glow"
-        },
-        "south": {
-          "uv": [3,0,5,1],
-          "texture": "#glow"
-        },
-        "west": {
-          "uv": [3,0,5,1],
-          "texture": "#glow"
-        },
-        "up": {
-          "uv": [0,0,2,2],
-          "texture": "#glow"
-        },
-        "down": {
-          "uv": [0,0,2,2],
-          "texture": "#glow"
         }
       }
     }

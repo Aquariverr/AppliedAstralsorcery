@@ -1,6 +1,11 @@
 package com.appliedastralsorcery;
 
 import java.util.List;
+import com.appliedastralsorcery.gateway.MECelestialGatewayBlock;
+import com.appliedastralsorcery.gateway.MECelestialGatewayBlockEntity;
+import com.appliedastralsorcery.gateway.MECelestialGatewayMenu;
+import com.appliedastralsorcery.gateway.SpatialReturnPortalBlock;
+import com.appliedastralsorcery.gateway.SpatialReturnPortalBlockEntity;
 import com.appliedastralsorcery.chisel.AutoChiselBlock;
 import com.appliedastralsorcery.chisel.AutoChiselBlockEntity;
 import com.appliedastralsorcery.chisel.AutoChiselMenu;
@@ -27,6 +32,8 @@ import com.appliedastralsorcery.lumen.MELumenFilamentMenu;
 import com.appliedastralsorcery.lumen.MELumenArrayBlock;
 import com.appliedastralsorcery.lumen.MELumenArrayBlockEntity;
 import com.appliedastralsorcery.lumen.MELumenArrayMenu;
+import com.appliedastralsorcery.lumen.MELumenAlchemyArrayBlock;
+import com.appliedastralsorcery.lumen.MELumenAlchemyArrayBlockEntity;
 import com.appliedastralsorcery.chalice.MEChaliceBlock;
 import com.appliedastralsorcery.chalice.MEChaliceBlockEntity;
 import com.appliedastralsorcery.chalice.MEChaliceMenu;
@@ -77,6 +84,27 @@ public final class ModContent {
             DeferredRegister.create(RegistriesAS.KEY_LIQUID_STARLIGHT_OUTPUT_MODIFIER_TYPES, AppliedAstralsorcery.MOD_ID);
     private static final DeferredRegister<IngredientType<?>> INGREDIENT_TYPES =
             DeferredRegister.create(NeoForgeRegistries.INGREDIENT_TYPES, AppliedAstralsorcery.MOD_ID);
+
+    private static final DeferredRegister<net.minecraft.world.item.crafting.RecipeSerializer<?>> RECIPE_SERIALIZERS =
+            DeferredRegister.create(Registries.RECIPE_SERIALIZER, AppliedAstralsorcery.MOD_ID);
+    public static final DeferredBlock<MECelestialGatewayBlock> ME_CELESTIAL_GATEWAY =
+            BLOCKS.register("me_celestial_gateway", MECelestialGatewayBlock::new);
+    public static final DeferredItem<BlockItem> ME_CELESTIAL_GATEWAY_ITEM = ITEMS.registerSimpleBlockItem(ME_CELESTIAL_GATEWAY);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MECelestialGatewayBlockEntity>> GATEWAY_ENTITY =
+            BLOCK_ENTITIES.register("me_celestial_gateway", () -> BlockEntityType.Builder.of(
+                    MECelestialGatewayBlockEntity::new, ME_CELESTIAL_GATEWAY.get()).build(null));
+    public static final DeferredHolder<MenuType<?>, MenuType<MECelestialGatewayMenu>> GATEWAY_MENU =
+            MENUS.register("me_celestial_gateway", () -> new MenuType<>(MECelestialGatewayMenu::new, FeatureFlags.VANILLA_SET));
+    public static final DeferredBlock<SpatialReturnPortalBlock> SPATIAL_RETURN_PORTAL =
+            BLOCKS.register("spatial_return_portal", SpatialReturnPortalBlock::new);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SpatialReturnPortalBlockEntity>> RETURN_PORTAL_ENTITY =
+            BLOCK_ENTITIES.register("spatial_return_portal", () -> BlockEntityType.Builder.of(
+                    SpatialReturnPortalBlockEntity::new, SPATIAL_RETURN_PORTAL.get()).build(null));
+    public static final DeferredHolder<net.minecraft.world.item.crafting.RecipeSerializer<?>,
+            net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer<hellfirepvp.astralsorcery.common.recipe.RecipeChangeColor>> GATEWAY_DYE_RECIPE =
+            RECIPE_SERIALIZERS.register("me_celestial_gateway_change_color", () -> new net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer<>(
+                    category -> new hellfirepvp.astralsorcery.common.recipe.RecipeChangeColor(category,
+                            ModContent.GATEWAY_DYE_RECIPE, ME_CELESTIAL_GATEWAY_ITEM)));
 
     public static final DeferredHolder<IngredientType<?>, IngredientType<CrystalSizeIngredient>> CRYSTAL_SIZE_INGREDIENT =
             INGREDIENT_TYPES.register("crystal_size", () -> new IngredientType<>(CrystalSizeIngredient.CODEC));
@@ -140,6 +168,9 @@ public final class ModContent {
             MENUS.register("me_lumen_filament", () -> new MenuType<>(MELumenFilamentMenu::new, FeatureFlags.VANILLA_SET));
     public static final DeferredHolder<MenuType<?>, MenuType<MELumenArrayMenu>> ARRAY_MENU =
             MENUS.register("me_lumen_array", () -> new MenuType<>(MELumenArrayMenu::new, FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<MenuType<?>, MenuType<MELumenArrayMenu>> ALCHEMY_ARRAY_MENU =
+            MENUS.register("me_lumen_alchemy_array", () -> new MenuType<>(
+                    (id, inventory) -> new MELumenArrayMenu(id, inventory, null, true), FeatureFlags.VANILLA_SET));
     public static final DeferredHolder<MenuType<?>, MenuType<MEChaliceMenu>> CHALICE_MENU =
             MENUS.register("me_chalice", () -> new MenuType<>(MEChaliceMenu::new, FeatureFlags.VANILLA_SET));
     public static final DeferredHolder<MenuType<?>, MenuType<com.appliedastralsorcery.wand.MEResonatingWandMenu>> WAND_MENU =
@@ -153,6 +184,12 @@ public final class ModContent {
                     MEChaliceBlockEntity::new, ME_CHALICE.get()).build(null));
     public static final DeferredBlock<MELumenArrayBlock> ME_LUMEN_ARRAY = BLOCKS.register("me_lumen_array", MELumenArrayBlock::new);
     public static final DeferredItem<BlockItem> ME_LUMEN_ARRAY_ITEM = ITEMS.registerSimpleBlockItem(ME_LUMEN_ARRAY);
+    public static final DeferredBlock<MELumenAlchemyArrayBlock> ME_LUMEN_ALCHEMY_ARRAY =
+            BLOCKS.register("me_lumen_alchemy_array", MELumenAlchemyArrayBlock::new);
+    public static final DeferredItem<BlockItem> ME_LUMEN_ALCHEMY_ARRAY_ITEM = ITEMS.registerSimpleBlockItem(ME_LUMEN_ALCHEMY_ARRAY);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MELumenAlchemyArrayBlockEntity>> ALCHEMY_ARRAY_ENTITY =
+            BLOCK_ENTITIES.register("me_lumen_alchemy_array", () -> BlockEntityType.Builder.of(
+                    MELumenAlchemyArrayBlockEntity::new, ME_LUMEN_ALCHEMY_ARRAY.get()).build(null));
     //noinspection DataFlowIssue
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MELumenArrayBlockEntity>> ARRAY_ENTITY =
             BLOCK_ENTITIES.register("me_lumen_array", () -> BlockEntityType.Builder.of(
@@ -221,11 +258,13 @@ public final class ModContent {
                     LUMEN_CELLS.forEach(output::accept);
                     output.accept(ME_LUMEN_FILAMENT_ITEM);
                     output.accept(ME_LUMEN_ARRAY_ITEM);
+                    output.accept(ME_LUMEN_ALCHEMY_ARRAY_ITEM);
                     output.accept(ME_CHALICE_ITEM);
                     output.accept(ALTAR_AUTOMATION_ITEM);
                     output.accept(AUTO_CHISEL_ITEM);
                     output.accept(STARLIGHT_TRANSMUTATION_CHAMBER_ITEM);
                     output.accept(ME_RESONATING_WAND);
+                    output.accept(ME_CELESTIAL_GATEWAY_ITEM);
                     output.accept(NON_EMPTY_ANNIHILATION_PLANE);
                     output.accept(ASTRAL_FLUIX_CRYSTAL);
                     output.accept(ASTRAL_FLUIX_CLUSTER_ITEM);
@@ -254,6 +293,7 @@ public final class ModContent {
         MENUS.register(bus);
         LIQUID_OUTPUTS.register(bus);
         INGREDIENT_TYPES.register(bus);
+        RECIPE_SERIALIZERS.register(bus);
         bus.addListener((net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent event) ->
                 event.registerBlockEntity(AECapabilities.IN_WORLD_GRID_NODE_HOST, FILAMENT_ENTITY.get(),
                         (entity, context) -> entity));
@@ -276,6 +316,13 @@ public final class ModContent {
             event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK, CHALICE_ENTITY.get(),
                     (entity, side) -> side == null || side == net.minecraft.core.Direction.DOWN ? entity.getTankView() : null);
             event.registerBlockEntity(AECapabilities.IN_WORLD_GRID_NODE_HOST, ARRAY_ENTITY.get(), (entity, context) -> entity);
+            event.registerBlockEntity(AECapabilities.IN_WORLD_GRID_NODE_HOST, ALCHEMY_ARRAY_ENTITY.get(), (entity, context) -> entity);
+            event.registerBlockEntity(hellfirepvp.astralsorcery.common.lumen.ILumenHandler.BLOCK, ALCHEMY_ARRAY_ENTITY.get(),
+                    (entity, side) -> side == null || side == net.minecraft.core.Direction.DOWN ? entity.getTileData().getLumenHandler() : null);
+            event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK, ALCHEMY_ARRAY_ENTITY.get(),
+                    (entity, side) -> side == null || side == net.minecraft.core.Direction.DOWN ? entity.getTileData().getFluidTank() : null);
+            event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.ItemHandler.BLOCK, ALCHEMY_ARRAY_ENTITY.get(),
+                    (entity, side) -> side == null || side.getAxis().isHorizontal() ? entity.getTileData().getInventory() : null);
             event.registerBlockEntity(hellfirepvp.astralsorcery.common.lumen.ILumenHandler.BLOCK, ARRAY_ENTITY.get(),
                     (entity, side) -> side == null || side == net.minecraft.core.Direction.DOWN ? entity.getTileData().getLumenHandler() : null);
             event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK, ARRAY_ENTITY.get(),

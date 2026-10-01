@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "com.appliedastralsorcery.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": ["LumenHandlerViewMixin", "ResonatingWandRecognitionMixin", "AltarAutomationMixin", "ActiveAltarRecipeResourceMixin", "NonEmptyItemPickupMixin"],
+  "mixins": ["LumenHandlerViewMixin", "LumenArrayCraftingMixin", "ResonatingWandRecognitionMixin", "AltarAutomationMixin", "ActiveAltarRecipeResourceMixin", "NonEmptyItemPickupMixin", "CelestialGatewayStructureMixin", "SpatialCellFormattingMixin", "GatewaySpatialTeleportMixin"],
+  "client": ["GatewaySourceUiMixin", "GatewayUiAccessor", "GatewayDestinationSyncMixin"],
   "injectors": { "defaultRequire": 1 }
 }

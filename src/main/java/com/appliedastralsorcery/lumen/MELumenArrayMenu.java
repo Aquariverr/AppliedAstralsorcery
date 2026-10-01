@@ -13,6 +13,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
 public final class MELumenArrayMenu extends AbstractContainerMenu {
+    public static final int REDSTONE_BUTTON = 4, REDSTONE_DATA = 10;
     private final MELumenArrayBlockEntity array;
     private final Player owner;
     private final ContainerData data;
@@ -21,10 +22,13 @@ public final class MELumenArrayMenu extends AbstractContainerMenu {
             .sorted(Comparator.comparing(type -> RegistriesAS.REGISTRY_LUMEN.getKey(type).toString())).toList();
     public MELumenArrayMenu(int id, Inventory inventory) { this(id, inventory, null); }
     public MELumenArrayMenu(int id, Inventory inventory, MELumenArrayBlockEntity array) {
-        super(ModContent.ARRAY_MENU.get(), id);
+        this(id, inventory, array, array != null && array.isAlchemyArray());
+    }
+    public MELumenArrayMenu(int id, Inventory inventory, MELumenArrayBlockEntity array, boolean alchemy) {
+        super(alchemy ? ModContent.ALCHEMY_ARRAY_MENU.get() : ModContent.ARRAY_MENU.get(), id);
         this.array = array;
         owner = inventory.player;
-        data = array == null ? new SimpleContainerData(10) : new ContainerData() {
+        data = array == null ? new SimpleContainerData(11) : new ContainerData() {
             public int get(int i) { return switch (i) {
                 case 0 -> types.indexOf(array.getSelectedLumen()) + 1;
                 case 1 -> array.getPullTarget();
@@ -36,10 +40,11 @@ public final class MELumenArrayMenu extends AbstractContainerMenu {
                 case 7 -> array.getMainNode().isOnline() ? 1 : 0;
                 case 8 -> types.indexOf(array.getActiveLumen()) + 1;
                 case 9 -> array.isSwitchPending() ? 1 : 0;
+                case REDSTONE_DATA -> array.isRedstoneControlEnabled() ? 1 : 0;
                 default -> 0;
             }; }
             public void set(int i, int value) {}
-            public int getCount() { return 10; }
+            public int getCount() { return 11; }
         };
         addDataSlots(data);
         addSlot(new SlotItemHandler(array == null ? new ItemStackHandler(1) : array.getTileData().getInventory(), 0, 45, 85) {
@@ -55,6 +60,7 @@ public final class MELumenArrayMenu extends AbstractContainerMenu {
         for (int col = 0; col < 9; col++) addSlot(new Slot(inventory, col, 18 + col * 18, 215));
     }
     public int value(int index) { return data.get(index); }
+    public boolean isAlchemyArray() { return getType() == ModContent.ALCHEMY_ARRAY_MENU.get(); }
     public List<Lumen> getTypes() { return types; }
     public Lumen getSelectedLumen() {
         int index = value(0) - 1;
@@ -70,6 +76,7 @@ public final class MELumenArrayMenu extends AbstractContainerMenu {
         else if (button == 1) array.setExportEnabled(!array.isExportEnabled());
         else if (button == 2) array.setSupplyItemsEnabled(!array.isSupplyItemsEnabled());
         else if (button == 3) array.setInteractWithFilaments(!array.canInteractWithFilaments());
+        else if (button == REDSTONE_BUTTON) array.setRedstoneControlEnabled(!array.isRedstoneControlEnabled());
         else if (button >= 100 && button < 100 + types.size()) array.setSelectedLumen(types.get(button - 100));
         else return false;
         broadcastChanges();

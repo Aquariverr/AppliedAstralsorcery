@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:block",
+  "pools": [{
+    "rolls": 1,
+    "conditions": [{"condition": "minecraft:survives_explosion"}],
+    "entries": [
+      {"type": "minecraft:item", "name": "appliedas:me_celestial_gateway",
+       "functions": [{"function": "minecraft:copy_components", "source": "block_entity",
+                      "include": ["minecraft:custom_name", "astralsorcery:color"]}]},
+      {"type": "minecraft:item", "name": "astralsorcery:aquamarine",
+       "conditions": [{"condition": "astralsorcery:lockable_tile_entity"}]}
+    ]
+  }]
+}

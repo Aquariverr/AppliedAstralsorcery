@@ -1,0 +1,176 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:translucent",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "appliedas:block/me_celestial_gateway",
+    "glass": "appliedas:block/me_celestial_gateway_glass"
+  },
+  "elements": [
+    {
+      "name": "north pane",
+      "from": [
+        3,
+        2,
+        3
+      ],
+      "to": [
+        13,
+        9,
+        3
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0.0,
+            0.0,
+            5.0,
+            3.5
+          ],
+          "texture": "#glass"
+        },
+        "south": {
+          "uv": [
+            0.0,
+            0.0,
+            5.0,
+            3.5
+          ],
+          "texture": "#glass"
+        }
+      }
+    },
+    {
+      "name": "south pane",
+      "from": [
+        3,
+        2,
+        13
+      ],
+      "to": [
+        13,
+        9,
+        13
+      ],
+      "faces": {
+        "south": {
+          "uv": [
+            0.0,
+            0.0,
+            5.0,
+            3.5
+          ],
+          "texture": "#glass"
+        },
+        "north": {
+          "uv": [
+            0.0,
+            0.0,
+            5.0,
+            3.5
+          ],
+          "texture": "#glass"
+        }
+      }
+    },
+    {
+      "name": "west pane",
+      "from": [
+        3,
+        2,
+        3
+      ],
+      "to": [
+        3,
+        9,
+        13
+      ],
+      "faces": {
+        "west": {
+          "uv": [
+            0.0,
+            0.0,
+            5.0,
+            3.5
+          ],
+          "texture": "#glass"
+        },
+        "east": {
+          "uv": [
+            0.0,
+            0.0,
+            5.0,
+            3.5
+          ],
+          "texture": "#glass"
+        }
+      }
+    },
+    {
+      "name": "east pane",
+      "from": [
+        13,
+        2,
+        3
+      ],
+      "to": [
+        13,
+        9,
+        13
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            0.0,
+            0.0,
+            5.0,
+            3.5
+          ],
+          "texture": "#glass"
+        },
+        "west": {
+          "uv": [
+            0.0,
+            0.0,
+            5.0,
+            3.5
+          ],
+          "texture": "#glass"
+        }
+      }
+    },
+    {
+      "name": "case lid",
+      "from": [
+        3,
+        9,
+        3
+      ],
+      "to": [
+        13,
+        9,
+        13
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0.0,
+            4.0,
+            5.0,
+            9.0
+          ],
+          "texture": "#glass"
+        },
+        "down": {
+          "uv": [
+            0.0,
+            4.0,
+            5.0,
+            9.0
+          ],
+          "texture": "#glass"
+        }
+      }
+    }
+  ]
+}

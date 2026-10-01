@@ -1,13 +1,16 @@
 package com.appliedastralsorcery.client;
 
-import java.util.Locale;
 import java.util.List;
+import java.util.Locale;
+import java.util.function.BooleanSupplier;
+import com.appliedastralsorcery.ModContent;
 import com.appliedastralsorcery.transmutation.TransmutationFilterSelection;
 import com.appliedastralsorcery.transmutation.TransmutationMarkerAmount;
 import com.appliedastralsorcery.transmutation.StarlightTransmutationBlockEntity.Status;
 import com.appliedastralsorcery.transmutation.StarlightTransmutationMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import hellfirepvp.astralsorcery.client.util.RenderConstellationUtil;
+import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -18,60 +21,66 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
-/** A gilded marble console with recessed trays and a view of the incoming constellation. */
+import static com.appliedastralsorcery.client.AstralGuiArt.*;
+
+/**
+ * The chamber's console in the Auto Chisel's marble and gilt: a night-sky header, the incoming constellation in an
+ * observatory between the trays, and the chamber's starlit pillars flanking the stock and inventory.
+ */
 public final class StarlightTransmutationScreen extends AbstractContainerScreen<StarlightTransmutationMenu> {
     public static final int RECIPE_X = 86, RECIPE_Y = 34, RECIPE_WIDTH = 92, RECIPE_HEIGHT = 78;
     // JEI's recipe hint stays above the pointer; place the constellation name below it.
     private static final ClientTooltipPositioner CONSTELLATION_TOOLTIP = (width, height, mouseX, mouseY, tipWidth, tipHeight) ->
             DefaultTooltipPositioner.INSTANCE.positionTooltip(width, height, mouseX, mouseY + 28, tipWidth, tipHeight);
+    // The chamber's inlays: navy channels, dormant blue, and the ramp starlight runs through while it works.
+    private static final int NAVY = 0xFF161D48, DUSK = 0xFF202B66, DORMANT = 0xFF3F6FB8;
+    private static final int[] GLOW = {0xFF2D3D88, 0xFF3F6FB8, 0xFF6FA3E0, 0xFFA9D4FA, 0xFFFFFFFF};
+    private static final int HEADER_X = 12, HEADER_Y = 10, HEADER_WIDTH = 240, HEADER_HEIGHT = 22;
+    private static final int TOGGLE_X = 124, TOGGLE_WIDTH = 92, TOGGLE_HEIGHT = 14;
+    private static final int PROGRESS_X = 20, PROGRESS_Y = 114, PROGRESS_WIDTH = 224, PROGRESS_HEIGHT = 10;
+    private static final int PILLAR_TOP = 141, PILLAR_BOTTOM = 270;
+    private static final int EDITOR_WIDTH = 208, EDITOR_HEIGHT = 136;
+    // A small chain of stars in the header, lit while the chamber holds starlight.
+    private static final int[][] STARS = {{0, 9}, {8, 4}, {17, 8}, {26, 2}, {33, 11}, {41, 6}};
+    private static final int[][] LINKS = {{0, 1}, {1, 2}, {2, 3}, {2, 4}, {4, 5}};
+    private static final Component ME = Component.literal("ME");
+    private final ItemStack chamber = ModContent.STARLIGHT_TRANSMUTATION_CHAMBER_ITEM.toStack();
     private Button autoPullButton;
     private Button overclockButton;
     private AmountEditor amountEditor;
     private boolean markerClick;
-    private static final ResourceLocation MARBLE = material("marble_raw");
-    private static final ResourceLocation WOOD = material("infused_wood");
-    private static final ResourceLocation RUNE = material("marble_runed");
-    private static final ResourceLocation SKY = ResourceLocation.fromNamespaceAndPath("astralsorcery",
-            "textures/screen/tome/background_constellation.png");
-    private static final int INK = 0xFF3B3933, MUTED = 0xFF77705F;
-    private static final int LABEL_PAPER = 0xFFF1EBDD;
-    private static final int GOLD = 0xFFD4BE76, GOLD_SHADE = 0xFF806630;
-    private static final int DARK = 0xFF202B42, AQUA = 0xFF228CC1, LIGHT = 0xFF9BE7F5;
 
     public StarlightTransmutationScreen(StarlightTransmutationMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
         imageWidth = 264;
         imageHeight = 280;
-        titleLabelX = 21;
-        titleLabelY = 13;
-        inventoryLabelX = 51;
-        inventoryLabelY = 185;
     }
-    private static ResourceLocation material(String name) {
-        return ResourceLocation.fromNamespaceAndPath("astralsorcery", "textures/block/" + name + ".png");
-    }
-    private Component tr(String key, Object... args) { return Component.translatable("gui.appliedas.transmutation." + key, args); }
+    private static Component tr(String key, Object... args) { return Component.translatable("gui.appliedas.transmutation." + key, args); }
 
     @Override protected void init() {
         super.init();
-        autoPullButton = addRenderableWidget(Button.builder(modeLabel(), button -> {
-            if (minecraft != null && minecraft.gameMode != null)
-                minecraft.gameMode.handleInventoryButtonClick(menu.containerId, StarlightTransmutationMenu.AUTO_PULL_BUTTON);
-        }).bounds(leftPos + 124, topPos + 139, 90, 14).build());
+        autoPullButton = toggle(139, StarlightTransmutationMenu.AUTO_PULL_BUTTON, menu::isAutoPull);
         autoPullButton.setTooltip(Tooltip.create(tr("auto_pull_hint")));
-        overclockButton = addRenderableWidget(Button.builder(overclockLabel(), button -> {
-            if (minecraft != null && minecraft.gameMode != null)
-                minecraft.gameMode.handleInventoryButtonClick(menu.containerId, StarlightTransmutationMenu.OVERCLOCK_BUTTON);
-        }).bounds(leftPos + 124, topPos + 181, 90, 14).build());
+        overclockButton = toggle(181, StarlightTransmutationMenu.OVERCLOCK_BUTTON, menu::isLumenOverclock);
         overclockButton.setTooltip(Tooltip.create(tr("overclock_hint")));
+        autoPullButton.setMessage(modeLabel());
+        overclockButton.setMessage(overclockLabel());
         if (amountEditor != null) amountEditor.init(minecraft, width, height);
+    }
+    private Button toggle(int y, int id, BooleanSupplier lamp) {
+        return addRenderableWidget(new Plaque(leftPos + TOGGLE_X, topPos + y, TOGGLE_WIDTH, TOGGLE_HEIGHT, Component.empty(),
+                button -> {
+                    if (minecraft != null && minecraft.gameMode != null)
+                        minecraft.gameMode.handleInventoryButtonClick(menu.containerId, id);
+                }, lamp));
     }
     private Component modeLabel() { return tr(menu.isAutoPull() ? "auto_pull_on" : "auto_pull_off"); }
     private Component overclockLabel() { return tr(menu.isLumenOverclock() ? "overclock_on" : "overclock_off"); }
@@ -158,139 +167,187 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
         return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
     }
 
-    @Override protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
+    @Override protected void renderBg(GuiGraphics g, float partialTick, int mouseX, int mouseY) {
         int x = leftPos, y = topPos;
-        plate(graphics, x, y, imageWidth, imageHeight);
-        tile(graphics, WOOD, x + 12, y + 6, 240, 23);
-        graphics.renderOutline(x + 12, y + 6, 240, 23, GOLD_SHADE);
-        plate(graphics, x + 16, y + 9, 232, 17);
-        graphics.fill(x + 20, y + 12, x + 232, y + 23, LABEL_PAPER);
-        graphics.fill(x + 18, y + 24, x + 246, y + 25, GOLD);
-        lamp(graphics, x + 236, y + 13, menu.isOnline() ? AQUA : MUTED);
+        boolean running = menu.getStatus() == Status.RUNNING;
+        frame(g, x, y, imageWidth, imageHeight);
+        renderHeader(g, x + HEADER_X, y + HEADER_Y, running);
 
-        tray(graphics, x + 14, y + 34, 68, 78);
-        tray(graphics, x + 182, y + 34, 68, 78);
-        graphics.fill(x + 19, y + 38, x + 77, y + 50, LABEL_PAPER);
-        graphics.fill(x + 187, y + 38, x + 245, y + 50, LABEL_PAPER);
+        inset(g, x + 14, y + 34, 68, 78);
+        inset(g, x + 182, y + 34, 68, 78);
+        trayLabel(g, tr("input"), x + 48, y + 39);
+        trayLabel(g, tr("output"), x + 216, y + 39);
         for (int slot = 0; slot < 18; slot++) {
             var position = menu.getSlot(slot);
-            slot(graphics, x + position.x, y + position.y, slot >= 9);
+            slot(g, x + position.x, y + position.y, slot >= 9);
         }
+        renderObservatory(g, x + RECIPE_X, y + RECIPE_Y, running);
+        // Starlight carries the inputs through the observatory and out to ME.
+        arrowhead(g, x + 82, y + 73, running ? AQUA : GOLD_SHADE);
+        arrowhead(g, x + 178, y + 73, running ? AQUA : GOLD_SHADE);
 
-        drawObservatory(graphics, x + 86, y + 34);
-        graphics.fill(x + 82, y + 71, x + 86, y + 73, GOLD_SHADE);
-        graphics.fill(x + 178, y + 71, x + 182, y + 73, GOLD_SHADE);
-        star(graphics, x + 83, y + 72, menu.hasStarlight() ? LIGHT : GOLD);
-        star(graphics, x + 181, y + 72, GOLD);
+        int duration = menu.getDuration();
+        star(g, x + 15, y + 119, 2, GOLD_SHADE);
+        channel(g, x + PROGRESS_X, x + PROGRESS_X + PROGRESS_WIDTH, y + 117,
+                duration <= 0 ? 0F : Math.clamp(menu.getProgress() / (float) duration, 0F, 1F));
+        star(g, x + 249, y + 119, 2, GOLD_SHADE);
+        renderStatus(g, x, y + 128);
 
-        drawProgress(graphics, x, y);
-        graphics.fill(x + 20, y + 126, x + 244, y + 137, LABEL_PAPER);
-        tray(graphics, x + 44, y + 137, 176, 38);
-        graphics.fill(x + 50, y + 141, x + 214, y + 154, LABEL_PAPER);
+        boolean pulling = menu.isAutoPull();
+        inset(g, x + 44, y + 137, 176, 38);
+        fitted(g, tr("markers"), x + 51, y + 141, TOGGLE_X - 55, MUTED);
         for (int slot = 0; slot < 9; slot++) {
             var position = menu.getSlot(StarlightTransmutationMenu.MARKER_SLOT_START + slot);
-            slot(graphics, x + position.x, y + position.y, false);
-            graphics.renderOutline(x + position.x, y + position.y, 16, 16, menu.isAutoPull() ? AQUA : MUTED);
+            marker(g, x + position.x, y + position.y, pulling);
         }
-        tray(graphics, x + 44, y + 179, 176, 96);
-        graphics.fill(x + 50, y + 183, x + 214, y + 196, LABEL_PAPER);
-        graphics.fill(x + 50, y + 250, x + 214, y + 251, GOLD_SHADE);
-        graphics.fill(x + 50, y + 251, x + 214, y + 252, GOLD);
+        inset(g, x + 44, y + 179, 176, 95);
+        fitted(g, playerInventoryTitle, x + 51, y + 183, TOGGLE_X - 55, MUTED);
+        g.fill(x + 50, y + 251, x + 214, y + 252, GOLD_SHADE);
+        g.fill(x + 50, y + 252, x + 214, y + 253, GOLD);
         for (int slot = 18; slot < StarlightTransmutationMenu.MARKER_SLOT_START; slot++) {
             var position = menu.getSlot(slot);
-            slot(graphics, x + position.x, y + position.y, false);
+            slot(g, x + position.x, y + position.y, false);
         }
-        // Carved marble and stars flank the inventory without encroaching on item hitboxes.
-        for (int side : new int[]{16, 230}) {
-            tile(graphics, RUNE, x + side, y + 205, 18, 44);
-            graphics.fill(x + side, y + 205, x + side + 18, y + 249, 0x35FFF7DD);
-            star(graphics, x + side + 9, y + 192, GOLD_SHADE);
-            star(graphics, x + side + 9, y + 263, GOLD_SHADE);
-        }
+        for (int center : new int[]{25, imageWidth - 25})
+            pillar(g, x + center, y + PILLAR_TOP, y + PILLAR_BOTTOM, running, menu.hasStarlight());
     }
 
-    private void drawObservatory(GuiGraphics graphics, int x, int y) {
-        graphics.fill(x, y, x + 92, y + 78, GOLD_SHADE);
-        graphics.blit(SKY, x + 1, y + 1, 180, 112, 90, 76, 450, 300);
-        graphics.renderOutline(x + 3, y + 3, 86, 72, 0xFF65778C);
-        var constellation = menu.getConstellation();
-        if (constellation != null) {
-            // The native renderer draws immediately; submit the buffered sky first.
-            graphics.flush();
-            RenderSystem.enableBlend();
-            RenderSystem.defaultBlendFunc();
-            try {
-                RenderConstellationUtil.drawConstellationUI(constellation.getConstellationColor(), constellation,
-                        graphics.pose(), x + 16, y + 7, 56, 56, 1.5F, () -> 1F, true, false);
-            } finally {
-                RenderSystem.disableBlend();
+    private void renderHeader(GuiGraphics g, int x, int y, boolean running) {
+        skyBand(g, x, y, HEADER_WIDTH, HEADER_HEIGHT, 147, 128);
+        socket(g, x + 5, y + 3, running ? 0xFF1E3A5A : 0xFF33363D);
+        g.renderItem(chamber, x + 5, y + 3);
+        boolean online = menu.isOnline();
+        int meX = x + HEADER_WIDTH - 17 - font.width(ME), titleWidth = Math.min(font.width(title), meX - x - 35);
+        fitted(g, title, x + 27, y + 7, titleWidth, CREAM);
+        int chainX = meX - 56;
+        if (chainX >= x + 27 + titleWidth + 12) constellation(g, chainX, y + 3, menu.hasStarlight());
+        g.drawString(font, ME, meX, y + 7, online ? PARCHMENT : 0xFF8F846C, false);
+        lamp(g, x + HEADER_WIDTH - 13, y + 9, online ? AQUA_LIGHT : WARNING);
+    }
+    private int networkX() { return HEADER_X + HEADER_WIDTH - 19 - font.width(ME); }
+
+    private static void constellation(GuiGraphics g, int x, int y, boolean lit) {
+        for (int[] link : LINKS) {
+            int[] from = STARS[link[0]], to = STARS[link[1]];
+            line(g, x + from[0], y + from[1], x + to[0], y + to[1], lit ? 0x709FE9F2 : 0x30A6B0C4);
+        }
+        float time = Util.getMillis() / 600F;
+        for (int i = 0; i < STARS.length; i++) {
+            int sx = x + STARS[i][0], sy = y + STARS[i][1], radius = i == 3 ? 2 : i % 2 == 0 ? 1 : 2;
+            int color = lit ? i == 3 ? GOLD : AQUA_LIGHT : i == 3 ? 0xFF8F846C : 0xFF647088;
+            if (lit && radius > 1) {
+                int halo = (int) (0x30 + 0x20 * Mth.sin(time + i * 1.7F));
+                g.fill(sx - 1, sy - 1, sx + 2, sy + 2, halo << 24 | color & 0xFFFFFF);
             }
+            star(g, sx, sy, radius, color, lit ? 0xFFFFFFFF : 0xFFA7AFBE);
         }
     }
 
-    private void drawProgress(GuiGraphics graphics, int x, int y) {
-        int duration = menu.getDuration();
-        int filled = duration <= 0 ? 0 : (int) (220L * menu.getProgress() / duration);
-        graphics.fill(x + 20, y + 114, x + 244, y + 124, GOLD_SHADE);
-        graphics.fill(x + 21, y + 115, x + 243, y + 123, DARK);
-        graphics.fillGradient(x + 22, y + 116, x + 22 + Math.clamp(filled, 0, 220), y + 122, LIGHT, AQUA);
-        if (filled > 0) graphics.fill(x + 21 + Math.clamp(filled, 0, 220), y + 116,
-                x + 22 + Math.clamp(filled, 0, 220), y + 122, 0xFFF0FCFF);
-        star(graphics, x + 15, y + 119, GOLD_SHADE);
-        star(graphics, x + 249, y + 119, GOLD_SHADE);
-    }
-
-    private static void plate(GuiGraphics graphics, int x, int y, int width, int height) {
-        graphics.fill(x, y, x + width, y + height, GOLD_SHADE);
-        tile(graphics, WOOD, x + 1, y + 1, width - 2, height - 2);
-        tile(graphics, MARBLE, x + 4, y + 4, width - 8, height - 8);
-        graphics.fill(x + 4, y + 4, x + width - 4, y + height - 4, 0x44FFF9E8);
-        graphics.renderOutline(x + 3, y + 3, width - 6, height - 6, GOLD);
-    }
-    private static void tray(GuiGraphics graphics, int x, int y, int width, int height) {
-        graphics.fill(x, y, x + width, y + height, GOLD_SHADE);
-        tile(graphics, WOOD, x + 1, y + 1, width - 2, height - 2);
-        tile(graphics, MARBLE, x + 3, y + 3, width - 6, height - 6);
-        graphics.fill(x + 3, y + 3, x + width - 3, y + height - 3, 0x56FFF9E8);
-        graphics.fill(x + 2, y + height - 2, x + width - 2, y + height - 1, GOLD);
-    }
-    private static void tile(GuiGraphics graphics, ResourceLocation texture, int x, int y, int width, int height) {
-        for (int row = 0; row < height; row += 16) {
-            for (int col = 0; col < width; col += 16)
-                graphics.blit(texture, x + col, y + row, 0, 0, Math.min(16, width - col), Math.min(16, height - row), 16, 16);
+    /** The incoming constellation over a gilt star chart, like the floor of the chamber beneath it. */
+    private void renderObservatory(GuiGraphics g, int x, int y, boolean running) {
+        skyBand(g, x, y, RECIPE_WIDTH, RECIPE_HEIGHT, 181, 113);
+        int cx = x + RECIPE_WIDTH / 2, cy = y + RECIPE_HEIGHT / 2;
+        // A sparkle runs around the ring while the chamber works, as on the pedestal's ring.
+        float sweep = Util.getMillis() / 1000F * 120F;
+        for (int i = 0; i < 48; i++) {
+            double angle = i * Math.PI / 24;
+            int px = cx + (int) Math.round(Math.cos(angle) * 32), py = cy + (int) Math.round(Math.sin(angle) * 32);
+            float distance = Mth.wrapDegrees(i * 7.5F - sweep) / 24F;
+            int color = running ? FastColor.ARGB32.lerp((float) Math.exp(-distance * distance), 0x50D4BE76, 0xF0DDF9FF)
+                    : 0x48D4BE76;
+            g.fill(px, py, px + 1, py + 1, color);
+        }
+        for (int[] point : new int[][]{{0, -32}, {32, 0}, {0, 32}, {-32, 0}})
+            star(g, cx + point[0], cy + point[1], 1, 0x90D4BE76, 0xC0FFF3C6);
+        var constellation = menu.getConstellation();
+        if (constellation == null) return;
+        // The native renderer draws immediately; submit the buffered sky first.
+        g.flush();
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        try {
+            RenderConstellationUtil.drawConstellationUI(constellation.getConstellationColor(), constellation,
+                    g.pose(), cx - 28, cy - 28, 56, 56, 1.5F, () -> 1F, true, false);
+        } finally {
+            RenderSystem.disableBlend();
         }
     }
-    private static void slot(GuiGraphics graphics, int x, int y, boolean output) {
-        graphics.fill(x - 1, y - 1, x + 17, y + 17, output ? GOLD_SHADE : 0xFF9C927D);
-        graphics.fill(x, y, x + 16, y + 16, 0xFFDEDACE);
-        graphics.fill(x, y, x + 16, y + 1, 0xFF969083);
-        graphics.fill(x, y + 1, x + 1, y + 16, 0xFFB7B1A3);
-        graphics.fill(x + 1, y + 15, x + 16, y + 16, 0xFFF6F1E4);
+
+    /** A groove ending in an arrowhead that starlight fills as the work advances, with a spark at its head. */
+    private static void channel(GuiGraphics g, int x1, int x2, int y, float fill) {
+        int end = x2 - 4, length = Math.round((end - x1 - 2) * fill), head = x1 + 1 + length;
+        g.fill(x1, y, end, y + 5, 0xFF777568);
+        g.fill(x1 + 1, y + 1, end - 1, y + 4, 0xFFACA99A);
+        g.fill(x1 + 1, y + 4, end - 1, y + 5, 0xFFF9F3DF);
+        if (length > 0) {
+            g.fill(x1 + 1, y + 1, head, y + 4, AQUA_LIGHT);
+            g.fill(x1 + 1, y + 1, head, y + 2, 0xFFDDF9FF);
+            g.fill(x1 + 1, y + 3, head, y + 4, AQUA);
+        }
+        arrowhead(g, end, y + 2, fill >= 1F ? AQUA : GOLD_SHADE);
+        if (length > 0 && fill < 1F) star(g, head, y + 2, 2, STARLIGHT, 0xFFFFFFFF);
     }
-    private static void lamp(GuiGraphics graphics, int x, int y, int color) {
-        graphics.fill(x, y, x + 7, y + 7, GOLD_SHADE);
-        graphics.fill(x + 1, y + 1, x + 6, y + 6, color);
-        graphics.fill(x + 2, y + 1, x + 4, y + 2, 0xFFDDF4EF);
+
+    /** The status between gilt rules, with a lamp: starlight while working, amber when something is in the way. */
+    private void renderStatus(GuiGraphics g, int x, int y) {
+        var status = menu.getStatus();
+        boolean running = status == Status.RUNNING, idle = status == Status.IDLE;
+        Component text = tr("status." + status.name().toLowerCase(Locale.ROOT));
+        int textWidth = Math.min(font.width(text), 170), total = textWidth + 9, left = x + (imageWidth - total) / 2;
+        lamp(g, left + 1, y + 2, running ? AQUA_LIGHT : idle ? 0xFF9C9685 : WARNING);
+        fitted(g, text, left + 9, y, textWidth, running ? 0xFF276D84 : idle ? MUTED : 0xFF9A5A1E);
+        g.fill(x + 20, y + 3, left - 9, y + 4, GOLD);
+        g.fill(left + total + 8, y + 3, x + imageWidth - 20, y + 4, GOLD);
+        star(g, left - 6, y + 3, 2, GOLD_SHADE);
+        star(g, left + total + 4, y + 3, 2, GOLD_SHADE);
     }
-    private static void star(GuiGraphics graphics, int x, int y, int color) {
-        graphics.fill(x - 2, y, x + 3, y + 1, color);
-        graphics.fill(x, y - 2, x + 1, y + 3, color);
-        graphics.fill(x, y, x + 1, y + 1, 0xFFF3F9EE);
+
+    private void trayLabel(GuiGraphics g, Component text, int centerX, int y) {
+        int width = Math.min(font.width(text), 58), left = centerX - width / 2;
+        fitted(g, text, left, y, width, MUTED);
+        if (width <= 44) {
+            star(g, left - 5, y + 3, 1, GOLD_SHADE);
+            star(g, left + width + 3, y + 3, 1, GOLD_SHADE);
+        }
     }
-    @Override protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-        graphics.drawString(font, title, titleLabelX, titleLabelY, INK, false);
-        graphics.drawString(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, INK, false);
-        centeredLabel(graphics, tr("input"), 48, 39, INK);
-        graphics.drawString(font, tr("markers"), 51, 143, INK, false);
-        centeredLabel(graphics, tr("output"), 216, 39, INK);
-        var status = tr("status." + menu.getStatus().name().toLowerCase(Locale.ROOT));
-        centeredLabel(graphics, status, imageWidth / 2, 128,
-                menu.getStatus() == Status.RUNNING ? 0xFF276D84 : INK);
+
+    /** One of the chamber's marble pillars, its navy channel carrying starlight down while the chamber works. */
+    private static void pillar(GuiGraphics g, int cx, int top, int bottom, boolean running, boolean charged) {
+        int shaftTop = top + 4, shaftBottom = bottom - 4;
+        g.fill(cx - 4, shaftTop, cx + 5, shaftBottom, 0xFF817C72);
+        g.fill(cx - 3, shaftTop, cx + 4, shaftBottom, 0xFFE7E5DF);
+        g.fill(cx - 3, shaftTop, cx - 2, shaftBottom, 0xFFF6F5F1);
+        g.fill(cx + 3, shaftTop, cx + 4, shaftBottom, 0xFFBEBAB0);
+        int channelTop = shaftTop + 3, channelBottom = shaftBottom - 3, length = channelBottom - channelTop;
+        g.fill(cx - 1, channelTop - 1, cx + 2, channelBottom + 1, 0xFF0D1331);
+        float head = (Util.getMillis() % 2200L) / 2200F * (length + 40) - 20;
+        for (int row = channelTop; row < channelBottom; row++) {
+            int core, side;
+            if (running) {
+                float distance = (row - channelTop - head) / 7F, pulse = (float) Math.exp(-distance * distance);
+                core = glow(0.15F + 0.85F * pulse);
+                side = FastColor.ARGB32.lerp(pulse * 0.8F, DUSK, GLOW[2]);
+            } else {
+                core = charged || (row - channelTop) % 8 == 4 ? DORMANT : DUSK;
+                side = NAVY;
+            }
+            g.fill(cx - 1, row, cx + 2, row + 1, side);
+            g.fill(cx, row, cx + 1, row + 1, core);
+        }
+        for (int cap : new int[]{top, bottom - 4}) {
+            g.fill(cx - 5, cap, cx + 6, cap + 4, GOLD);
+            g.fill(cx - 5, cap, cx + 6, cap + 1, 0xFFEFD27B);
+            g.fill(cx - 5, cap + 3, cx + 6, cap + 4, GOLD_SHADE);
+        }
+        star(g, cx, top - 3, 2, GOLD_SHADE, running ? 0xFFFFFFFF : GOLD);
     }
-    private void centeredLabel(GuiGraphics graphics, Component text, int centerX, int y, int color) {
-        // Dark text on light marble needs crisp glyphs, without Minecraft's offset black shadow.
-        graphics.drawString(font, text, centerX - font.width(text) / 2, y, color, false);
+    private static int glow(float level) {
+        float position = Mth.clamp(level, 0F, 1F) * (GLOW.length - 1);
+        int index = Math.min((int) position, GLOW.length - 2);
+        return FastColor.ARGB32.lerp(position - index, GLOW[index], GLOW[index + 1]);
     }
+
+    @Override protected void renderLabels(GuiGraphics g, int mouseX, int mouseY) {}
     @Override public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         super.render(graphics, amountEditor == null ? mouseX : -10000, amountEditor == null ? mouseY : -10000, partialTick);
         if (amountEditor != null) {
@@ -313,10 +370,62 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
         if (recipeHovered && menu.getConstellation() != null)
             graphics.renderTooltip(font, List.of(menu.getConstellation().getName().getVisualOrderText()),
                     CONSTELLATION_TOOLTIP, mouseX, mouseY);
-        if (isHovering(233, 10, 13, 13, mouseX, mouseY))
+        int networkX = networkX();
+        if (isHovering(networkX, HEADER_Y + 2, HEADER_X + HEADER_WIDTH - 2 - networkX, HEADER_HEIGHT - 4, mouseX, mouseY))
             graphics.renderTooltip(font, tr(menu.isOnline() ? "network_online" : "network_offline"), mouseX, mouseY);
-        if (isHovering(20, 114, 224, 10, mouseX, mouseY) && menu.getDuration() > 0)
+        if (isHovering(PROGRESS_X, PROGRESS_Y, PROGRESS_WIDTH, PROGRESS_HEIGHT, mouseX, mouseY) && menu.getDuration() > 0)
             graphics.renderTooltip(font, tr("progress", menu.getProgress(), menu.getDuration()), mouseX, mouseY);
+    }
+
+    private void fitted(GuiGraphics g, Component text, int x, int y, int width, int color) {
+        if (width <= 0) return;
+        String label = text.getString();
+        if (font.width(label) > width) {
+            int ellipsisWidth = font.width("…");
+            label = width < ellipsisWidth ? "" : font.plainSubstrByWidth(label, width - ellipsisWidth) + "…";
+        }
+        g.drawString(font, label, x, y, color, false);
+    }
+
+    /** A stock marker, inlaid with starlight blue while auto pull keeps it, and sealed under a dim star otherwise. */
+    private static void marker(GuiGraphics g, int x, int y, boolean enabled) {
+        g.fill(x - 1, y - 1, x + 17, y + 17, enabled ? 0xFFB5E4EA : 0xFFE9E4D8);
+        g.fill(x - 1, y - 1, x + 17, y, enabled ? 0xFF2F6F86 : 0xFFA49E91);
+        g.fill(x - 1, y, x, y + 16, enabled ? 0xFF2F6F86 : 0xFFA49E91);
+        g.fill(x, y, x + 16, y + 16, enabled ? 0xFF929E9F : 0xFFCBC6BA);
+        if (!enabled) star(g, x + 7, y + 7, 2, 0xFFB2AB9C, 0xFFEDE8DC);
+    }
+
+    /** A wood-framed marble plaque like the Auto Chisel's buttons; toggles carry a lamp beside their label. */
+    private final class Plaque extends Button {
+        private final BooleanSupplier lamp;
+
+        private Plaque(int x, int y, int width, int height, Component message, OnPress onPress, BooleanSupplier lamp) {
+            super(x, y, width, height, message, onPress, DEFAULT_NARRATION);
+            this.lamp = lamp;
+        }
+
+        @Override protected void renderWidget(GuiGraphics g, int mx, int my, float partial) {
+            int x = getX(), y = getY(), w = width, h = height;
+            boolean hover = active && isHoveredOrFocused();
+            int border = hover ? AQUA : GOLD_SHADE;
+            g.fill(x + 1, y + 1, x + w - 1, y + h, 0xFF98907C);
+            g.fill(x, y + 1, x + w, y + h - 2, border);
+            g.fill(x + 1, y, x + w - 1, y + h - 1, border);
+            tile(g, WOOD, x + 1, y + 1, w - 2, h - 3);
+            tile(g, MARBLE, x + 3, y + 2, w - 6, h - 5);
+            g.fill(x + 3, y + 2, x + w - 3, y + h - 3, hover ? 0x605FCBDC : active ? 0x58FFF9E8 : 0xA0D8D3C5);
+            g.fill(x + 2, y + 1, x + w - 2, y + 2, 0xFFFFF2BF);
+            g.fill(x + 2, y + h - 3, x + w - 2, y + h - 2, GOLD);
+            int textY = y + (h - 1 - font.lineHeight) / 2 + 1, color = active ? INK : 0xFF91897A;
+            if (lamp != null) {
+                lamp(g, x + w - 12, y + (h - 5) / 2, !active ? FADED : lamp.getAsBoolean() ? AQUA : 0xFF9C9685);
+                fitted(g, getMessage(), x + 7, textY, w - 24, color);
+            } else {
+                int textWidth = Math.min(font.width(getMessage()), w - 10);
+                fitted(g, getMessage(), x + (w - textWidth) / 2, textY, textWidth, color);
+            }
+        }
     }
 
     /** A modal child, without changing Minecraft's screen or closing the live container/cursor. */
@@ -336,8 +445,11 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
             value = Integer.toString(item.getCount());
         }
         @Override protected void init() {
-            int x = (width - 208) / 2, y = (height - 142) / 2;
-            input = addRenderableWidget(new EditBox(font, x + 16, y + 51, 176, 18, tr("amount_title")));
+            int x = (width - EDITOR_WIDTH) / 2, y = (height - EDITOR_HEIGHT) / 2;
+            // Drawn into a starlit field of our own rather than the vanilla black box.
+            input = addRenderableWidget(new EditBox(font, x + 22, y + 52, 164, 10, tr("amount_title")));
+            input.setBordered(false);
+            input.setTextColor(CREAM);
             input.setMaxLength(3);
             input.setFilter(text -> text.isEmpty() || text.matches("[0-9]{1,3}"));
             input.setValue(value);
@@ -345,13 +457,13 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
             int[] changes = {-10, -1, 1, 10};
             for (int i = 0; i < changes.length; i++) {
                 int change = changes[i];
-                addRenderableWidget(Button.builder(Component.literal(change > 0 ? "+" + change : "" + change),
-                        button -> adjust(change)).bounds(x + 16 + 45 * i, y + 76, 41, 18).build());
+                addRenderableWidget(new Plaque(x + 16 + 45 * i, y + 72, 41, 18,
+                        Component.literal(change > 0 ? "+" + change : "" + change), button -> adjust(change), null));
             }
-            confirm = addRenderableWidget(Button.builder(Component.translatable("gui.done"), button -> save())
-                    .bounds(x + 16, y + 108, 85, 20).build());
-            addRenderableWidget(Button.builder(Component.translatable("gui.cancel"), button -> onClose())
-                    .bounds(x + 107, y + 108, 85, 20).build());
+            confirm = addRenderableWidget(new Plaque(x + 16, y + 106, 85, 18, Component.translatable("gui.done"),
+                    button -> save(), null));
+            addRenderableWidget(new Plaque(x + 107, y + 106, 85, 18, Component.translatable("gui.cancel"),
+                    button -> onClose(), null));
             confirm.active = validAmount();
             setInitialFocus(input);
             input.setHighlightPos(0);
@@ -381,12 +493,25 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
             return true;
         }
         @Override public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-            int x = (width - 208) / 2, y = (height - 142) / 2;
+            int x = (width - EDITOR_WIDTH) / 2, y = (height - EDITOR_HEIGHT) / 2;
             graphics.fill(0, 0, width, height, 0xB0000000);
-            plate(graphics, x, y, 208, 142);
-            graphics.drawString(font, title, x + 16, y + 12, INK, false);
-            graphics.renderItem(item, x + 16, y + 29);
-            graphics.drawString(font, tr("amount_range", maximum), x + 38, y + 33, INK, false);
+            frame(graphics, x, y, EDITOR_WIDTH, EDITOR_HEIGHT);
+            skyBand(graphics, x + 10, y + 10, EDITOR_WIDTH - 20, 30, 144, 42);
+            socket(graphics, x + 16, y + 17, 0xFF33363D);
+            graphics.renderItem(item, x + 16, y + 17);
+            fitted(graphics, title, x + 39, y + 15, EDITOR_WIDTH - 59, CREAM);
+            fitted(graphics, tr("amount_range", maximum), x + 39, y + 27, EDITOR_WIDTH - 59, PARCHMENT);
+            // The field's gilt turns amber while the amount is out of range.
+            int fieldX = x + 16, fieldY = y + 46, fieldWidth = EDITOR_WIDTH - 32;
+            boolean valid = validAmount();
+            graphics.fill(fieldX, fieldY, fieldX + fieldWidth, fieldY + 20, valid ? GOLD : WARNING);
+            graphics.fill(fieldX, fieldY, fieldX + fieldWidth, fieldY + 1, valid ? GOLD_SHADE : 0xFF8A4A1A);
+            graphics.fill(fieldX, fieldY, fieldX + 1, fieldY + 20, valid ? GOLD_SHADE : 0xFF8A4A1A);
+            graphics.blit(SKY, fieldX + 1, fieldY + 1, 140, 150, fieldWidth - 2, 18, 450, 300);
+            graphics.fill(fieldX + 1, fieldY + 1, fieldX + fieldWidth - 1, fieldY + 19, 0x50000000);
+            graphics.fill(x + 24, y + 98, x + EDITOR_WIDTH - 24, y + 99, GOLD);
+            star(graphics, x + 20, y + 98, 2, GOLD_SHADE);
+            star(graphics, x + EDITOR_WIDTH - 21, y + 98, 2, GOLD_SHADE);
             super.render(graphics, mouseX, mouseY, partialTick);
         }
     }

@@ -177,6 +177,17 @@ public final class AutoChiselBlockEntity extends BlockEntity {
 
     public void serverTick() {
         if (!(level instanceof ServerLevel server)) return;
+        tickProcessing(server);
+        boolean active = getStatus() == Status.WORKING;
+        var state = getBlockState();
+        var next = state.setValue(AutoChiselBlock.ACTIVE, active)
+                .setValue(AutoChiselBlock.LIT, getLumenAmount() > 0);
+        if (state != next)
+            server.setBlock(worldPosition, next,
+                    net.minecraft.world.level.block.Block.UPDATE_CLIENTS);
+    }
+
+    private void tickProcessing(ServerLevel server) {
         // Refill in either mode, even while idle or blocked; processing must not gate network requests.
         requestLumen(server);
         if (droppedItemMode) {

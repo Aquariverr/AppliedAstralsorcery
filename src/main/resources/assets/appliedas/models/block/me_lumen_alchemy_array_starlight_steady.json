@@ -1,0 +1,6 @@
+{
+  "parent": "appliedas:block/me_lumen_alchemy_array_starlight",
+  "textures": {
+    "glow": "appliedas:block/me_lumen_alchemy_array_starlight_steady"
+  }
+}

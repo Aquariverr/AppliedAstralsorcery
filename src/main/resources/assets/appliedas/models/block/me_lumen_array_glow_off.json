@@ -1,0 +1,655 @@
+{
+  "ambientocclusion": true,
+  "textures": {
+    "particle": "astralsorcery:block/marble_raw",
+    "glow": "appliedas:block/me_lumen_array_glow_steady"
+  },
+  "render_type": "minecraft:cutout",
+  "elements": [
+    {
+      "name": "North ME inset",
+      "from": [
+        6,
+        0.35,
+        0.7
+      ],
+      "to": [
+        10,
+        1.15,
+        1
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            6,
+            0,
+            10,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "down": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "South ME inset",
+      "from": [
+        6,
+        0.35,
+        15
+      ],
+      "to": [
+        10,
+        1.15,
+        15.3
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            6,
+            0,
+            10,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "down": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "West ME inset",
+      "from": [
+        0.7,
+        0.35,
+        6
+      ],
+      "to": [
+        1,
+        1.15,
+        10
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            6,
+            0,
+            10,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "down": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "East ME inset",
+      "from": [
+        15,
+        0.35,
+        6
+      ],
+      "to": [
+        15.3,
+        1.15,
+        10
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            6,
+            0,
+            10,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "down": {
+          "uv": [
+            11,
+            0,
+            12,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "Crown ME node",
+      "from": [
+        2.2,
+        16,
+        2.2
+      ],
+      "to": [
+        3.8,
+        16.12,
+        3.8
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          3,
+          0,
+          3
+        ]
+      },
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            3,
+            0,
+            5,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            3,
+            0,
+            5,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            3,
+            0,
+            5,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            3,
+            0,
+            5,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "Crown ME node",
+      "from": [
+        2.2,
+        16,
+        12.2
+      ],
+      "to": [
+        3.8,
+        16.12,
+        13.8
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          3,
+          0,
+          13
+        ]
+      },
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            3,
+            0,
+            5,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            3,
+            0,
+            5,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            3,
+            0,
+            5,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            3,
+            0,
+            5,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "Crown ME node",
+      "from": [
+        12.2,
+        16,
+        2.2
+      ],
+      "to": [
+        13.8,
+        16.12,
+        3.8
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          13,
+          0,
+          3
+        ]
+      },
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            3,
+            0,
+            5,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            3,
+            0,
+            5,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            3,
+            0,
+            5,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            3,
+            0,
+            5,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "Crown ME node",
+      "from": [
+        12.2,
+        16,
+        12.2
+      ],
+      "to": [
+        13.8,
+        16.12,
+        13.8
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          13,
+          0,
+          13
+        ]
+      },
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            3,
+            0,
+            5,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            3,
+            0,
+            5,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            3,
+            0,
+            5,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            3,
+            0,
+            5,
+            1
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    }
+  ],
+  "parent": "minecraft:block/block"
+}

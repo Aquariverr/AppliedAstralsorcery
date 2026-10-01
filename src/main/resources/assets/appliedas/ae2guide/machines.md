@@ -18,6 +18,8 @@ Follow the native Lumen Array layout, putting **1 Lumen Array** in the center an
 
 <Recipe id="appliedas:me_lumen_array" />
 
+**Redstone control** defaults to off, ignoring redstone signals. When enabled, only production requires a redstone signal. Without a signal, production's Liquid Starlight consumption and catalyst wear pause. Automatic ME lumen, Liquid Starlight and catalyst refills, surplus exports and lumen type changes remain available. Stored lumen remains available to external consumers.
+
 ## ME Chalice
 
 Follow the native Chalice layout, putting **1 Chalice** in the center and **1 ME Interface** above it. Replace the lowest Sooty Marble with **1 Fluix Block**.

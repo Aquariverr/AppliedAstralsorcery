@@ -17,12 +17,15 @@ navigation:
 
 ## 使用说明
 
+- [使用 ME 天辉星门进入空间元件](gateway.md)
+
 - [自动化星能物品嬗变](transmutation.md)
 - [自动分割水晶与材料](chisel.md)
 
 - [自动化祭坛合成](altar.md)
 - [制作星座核心](constellation_core.md)
 - [制作 ME 流明阵列与 ME 纳星圣杯](machines.md)
+- [使用 ME 流明炼金阵列自动生产](alchemy_array.md)
 
 - [培育异辉水晶石](crystal.md)
 - [制作异辉处理器](processor.md)

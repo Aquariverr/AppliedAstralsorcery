@@ -1,0 +1,1201 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:cutout",
+  "ambientocclusion": true,
+  "textures": {
+    "particle": "appliedas:block/me_lumen_alchemy_array_frame",
+    "glow": "appliedas:block/me_lumen_alchemy_array_starlight_steady"
+  },
+  "elements": [
+    {
+      "name": "chassis plate glow",
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        15,
+        1,
+        15
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            0.0,
+            0.0,
+            7.0,
+            0.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            0.0,
+            0.0,
+            7.0,
+            0.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            0.0,
+            0.0,
+            7.0,
+            0.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            0.0,
+            0.0,
+            7.0,
+            0.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "basin tray glow",
+      "from": [
+        3,
+        3,
+        3
+      ],
+      "to": [
+        13,
+        6,
+        13
+      ],
+      "shade": true,
+      "faces": {
+        "up": {
+          "uv": [
+            0.0,
+            1.0,
+            5.0,
+            6.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "north": {
+          "uv": [
+            5.0,
+            1.0,
+            10.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            5.0,
+            1.0,
+            10.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            5.0,
+            1.0,
+            10.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            5.0,
+            1.0,
+            10.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "north-west plinth glow",
+      "from": [
+        1,
+        1,
+        1
+      ],
+      "to": [
+        5,
+        5,
+        5
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            10.0,
+            1.0,
+            12.0,
+            3.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      },
+      "rotation": {
+        "origin": [
+          3,
+          8,
+          3
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "north-west shaft glow",
+      "from": [
+        1.5,
+        5,
+        1.5
+      ],
+      "to": [
+        4.5,
+        13,
+        4.5
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            12.0,
+            1.0,
+            13.5,
+            5.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      },
+      "rotation": {
+        "origin": [
+          3,
+          8,
+          3
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "north-west band glow",
+      "from": [
+        1,
+        13,
+        1
+      ],
+      "to": [
+        5,
+        14,
+        5
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            5.0,
+            3.0,
+            7.0,
+            3.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            5.0,
+            3.0,
+            7.0,
+            3.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            5.0,
+            3.0,
+            7.0,
+            3.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            5.0,
+            3.0,
+            7.0,
+            3.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      },
+      "rotation": {
+        "origin": [
+          3,
+          8,
+          3
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "north-west crystal",
+      "from": [
+        2.25,
+        16,
+        2.25
+      ],
+      "to": [
+        3.75,
+        17.25,
+        3.75
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "north-west crystal tip",
+      "from": [
+        2.625,
+        17.25,
+        2.625
+      ],
+      "to": [
+        3.375,
+        18,
+        3.375
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "north-east plinth glow",
+      "from": [
+        11,
+        1,
+        1
+      ],
+      "to": [
+        15,
+        5,
+        5
+      ],
+      "shade": true,
+      "faces": {
+        "east": {
+          "uv": [
+            10.0,
+            1.0,
+            12.0,
+            3.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      },
+      "rotation": {
+        "origin": [
+          13,
+          8,
+          3
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "north-east shaft glow",
+      "from": [
+        11.5,
+        5,
+        1.5
+      ],
+      "to": [
+        14.5,
+        13,
+        4.5
+      ],
+      "shade": true,
+      "faces": {
+        "east": {
+          "uv": [
+            12.0,
+            1.0,
+            13.5,
+            5.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      },
+      "rotation": {
+        "origin": [
+          13,
+          8,
+          3
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "north-east band glow",
+      "from": [
+        11,
+        13,
+        1
+      ],
+      "to": [
+        15,
+        14,
+        5
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            5.0,
+            3.0,
+            7.0,
+            3.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            5.0,
+            3.0,
+            7.0,
+            3.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            5.0,
+            3.0,
+            7.0,
+            3.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            5.0,
+            3.0,
+            7.0,
+            3.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      },
+      "rotation": {
+        "origin": [
+          13,
+          8,
+          3
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "north-east crystal",
+      "from": [
+        12.25,
+        16,
+        2.25
+      ],
+      "to": [
+        13.75,
+        17.25,
+        3.75
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "north-east crystal tip",
+      "from": [
+        12.625,
+        17.25,
+        2.625
+      ],
+      "to": [
+        13.375,
+        18,
+        3.375
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "south-west plinth glow",
+      "from": [
+        1,
+        1,
+        11
+      ],
+      "to": [
+        5,
+        5,
+        15
+      ],
+      "shade": true,
+      "faces": {
+        "west": {
+          "uv": [
+            10.0,
+            1.0,
+            12.0,
+            3.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      },
+      "rotation": {
+        "origin": [
+          3,
+          8,
+          13
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "south-west shaft glow",
+      "from": [
+        1.5,
+        5,
+        11.5
+      ],
+      "to": [
+        4.5,
+        13,
+        14.5
+      ],
+      "shade": true,
+      "faces": {
+        "west": {
+          "uv": [
+            12.0,
+            1.0,
+            13.5,
+            5.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      },
+      "rotation": {
+        "origin": [
+          3,
+          8,
+          13
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "south-west band glow",
+      "from": [
+        1,
+        13,
+        11
+      ],
+      "to": [
+        5,
+        14,
+        15
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            5.0,
+            3.0,
+            7.0,
+            3.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            5.0,
+            3.0,
+            7.0,
+            3.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            5.0,
+            3.0,
+            7.0,
+            3.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            5.0,
+            3.0,
+            7.0,
+            3.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      },
+      "rotation": {
+        "origin": [
+          3,
+          8,
+          13
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "south-west crystal",
+      "from": [
+        2.25,
+        16,
+        12.25
+      ],
+      "to": [
+        3.75,
+        17.25,
+        13.75
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "south-west crystal tip",
+      "from": [
+        2.625,
+        17.25,
+        12.625
+      ],
+      "to": [
+        3.375,
+        18,
+        13.375
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "south-east plinth glow",
+      "from": [
+        11,
+        1,
+        11
+      ],
+      "to": [
+        15,
+        5,
+        15
+      ],
+      "shade": true,
+      "faces": {
+        "south": {
+          "uv": [
+            10.0,
+            1.0,
+            12.0,
+            3.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      },
+      "rotation": {
+        "origin": [
+          13,
+          8,
+          13
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "south-east shaft glow",
+      "from": [
+        11.5,
+        5,
+        11.5
+      ],
+      "to": [
+        14.5,
+        13,
+        14.5
+      ],
+      "shade": true,
+      "faces": {
+        "south": {
+          "uv": [
+            12.0,
+            1.0,
+            13.5,
+            5.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      },
+      "rotation": {
+        "origin": [
+          13,
+          8,
+          13
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "south-east band glow",
+      "from": [
+        11,
+        13,
+        11
+      ],
+      "to": [
+        15,
+        14,
+        15
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            5.0,
+            3.0,
+            7.0,
+            3.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            5.0,
+            3.0,
+            7.0,
+            3.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            5.0,
+            3.0,
+            7.0,
+            3.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            5.0,
+            3.0,
+            7.0,
+            3.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      },
+      "rotation": {
+        "origin": [
+          13,
+          8,
+          13
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "name": "south-east crystal",
+      "from": [
+        12.25,
+        16,
+        12.25
+      ],
+      "to": [
+        13.75,
+        17.25,
+        13.75
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            13.5,
+            1.0,
+            14.5,
+            2.0
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    },
+    {
+      "name": "south-east crystal tip",
+      "from": [
+        12.625,
+        17.25,
+        12.625
+      ],
+      "to": [
+        13.375,
+        18,
+        13.375
+      ],
+      "shade": true,
+      "faces": {
+        "north": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [
+            13.5,
+            2.0,
+            14.0,
+            2.5
+          ],
+          "texture": "#glow",
+          "tintindex": 1
+        }
+      }
+    }
+  ]
+}

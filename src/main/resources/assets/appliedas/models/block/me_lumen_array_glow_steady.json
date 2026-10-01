@@ -1,0 +1,6 @@
+{
+  "parent": "appliedas:block/me_lumen_array_glow",
+  "textures": {
+    "glow": "appliedas:block/me_lumen_array_glow_steady"
+  }
+}

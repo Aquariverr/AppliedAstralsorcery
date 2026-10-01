@@ -1,0 +1,6 @@
+{
+  "parent": "appliedas:block/starlight_transmutation_chamber_starlight",
+  "textures": {
+    "glow": "appliedas:block/starlight_transmutation_chamber_glow_tint_steady"
+  }
+}
