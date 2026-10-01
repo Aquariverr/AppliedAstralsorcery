@@ -84,7 +84,8 @@ public final class AutoChiselMenu extends AbstractContainerMenu {
         return AutoChiselBlockEntity.Status.values()[Math.clamp(data.get(2), 0, AutoChiselBlockEntity.Status.values().length - 1)];
     }
     public AutoChiselBlockEntity.SideMode getSideMode(Direction side) {
-        return AutoChiselBlockEntity.SideMode.values()[Math.clamp(data.get(3 + side.ordinal()), 0, 2)];
+        return AutoChiselBlockEntity.SideMode.values()[Math.clamp(data.get(3 + side.ordinal()), 0,
+                AutoChiselBlockEntity.SideMode.values().length - 1)];
     }
     @Override public boolean clickMenuButton(Player player, int button) {
         if (machine == null || player.level().isClientSide || !stillValid(player) || button < 0 || button == 7

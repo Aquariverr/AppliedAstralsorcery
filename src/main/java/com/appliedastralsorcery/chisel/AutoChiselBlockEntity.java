@@ -50,9 +50,10 @@ public final class AutoChiselBlockEntity extends BlockEntity {
     };
 
     public enum SideMode {
-        INPUT, OUTPUT, INPUT_OUTPUT;
-        public boolean allowsInput() { return this != OUTPUT; }
-        public boolean allowsOutput() { return this != INPUT; }
+        // Append new modes so existing saves retain their input/output ordinals.
+        INPUT, OUTPUT, INPUT_OUTPUT, NONE;
+        public boolean allowsInput() { return this == INPUT || this == INPUT_OUTPUT; }
+        public boolean allowsOutput() { return this == OUTPUT || this == INPUT_OUTPUT; }
         public SideMode cycle(boolean reverse) {
             return values()[Math.floorMod(ordinal() + (reverse ? -1 : 1), values().length)];
         }

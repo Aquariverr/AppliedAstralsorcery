@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "working=true": {
+      "model": "appliedas:block/starlight_transmutation_chamber_active"
+    },
+    "working=false": {
+      "model": "appliedas:block/starlight_transmutation_chamber"
+    }
+  }
+}

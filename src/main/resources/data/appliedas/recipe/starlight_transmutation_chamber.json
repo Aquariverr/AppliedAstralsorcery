@@ -1,0 +1,77 @@
+{
+  "type": "astralsorcery:altar_crafting",
+  "baseFocusShatterChance": 0.0,
+  "duration": 100,
+  "effects": [
+    "astralsorcery:default_central_beam",
+    "astralsorcery:default_altar_sparkle",
+    "astralsorcery:default_lumen_input",
+    "astralsorcery:default_relay_input"
+  ],
+  "grid": {
+    "key": {
+      "P": {
+        "ingredient": {
+          "item": "appliedas:astral_processor"
+        },
+        "type": "item"
+      },
+      "Q": {
+        "ingredient": {
+          "item": "ae2:quartz_glass"
+        },
+        "type": "item"
+      },
+      "A": {
+        "ingredient": {
+          "item": "ae2:molecular_assembler"
+        },
+        "type": "item"
+      },
+      "M": {
+        "ingredient": {
+          "item": "astralsorcery:marble_runed"
+        },
+        "type": "item"
+      },
+      "L": {
+        "ingredient": {
+          "item": "astralsorcery:glass_lens"
+        },
+        "type": "item"
+      },
+      "G": {
+        "ingredient": {
+          "tag": "c:ingots/gold"
+        },
+        "type": "item"
+      }
+    },
+    "pattern": [
+      "MLM",
+      "PAP",
+      "MGM"
+    ],
+    "relayPattern": [
+      "     ",
+      "  Q  ",
+      " Q Q ",
+      "  Q  ",
+      "     "
+    ]
+  },
+  "mayChain": false,
+  "onlyNight": true,
+  "outputModifiers": [],
+  "outputs": [
+    {
+      "count": 1,
+      "id": "appliedas:starlight_transmutation_chamber"
+    }
+  ],
+  "requiredAdditionalInputs": [],
+  "requiredFluid": [],
+  "requiredLumen": [],
+  "requiredStarlight": [],
+  "requiredType": "resonance"
+}

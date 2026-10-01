@@ -3,8 +3,8 @@ package com.appliedastralsorcery.chalice;
 import java.util.Set;
 import appeng.api.config.Actionable;
 import appeng.api.networking.*;
-import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.IActionSource;
+import appeng.me.helpers.IGridConnectedBlockEntity;
 import appeng.api.stacks.AEFluidKey;
 import com.appliedastralsorcery.ModContent;
 import hellfirepvp.astralsorcery.common.tile.TileChalice;
@@ -22,7 +22,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
 
 /** Keeps the original chalice tank and all its native interactions. */
-public final class MEChaliceBlockEntity extends TileChalice implements IInWorldGridNodeHost, IActionHost {
+public final class MEChaliceBlockEntity extends TileChalice implements IGridConnectedBlockEntity {
     public static final int CAPACITY = 64_000;
     private final IManagedGridNode mainNode = GridHelper.createManagedNode(this,
             (IGridNodeListener<MEChaliceBlockEntity>) (owner, node) -> owner.setChanged())
@@ -37,7 +37,8 @@ public final class MEChaliceBlockEntity extends TileChalice implements IInWorldG
         super(new TileRegistryObject<>(ModContent.CHALICE_ENTITY), pos, state);
     }
 
-    public IManagedGridNode getMainNode() { return mainNode; }
+    @Override public IManagedGridNode getMainNode() { return mainNode; }
+    @Override public void saveChanges() { setChanged(); }
     @Override public IGridNode getGridNode(Direction side) {
         return side == Direction.UP || side == Direction.DOWN ? mainNode.getNode() : null;
     }

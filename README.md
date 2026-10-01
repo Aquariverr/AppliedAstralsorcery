@@ -19,6 +19,7 @@ An addon for **Astral Sorcery** and **Applied Energistics 2 (AE2)** that lets ME
 - **Constellation Core**: Combine crystals attuned to all 12 constellations on an Iridescent Crafting Altar. Each constellation accepts either a rock or celestial crystal.
 - **Altar Automation Interface**: Connect an ME Pattern Provider to the nearest loaded altar within 16 blocks. Processing patterns supply items, additional fluids and lumen, with JEI transfers including all three. The interface buffers fluids and lumen; products and container returns go back to the provider. Astral Sorcery's altar conditions still apply.
 - **Automatic Starmetal Chisel**: Process crystals, Starmetal Ingots and artifacts from item slots or adjacent dropped items. Each operation takes 2 seconds and 25 Lm of Evorsio and follows Astral Sorcery's processing rules. Supports side configuration, automatic item transfers, enchantments, lumen relays and ME Export Buses.
+- **Starlight Transmutation Chamber**: Automate native starlight item transmutation recipes in a gilded marble and quartz glass enclosure. Link a Collector Crystal or Lens, supply ingredients manually or through item automation, and return products directly to ME. Respects recipe durations and constellation requirements, with saved progress and buffered output when storage is full.
 - **Non-Empty Annihilation Plane**: Collect blocks like AE2's Annihilation Plane, but leave a block intact if its loot contains no items. Fluid and dropped-item collection work as usual.
 
 Recipes and usage instructions are available in the in-game AE2 guide in English and Chinese, with recipes also viewable in JEI.
@@ -36,3 +37,5 @@ Minecraft **1.21.1**, NeoForge **21.1.238 or later**, and **Java 21**, with comp
 | [Curios API](https://www.curseforge.com/minecraft/mc-mods/curios) | 9.5.1 or later |
 
 JEI, Jade and AE2 JEI Integration are optional.
+
+Jade shows AE2's native network status for the Starlight Transmutation Chamber, ME Lumen Array and ME Chalice, including online, offline, network booting and missing channels.

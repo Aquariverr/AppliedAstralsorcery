@@ -14,6 +14,8 @@ public final class AppliedAstralsorcery {
         ModContent.register(modEventBus);
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(com.appliedastralsorcery.chalice.ChaliceFluidSelection::register);
+        modEventBus.addListener(com.appliedastralsorcery.transmutation.TransmutationFilterSelection::register);
+        modEventBus.addListener(com.appliedastralsorcery.transmutation.TransmutationMarkerAmount::register);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

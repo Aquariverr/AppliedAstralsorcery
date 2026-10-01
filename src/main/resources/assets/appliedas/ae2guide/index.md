@@ -17,6 +17,7 @@ Applied Astralsorcery connects AE2 with Astral Sorcery, allowing ME networks to 
 
 ## Topics
 
+- [Automating starlight item transmutation](transmutation.md)
 - [Automatically splitting crystals and materials](chisel.md)
 
 - [Automating altar crafting](altar.md)

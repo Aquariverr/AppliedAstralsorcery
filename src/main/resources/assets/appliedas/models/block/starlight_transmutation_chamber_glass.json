@@ -1,0 +1,139 @@
+{
+  "render_type": "minecraft:translucent",
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "name": "quartz glass enclosure",
+      "from": [
+        1.25,
+        3,
+        1.25
+      ],
+      "to": [
+        14.75,
+        14,
+        14.75
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1.25,
+            2,
+            14.75,
+            13
+          ],
+          "texture": "#glass"
+        },
+        "south": {
+          "uv": [
+            1.25,
+            2,
+            14.75,
+            13
+          ],
+          "texture": "#glass"
+        },
+        "west": {
+          "uv": [
+            1.25,
+            2,
+            14.75,
+            13
+          ],
+          "texture": "#glass"
+        },
+        "east": {
+          "uv": [
+            1.25,
+            2,
+            14.75,
+            13
+          ],
+          "texture": "#glass"
+        }
+      }
+    },
+    {
+      "name": "quartz glass roof",
+      "from": [
+        2,
+        14.6,
+        2
+      ],
+      "to": [
+        14,
+        15.1,
+        14
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "texture": "#glass"
+        },
+        "up": {
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "texture": "#glass"
+        },
+        "north": {
+          "uv": [
+            2,
+            0.9000000000000004,
+            14,
+            1.4000000000000004
+          ],
+          "texture": "#glass"
+        },
+        "south": {
+          "uv": [
+            2,
+            0.9000000000000004,
+            14,
+            1.4000000000000004
+          ],
+          "texture": "#glass"
+        },
+        "west": {
+          "uv": [
+            2,
+            0.9000000000000004,
+            14,
+            1.4000000000000004
+          ],
+          "texture": "#glass"
+        },
+        "east": {
+          "uv": [
+            2,
+            0.9000000000000004,
+            14,
+            1.4000000000000004
+          ],
+          "texture": "#glass"
+        }
+      }
+    }
+  ],
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "astralsorcery:block/marble_raw",
+    "marble": "astralsorcery:block/marble_raw",
+    "pillar": "astralsorcery:block/marble_pillar",
+    "rune": "astralsorcery:block/marble_runed",
+    "gold": "minecraft:block/gold_block",
+    "dark": "astralsorcery:block/sooty_marble_raw",
+    "glass": "ae2:block/glass/quartz_glass_a",
+    "lens": "astralsorcery:block/focus_relay/focus_relay_glass",
+    "port": "ae2:block/molecular_assembler",
+    "crystal": "minecraft:block/diamond_block"
+  }
+}

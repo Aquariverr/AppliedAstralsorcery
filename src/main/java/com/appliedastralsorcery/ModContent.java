@@ -5,6 +5,9 @@ import com.appliedastralsorcery.chisel.AutoChiselBlock;
 import com.appliedastralsorcery.chisel.AutoChiselBlockEntity;
 import com.appliedastralsorcery.chisel.AutoChiselMenu;
 import com.appliedastralsorcery.chisel.AutoChiselItem;
+import com.appliedastralsorcery.transmutation.StarlightTransmutationBlock;
+import com.appliedastralsorcery.transmutation.StarlightTransmutationBlockEntity;
+import com.appliedastralsorcery.transmutation.StarlightTransmutationMenu;
 
 import com.appliedastralsorcery.parts.NonEmptyAnnihilationPlaneItem;
 
@@ -87,6 +90,16 @@ public final class ModContent {
                     AutoChiselBlockEntity::new, AUTO_CHISEL.get()).build(null));
     public static final DeferredHolder<MenuType<?>, MenuType<AutoChiselMenu>> AUTO_CHISEL_MENU =
             MENUS.register("auto_starmetal_chisel", () -> new MenuType<>(AutoChiselMenu::new, FeatureFlags.VANILLA_SET));
+    public static final DeferredBlock<StarlightTransmutationBlock> STARLIGHT_TRANSMUTATION_CHAMBER =
+            BLOCKS.register("starlight_transmutation_chamber", StarlightTransmutationBlock::new);
+    public static final DeferredItem<BlockItem> STARLIGHT_TRANSMUTATION_CHAMBER_ITEM =
+            ITEMS.registerSimpleBlockItem(STARLIGHT_TRANSMUTATION_CHAMBER);
+    //noinspection DataFlowIssue
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<StarlightTransmutationBlockEntity>> TRANSMUTATION_ENTITY =
+            BLOCK_ENTITIES.register("starlight_transmutation_chamber", () -> BlockEntityType.Builder.of(
+                    StarlightTransmutationBlockEntity::new, STARLIGHT_TRANSMUTATION_CHAMBER.get()).build(null));
+    public static final DeferredHolder<MenuType<?>, MenuType<StarlightTransmutationMenu>> TRANSMUTATION_MENU =
+            MENUS.register("starlight_transmutation_chamber", () -> new MenuType<>(StarlightTransmutationMenu::new, FeatureFlags.VANILLA_SET));
     public static final DeferredItem<Item> ASTRAL_PROCESSOR_PRESS = ITEMS.registerSimpleItem("astral_processor_press");
     public static final DeferredItem<Item> PRINTED_ASTRAL_PROCESSOR = ITEMS.registerSimpleItem("printed_astral_processor");
     public static final DeferredItem<Item> ASTRAL_PROCESSOR = ITEMS.registerSimpleItem("astral_processor");
@@ -211,6 +224,7 @@ public final class ModContent {
                     output.accept(ME_CHALICE_ITEM);
                     output.accept(ALTAR_AUTOMATION_ITEM);
                     output.accept(AUTO_CHISEL_ITEM);
+                    output.accept(STARLIGHT_TRANSMUTATION_CHAMBER_ITEM);
                     output.accept(ME_RESONATING_WAND);
                     output.accept(NON_EMPTY_ANNIHILATION_PLANE);
                     output.accept(ASTRAL_FLUIX_CRYSTAL);
@@ -244,6 +258,9 @@ public final class ModContent {
                 event.registerBlockEntity(AECapabilities.IN_WORLD_GRID_NODE_HOST, FILAMENT_ENTITY.get(),
                         (entity, context) -> entity));
         bus.addListener((net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent event) -> {
+            event.registerBlockEntity(AECapabilities.IN_WORLD_GRID_NODE_HOST, TRANSMUTATION_ENTITY.get(), (entity, side) -> entity);
+            event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.ItemHandler.BLOCK,
+                    TRANSMUTATION_ENTITY.get(), (entity, side) -> entity.getInventory());
             event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.ItemHandler.BLOCK,
                     AUTO_CHISEL_ENTITY.get(), AutoChiselBlockEntity::getItemHandler);
             event.registerBlockEntity(hellfirepvp.astralsorcery.common.lumen.ILumenHandler.BLOCK,

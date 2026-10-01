@@ -126,7 +126,7 @@ public final class ChiselGameTests {
         helper.assertTrue(!top.extractItem(1, 1, false).isEmpty(), "Cached capability must follow new output mode");
         for (var side : Direction.values()) {
             var mode = machine.getSideMode(side);
-            for (int i = 0; i < 3; i++) machine.cycleSide(side);
+            for (int i = 0; i < 4; i++) machine.cycleSide(side);
             helper.assertTrue(mode == machine.getSideMode(side), "All six world directions must cycle independently");
         }
         helper.succeed();

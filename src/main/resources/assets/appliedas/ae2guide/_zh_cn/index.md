@@ -17,6 +17,7 @@ navigation:
 
 ## 使用说明
 
+- [自动化星能物品嬗变](transmutation.md)
 - [自动分割水晶与材料](chisel.md)
 
 - [自动化祭坛合成](altar.md)

@@ -232,6 +232,7 @@ public final class ChiselDropGameTests {
     @GameTest(template = "wand_empty")
     public static void roundRobinVisitsAllInputFaces(GameTestHelper helper) {
         var machine = machine(helper);
+        machine.cycleSide(Direction.EAST, true); // none
         machine.cycleSide(Direction.EAST, true); // input/output
         machine.toggleRoundRobin();
         var first = drop(helper, POS.above(), new ItemStack(ItemsAS.STARMETAL_INGOT.get(), 4), 1);
@@ -287,6 +288,29 @@ public final class ChiselDropGameTests {
         restored.setLevel(helper.getLevel());
         restored.loadWithComponents(machine.saveWithoutMetadata(helper.getLevel().registryAccess()), helper.getLevel().registryAccess());
         return restored;
+    }
+
+    @GameTest(template = "wand_empty")
+    public static void noneFacesExcludeDropTargetsAndOutputs(GameTestHelper helper) {
+        var machine = machine(helper);
+        var target = drop(helper, POS.above(), crystal(), 1);
+        tick(machine, 30);
+        machine.cycleSide(Direction.UP, true); // input -> none
+        tick(machine, 40);
+        helper.assertTrue(target.isAlive() && machine.getProgress() == 0 && machine.getLumenAmount() == 1000,
+                "Disabling an input face must reset work and exclude its dropped items");
+        machine.cycleSide(Direction.DOWN);
+        machine.cycleSide(Direction.DOWN); // output -> both -> none
+        machine.cycleSide(Direction.UP); // none -> input
+        tick(machine, 40);
+        helper.assertTrue(machine.getStatus() == AutoChiselBlockEntity.Status.NO_OUTPUT && target.isAlive(),
+                "None must not count as an output face");
+        machine.cycleSide(Direction.EAST); // input -> output
+        tick(machine, 40);
+        helper.assertTrue(!target.isAlive() && drops(helper, POS.below()).isEmpty()
+                && drops(helper, POS.east()).size() == 2 && machine.getLumenAmount() == 975,
+                "Outputs must skip disabled faces and use the next configured output");
+        helper.succeed();
     }
 
     private static ItemStack crystal() {

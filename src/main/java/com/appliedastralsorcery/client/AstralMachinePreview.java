@@ -2,6 +2,7 @@ package com.appliedastralsorcery.client;
 
 import com.appliedastralsorcery.ModContent;
 import com.appliedastralsorcery.chalice.MEChaliceBlock;
+import com.appliedastralsorcery.transmutation.StarlightTransmutationBlock;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -15,6 +16,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -74,6 +77,30 @@ final class AstralMachinePreview {
         begin(graphics, x, y, 32F);
         try {
             block(graphics, ModContent.AUTO_CHISEL.get().defaultBlockState());
+        } finally {
+            end(graphics);
+        }
+    }
+
+    static void transmutation(GuiGraphics graphics, int x, int y, ItemStack workpiece, boolean working, float partialTick) {
+        begin(graphics, x, y, 42F);
+        try {
+            if (!workpiece.isEmpty()) {
+                var pose = graphics.pose();
+                float time = ClientProxy.getClientTick() + partialTick;
+                pose.pushPose();
+                pose.translate(0.5F, 0.53F + Math.sin(time / 16F) * 0.035F, 0.5F);
+                pose.mulPose(Axis.YP.rotationDegrees(time * 1.5F % 360));
+                pose.scale(0.48F, 0.48F, 0.48F);
+                Minecraft.getInstance().getItemRenderer().renderStatic(workpiece, ItemDisplayContext.GROUND,
+                        LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, pose, graphics.bufferSource(),
+                        Minecraft.getInstance().level, 0);
+                pose.popPose();
+                graphics.flush();
+            }
+            // Render the item before the composite model's translucent glass enclosure.
+            block(graphics, ModContent.STARLIGHT_TRANSMUTATION_CHAMBER.get().defaultBlockState()
+                    .setValue(StarlightTransmutationBlock.WORKING, working));
         } finally {
             end(graphics);
         }

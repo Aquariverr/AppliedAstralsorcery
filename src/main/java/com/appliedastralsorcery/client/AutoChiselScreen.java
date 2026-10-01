@@ -299,6 +299,7 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
             case INPUT -> 0xFF508AB9;
             case OUTPUT -> 0xFFC88642;
             case INPUT_OUTPUT -> 0xFF9466AE;
+            case NONE -> 0xFFFFFFFF;
         };
     }
 
@@ -484,9 +485,12 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
             int x = getX(), y = getY();
             boolean hover = isHoveredOrFocused();
             if (hover) g.renderOutline(x - 1, y - 1, width + 2, height + 2, 0x90FFF2BF);
-            faceTile(g, x, y, width, faceColor(menu.getSideMode(side)), hover ? GOLD : 0xFF4A4034);
+            var mode = menu.getSideMode(side);
+            faceTile(g, x, y, width, faceColor(mode), hover ? GOLD : 0xFF4A4034);
             Component label = tr("face_short." + side.getName());
-            g.drawString(font, label, x + (width - font.width(label) + 1) / 2, y + 8, 0xFFFFFFFF, true);
+            boolean disabled = mode == AutoChiselBlockEntity.SideMode.NONE;
+            g.drawString(font, label, x + (width - font.width(label) + 1) / 2, y + 8,
+                    disabled ? INK : 0xFFFFFFFF, !disabled);
         }
     }
 }

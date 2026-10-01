@@ -3,8 +3,8 @@ package com.appliedastralsorcery.lumen;
 import java.util.Set;
 import appeng.api.config.Actionable;
 import appeng.api.networking.*;
-import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.IActionSource;
+import appeng.me.helpers.IGridConnectedBlockEntity;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEFluidKey;
 import com.appliedastralsorcery.ModContent;
@@ -26,7 +26,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 /** Native AS array with an independent, bottom-only ME node. */
-public final class MELumenArrayBlockEntity extends TileLumenArray implements IInWorldGridNodeHost, IActionHost {
+public final class MELumenArrayBlockEntity extends TileLumenArray implements IGridConnectedBlockEntity {
     private final IManagedGridNode mainNode = GridHelper.createManagedNode(this,
             (IGridNodeListener<MELumenArrayBlockEntity>) (owner, node) -> owner.setChanged())
             .setInWorldNode(true).setExposedOnSides(Set.of(Direction.DOWN))
@@ -41,7 +41,8 @@ public final class MELumenArrayBlockEntity extends TileLumenArray implements IIn
         super(new TileRegistryObject<>(ModContent.ARRAY_ENTITY), pos, state);
     }
 
-    public IManagedGridNode getMainNode() { return mainNode; }
+    @Override public IManagedGridNode getMainNode() { return mainNode; }
+    @Override public void saveChanges() { setChanged(); }
     @Override public Codec<Data> dataCodec() { return MELumenArrayData.CODEC; }
     private MELumenArrayData arrayData() { return (MELumenArrayData) getTileData(); }
     public Lumen getActiveLumen() { return arrayData().getActiveLumen(); }

@@ -27,10 +27,11 @@ public final class ChiselConfigurationGameTests {
             machine.cycleSide(side);
             machine.cycleSide(side, true);
             helper.assertTrue(machine.getSideMode(side) == original, "Right-click must undo one left-click on each face");
-            for (int i = 0; i < 3; i++) machine.cycleSide(side, true);
-            helper.assertTrue(machine.getSideMode(side) == original, "Reverse cycle must contain exactly three states");
+            for (int i = 0; i < 4; i++) machine.cycleSide(side, true);
+            helper.assertTrue(machine.getSideMode(side) == original, "Reverse cycle must contain exactly four states");
         }
-        machine.cycleSide(Direction.UP, true); // input -> input/output
+        machine.cycleSide(Direction.UP, true); // input -> none
+        machine.cycleSide(Direction.UP, true); // none -> input/output
         machine.toggleAutoInput();
         machine.toggleAutoOutput();
         helper.assertTrue(handler.insertItem(0, ItemsAS.STARMETAL_INGOT.toStack(), false).isEmpty(),
@@ -86,11 +87,14 @@ public final class ChiselConfigurationGameTests {
                 "Legacy output/input ordinals must retain their meanings; removed off faces migrate to input");
         helper.assertTrue(machine.isAutoInput() && machine.isAutoOutput(), "Legacy machines keep automatic transfers enabled");
         machine.cycleSide(Direction.UP, true);
+        machine.cycleSide(Direction.UP, true);
+        machine.cycleSide(Direction.NORTH, true); // none
         machine.toggleAutoInput();
         machine.toggleAutoOutput();
         var restored = new AutoChiselBlockEntity(machine.getBlockPos(), machine.getBlockState());
         restored.loadWithComponents(machine.saveWithoutMetadata(helper.getLevel().registryAccess()), helper.getLevel().registryAccess());
         helper.assertTrue(restored.getSideMode(Direction.UP) == AutoChiselBlockEntity.SideMode.INPUT_OUTPUT
+                && restored.getSideMode(Direction.NORTH) == AutoChiselBlockEntity.SideMode.NONE
                 && !restored.isAutoInput() && !restored.isAutoOutput(), "Shared faces and both switches must persist");
         helper.succeed();
     }
@@ -102,6 +106,9 @@ public final class ChiselConfigurationGameTests {
                 new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "chisel-config"));
         player.setPos(machine.getBlockPos().getCenter());
         var menu = new AutoChiselMenu(0, player.getInventory(), machine);
+        helper.assertTrue(menu.clickMenuButton(player, AutoChiselMenu.REVERSE_SIDE_BASE + Direction.UP.ordinal())
+                && menu.getSideMode(Direction.UP) == AutoChiselBlockEntity.SideMode.NONE,
+                "A reverse face packet must synchronize the new none mode");
         helper.assertTrue(menu.clickMenuButton(player, AutoChiselMenu.REVERSE_SIDE_BASE + Direction.UP.ordinal())
                 && menu.getSideMode(Direction.UP) == AutoChiselBlockEntity.SideMode.INPUT_OUTPUT,
                 "A reverse face packet must be validated and reflected in menu data");
@@ -122,5 +129,34 @@ public final class ChiselConfigurationGameTests {
     private static AutoChiselBlockEntity machine(GameTestHelper helper) {
         helper.setBlock(POS, ModContent.AUTO_CHISEL.get());
         return (AutoChiselBlockEntity) helper.getBlockEntity(POS);
+    }
+
+    @GameTest(template = "wand_empty", timeoutTicks = 80)
+    public static void noneBlocksCachedHandlersAndAutomaticTransfers(GameTestHelper helper) {
+        var machine = machine(helper);
+        var top = machine.getItemHandler(Direction.UP);
+        var bottom = machine.getItemHandler(Direction.DOWN);
+        machine.cycleSide(Direction.UP, true); // input -> none
+        machine.cycleSide(Direction.DOWN);
+        machine.cycleSide(Direction.DOWN); // output -> both -> none
+        helper.setBlock(POS.above(), Blocks.CHEST);
+        helper.setBlock(POS.below(), Blocks.CHEST);
+        var source = (ChestBlockEntity) helper.getBlockEntity(POS.above());
+        var destination = (ChestBlockEntity) helper.getBlockEntity(POS.below());
+        source.setItem(0, ItemsAS.STARMETAL_INGOT.toStack());
+        machine.getInventory().setStackInSlot(1, ItemsAS.STARDUST.toStack());
+        helper.assertTrue(!top.insertItem(0, ItemsAS.STARMETAL_INGOT.toStack(), false).isEmpty()
+                && bottom.extractItem(1, 1, false).isEmpty() && bottom.getStackInSlot(1).isEmpty(),
+                "Cached capabilities must reject input and hide output on none faces");
+        helper.runAfterDelay(10, () -> {
+            helper.assertTrue(!source.isEmpty() && destination.isEmpty()
+                    && machine.getInventory().getStackInSlot(0).isEmpty(), "None faces must stop automatic pulling and pushing");
+            machine.cycleSide(Direction.UP); // none -> input
+            machine.cycleSide(Direction.DOWN, true); // none -> both
+            helper.runAfterDelay(10, () -> {
+                helper.assertTrue(source.isEmpty() && !destination.isEmpty(), "Re-enabled faces must resume transfers");
+                helper.succeed();
+            });
+        });
     }
 }

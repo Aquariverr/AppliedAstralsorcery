@@ -1,0 +1,8 @@
+{
+  "type": "astralsorcery:focal_combine",
+  "color": -15269633,
+  "duration": 20,
+  "required_constellation": "astralsorcery:mineralis",
+  "inputs": [{"item": "minecraft:amethyst_shard"}],
+  "outputs": [{"id": "minecraft:quartz", "count": 2}, {"id": "minecraft:diamond", "count": 3}]
+}

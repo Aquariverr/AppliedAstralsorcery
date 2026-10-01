@@ -42,6 +42,7 @@ public final class LumenClient {
     @SubscribeEvent
     public static void screens(RegisterMenuScreensEvent event) {
         event.register(ModContent.AUTO_CHISEL_MENU.get(), AutoChiselScreen::new);
+        event.register(ModContent.TRANSMUTATION_MENU.get(), StarlightTransmutationScreen::new);
         event.register(ModContent.FILAMENT_MENU.get(), MELumenFilamentScreen::new);
         event.register(ModContent.ARRAY_MENU.get(), MELumenArrayScreen::new);
         event.register(ModContent.CHALICE_MENU.get(), MEChaliceScreen::new);
@@ -50,6 +51,7 @@ public final class LumenClient {
 
     @SubscribeEvent
     public static void renderers(net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(ModContent.TRANSMUTATION_ENTITY.get(), StarlightTransmutationRenderer::new);
         event.registerBlockEntityRenderer(ModContent.ARRAY_ENTITY.get(), context ->
                 new hellfirepvp.astralsorcery.client.tile.TileLumenArrayRenderer(context.getItemRenderer()));
         event.registerBlockEntityRenderer(ModContent.CHALICE_ENTITY.get(), context ->

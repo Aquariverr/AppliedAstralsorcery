@@ -35,7 +35,7 @@ Any retained material also enters the output slots. Leave **two empty output slo
 
 Click the wrench tab to open **Settings**. Click it again to return to the item slots.
 
-The six buttons represent up, down, north, south, east and west. **Left-click** cycles through input, output and input/output; **right-click** cycles backward. Blue means input, orange means output and purple allows both. The bottom defaults to output; all other faces default to input.
+The six buttons represent up, down, north, south, east and west. **Left-click** cycles through input, output, input/output and none; **right-click** cycles backward. Blue means input, orange means output, purple allows both and white means none. A face set to **None** does not transfer items, chisel adjacent drops or receive products. The bottom defaults to output; all other faces default to input.
 
 In **Mode: Item Slots**, **Auto input** pulls from adjacent containers and **Auto output** sends products to them. When these switches are off, hoppers, pipes and ME buses can still transfer items through the configured faces.
 

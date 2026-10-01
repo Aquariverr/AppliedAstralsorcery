@@ -1,0 +1,2226 @@
+{
+  "render_type": "minecraft:solid",
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "name": "marble foundation",
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        2,
+        16
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#marble"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#marble"
+        },
+        "north": {
+          "uv": [
+            0,
+            14,
+            16,
+            16
+          ],
+          "texture": "#marble"
+        },
+        "south": {
+          "uv": [
+            0,
+            14,
+            16,
+            16
+          ],
+          "texture": "#marble"
+        },
+        "west": {
+          "uv": [
+            0,
+            14,
+            16,
+            16
+          ],
+          "texture": "#marble"
+        },
+        "east": {
+          "uv": [
+            0,
+            14,
+            16,
+            16
+          ],
+          "texture": "#marble"
+        }
+      }
+    },
+    {
+      "name": "gilded lower band",
+      "from": [
+        0,
+        2,
+        0
+      ],
+      "to": [
+        16,
+        2.5,
+        16
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#gold"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#gold"
+        },
+        "north": {
+          "uv": [
+            0,
+            13.5,
+            16,
+            14
+          ],
+          "texture": "#gold"
+        },
+        "south": {
+          "uv": [
+            0,
+            13.5,
+            16,
+            14
+          ],
+          "texture": "#gold"
+        },
+        "west": {
+          "uv": [
+            0,
+            13.5,
+            16,
+            14
+          ],
+          "texture": "#gold"
+        },
+        "east": {
+          "uv": [
+            0,
+            13.5,
+            16,
+            14
+          ],
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "runic base",
+      "from": [
+        0.5,
+        2.5,
+        0.5
+      ],
+      "to": [
+        15.5,
+        3,
+        15.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0.5,
+            0.5,
+            15.5,
+            15.5
+          ],
+          "texture": "#rune"
+        },
+        "up": {
+          "uv": [
+            0.5,
+            0.5,
+            15.5,
+            15.5
+          ],
+          "texture": "#rune"
+        },
+        "north": {
+          "uv": [
+            0.5,
+            13,
+            15.5,
+            13.5
+          ],
+          "texture": "#rune"
+        },
+        "south": {
+          "uv": [
+            0.5,
+            13,
+            15.5,
+            13.5
+          ],
+          "texture": "#rune"
+        },
+        "west": {
+          "uv": [
+            0.5,
+            13,
+            15.5,
+            13.5
+          ],
+          "texture": "#rune"
+        },
+        "east": {
+          "uv": [
+            0.5,
+            13,
+            15.5,
+            13.5
+          ],
+          "texture": "#rune"
+        }
+      }
+    },
+    {
+      "name": "workpiece pedestal",
+      "from": [
+        5,
+        3,
+        5
+      ],
+      "to": [
+        11,
+        4,
+        11
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            5,
+            5,
+            11,
+            11
+          ],
+          "texture": "#rune"
+        },
+        "up": {
+          "uv": [
+            5,
+            5,
+            11,
+            11
+          ],
+          "texture": "#rune"
+        },
+        "north": {
+          "uv": [
+            5,
+            12,
+            11,
+            13
+          ],
+          "texture": "#rune"
+        },
+        "south": {
+          "uv": [
+            5,
+            12,
+            11,
+            13
+          ],
+          "texture": "#rune"
+        },
+        "west": {
+          "uv": [
+            5,
+            12,
+            11,
+            13
+          ],
+          "texture": "#rune"
+        },
+        "east": {
+          "uv": [
+            5,
+            12,
+            11,
+            13
+          ],
+          "texture": "#rune"
+        }
+      }
+    },
+    {
+      "name": "pedestal gilding",
+      "from": [
+        5,
+        4,
+        5
+      ],
+      "to": [
+        11,
+        4.3,
+        11
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            5,
+            5,
+            11,
+            11
+          ],
+          "texture": "#gold"
+        },
+        "up": {
+          "uv": [
+            5,
+            5,
+            11,
+            11
+          ],
+          "texture": "#gold"
+        },
+        "north": {
+          "uv": [
+            5,
+            11.7,
+            11,
+            12
+          ],
+          "texture": "#gold"
+        },
+        "south": {
+          "uv": [
+            5,
+            11.7,
+            11,
+            12
+          ],
+          "texture": "#gold"
+        },
+        "west": {
+          "uv": [
+            5,
+            11.7,
+            11,
+            12
+          ],
+          "texture": "#gold"
+        },
+        "east": {
+          "uv": [
+            5,
+            11.7,
+            11,
+            12
+          ],
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "carved corner pillar",
+      "from": [
+        0.5,
+        3.5,
+        0.5
+      ],
+      "to": [
+        2.5,
+        13.5,
+        2.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0.5,
+            0.5,
+            2.5,
+            2.5
+          ],
+          "texture": "#pillar"
+        },
+        "up": {
+          "uv": [
+            0.5,
+            0.5,
+            2.5,
+            2.5
+          ],
+          "texture": "#pillar"
+        },
+        "north": {
+          "uv": [
+            0.5,
+            2,
+            2.5,
+            13
+          ],
+          "texture": "#pillar"
+        },
+        "south": {
+          "uv": [
+            0.5,
+            2,
+            2.5,
+            13
+          ],
+          "texture": "#pillar"
+        },
+        "west": {
+          "uv": [
+            0.5,
+            2,
+            2.5,
+            13
+          ],
+          "texture": "#pillar"
+        },
+        "east": {
+          "uv": [
+            0.5,
+            2,
+            2.5,
+            13
+          ],
+          "texture": "#pillar"
+        }
+      }
+    },
+    {
+      "name": "lower pillar collar",
+      "from": [
+        0.25,
+        3,
+        0.5
+      ],
+      "to": [
+        2.75,
+        3.5,
+        2.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0.25,
+            0.5,
+            2.75,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.5,
+            2.75,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "north": {
+          "uv": [
+            0.25,
+            12.5,
+            2.75,
+            13
+          ],
+          "texture": "#gold"
+        },
+        "south": {
+          "uv": [
+            0.25,
+            12.5,
+            2.75,
+            13
+          ],
+          "texture": "#gold"
+        },
+        "west": {
+          "uv": [
+            0.5,
+            12.5,
+            2.5,
+            13
+          ],
+          "texture": "#gold"
+        },
+        "east": {
+          "uv": [
+            0.5,
+            12.5,
+            2.5,
+            13
+          ],
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "upper pillar collar",
+      "from": [
+        0.25,
+        13.5,
+        0.5
+      ],
+      "to": [
+        2.75,
+        14,
+        2.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0.25,
+            0.5,
+            2.75,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.5,
+            2.75,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "north": {
+          "uv": [
+            0.25,
+            2,
+            2.75,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "south": {
+          "uv": [
+            0.25,
+            2,
+            2.75,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "west": {
+          "uv": [
+            0.5,
+            2,
+            2.5,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "east": {
+          "uv": [
+            0.5,
+            2,
+            2.5,
+            2.5
+          ],
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "carved corner pillar",
+      "from": [
+        0.5,
+        3.5,
+        13.5
+      ],
+      "to": [
+        2.5,
+        13.5,
+        15.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0.5,
+            13.5,
+            2.5,
+            15.5
+          ],
+          "texture": "#pillar"
+        },
+        "up": {
+          "uv": [
+            0.5,
+            13.5,
+            2.5,
+            15.5
+          ],
+          "texture": "#pillar"
+        },
+        "north": {
+          "uv": [
+            0.5,
+            2,
+            2.5,
+            13
+          ],
+          "texture": "#pillar"
+        },
+        "south": {
+          "uv": [
+            0.5,
+            2,
+            2.5,
+            13
+          ],
+          "texture": "#pillar"
+        },
+        "west": {
+          "uv": [
+            13.5,
+            2,
+            15.5,
+            13
+          ],
+          "texture": "#pillar"
+        },
+        "east": {
+          "uv": [
+            13.5,
+            2,
+            15.5,
+            13
+          ],
+          "texture": "#pillar"
+        }
+      }
+    },
+    {
+      "name": "lower pillar collar",
+      "from": [
+        0.25,
+        3,
+        13.5
+      ],
+      "to": [
+        2.75,
+        3.5,
+        15.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0.25,
+            13.5,
+            2.75,
+            15.5
+          ],
+          "texture": "#gold"
+        },
+        "up": {
+          "uv": [
+            0.25,
+            13.5,
+            2.75,
+            15.5
+          ],
+          "texture": "#gold"
+        },
+        "north": {
+          "uv": [
+            0.25,
+            12.5,
+            2.75,
+            13
+          ],
+          "texture": "#gold"
+        },
+        "south": {
+          "uv": [
+            0.25,
+            12.5,
+            2.75,
+            13
+          ],
+          "texture": "#gold"
+        },
+        "west": {
+          "uv": [
+            13.5,
+            12.5,
+            15.5,
+            13
+          ],
+          "texture": "#gold"
+        },
+        "east": {
+          "uv": [
+            13.5,
+            12.5,
+            15.5,
+            13
+          ],
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "upper pillar collar",
+      "from": [
+        0.25,
+        13.5,
+        13.5
+      ],
+      "to": [
+        2.75,
+        14,
+        15.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0.25,
+            13.5,
+            2.75,
+            15.5
+          ],
+          "texture": "#gold"
+        },
+        "up": {
+          "uv": [
+            0.25,
+            13.5,
+            2.75,
+            15.5
+          ],
+          "texture": "#gold"
+        },
+        "north": {
+          "uv": [
+            0.25,
+            2,
+            2.75,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "south": {
+          "uv": [
+            0.25,
+            2,
+            2.75,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "west": {
+          "uv": [
+            13.5,
+            2,
+            15.5,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "east": {
+          "uv": [
+            13.5,
+            2,
+            15.5,
+            2.5
+          ],
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "carved corner pillar",
+      "from": [
+        13.5,
+        3.5,
+        0.5
+      ],
+      "to": [
+        15.5,
+        13.5,
+        2.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            13.5,
+            0.5,
+            15.5,
+            2.5
+          ],
+          "texture": "#pillar"
+        },
+        "up": {
+          "uv": [
+            13.5,
+            0.5,
+            15.5,
+            2.5
+          ],
+          "texture": "#pillar"
+        },
+        "north": {
+          "uv": [
+            13.5,
+            2,
+            15.5,
+            13
+          ],
+          "texture": "#pillar"
+        },
+        "south": {
+          "uv": [
+            13.5,
+            2,
+            15.5,
+            13
+          ],
+          "texture": "#pillar"
+        },
+        "west": {
+          "uv": [
+            0.5,
+            2,
+            2.5,
+            13
+          ],
+          "texture": "#pillar"
+        },
+        "east": {
+          "uv": [
+            0.5,
+            2,
+            2.5,
+            13
+          ],
+          "texture": "#pillar"
+        }
+      }
+    },
+    {
+      "name": "lower pillar collar",
+      "from": [
+        13.25,
+        3,
+        0.5
+      ],
+      "to": [
+        15.75,
+        3.5,
+        2.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            13.25,
+            0.5,
+            15.75,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "up": {
+          "uv": [
+            13.25,
+            0.5,
+            15.75,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "north": {
+          "uv": [
+            13.25,
+            12.5,
+            15.75,
+            13
+          ],
+          "texture": "#gold"
+        },
+        "south": {
+          "uv": [
+            13.25,
+            12.5,
+            15.75,
+            13
+          ],
+          "texture": "#gold"
+        },
+        "west": {
+          "uv": [
+            0.5,
+            12.5,
+            2.5,
+            13
+          ],
+          "texture": "#gold"
+        },
+        "east": {
+          "uv": [
+            0.5,
+            12.5,
+            2.5,
+            13
+          ],
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "upper pillar collar",
+      "from": [
+        13.25,
+        13.5,
+        0.5
+      ],
+      "to": [
+        15.75,
+        14,
+        2.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            13.25,
+            0.5,
+            15.75,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "up": {
+          "uv": [
+            13.25,
+            0.5,
+            15.75,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "north": {
+          "uv": [
+            13.25,
+            2,
+            15.75,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "south": {
+          "uv": [
+            13.25,
+            2,
+            15.75,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "west": {
+          "uv": [
+            0.5,
+            2,
+            2.5,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "east": {
+          "uv": [
+            0.5,
+            2,
+            2.5,
+            2.5
+          ],
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "carved corner pillar",
+      "from": [
+        13.5,
+        3.5,
+        13.5
+      ],
+      "to": [
+        15.5,
+        13.5,
+        15.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            13.5,
+            13.5,
+            15.5,
+            15.5
+          ],
+          "texture": "#pillar"
+        },
+        "up": {
+          "uv": [
+            13.5,
+            13.5,
+            15.5,
+            15.5
+          ],
+          "texture": "#pillar"
+        },
+        "north": {
+          "uv": [
+            13.5,
+            2,
+            15.5,
+            13
+          ],
+          "texture": "#pillar"
+        },
+        "south": {
+          "uv": [
+            13.5,
+            2,
+            15.5,
+            13
+          ],
+          "texture": "#pillar"
+        },
+        "west": {
+          "uv": [
+            13.5,
+            2,
+            15.5,
+            13
+          ],
+          "texture": "#pillar"
+        },
+        "east": {
+          "uv": [
+            13.5,
+            2,
+            15.5,
+            13
+          ],
+          "texture": "#pillar"
+        }
+      }
+    },
+    {
+      "name": "lower pillar collar",
+      "from": [
+        13.25,
+        3,
+        13.5
+      ],
+      "to": [
+        15.75,
+        3.5,
+        15.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            13.25,
+            13.5,
+            15.75,
+            15.5
+          ],
+          "texture": "#gold"
+        },
+        "up": {
+          "uv": [
+            13.25,
+            13.5,
+            15.75,
+            15.5
+          ],
+          "texture": "#gold"
+        },
+        "north": {
+          "uv": [
+            13.25,
+            12.5,
+            15.75,
+            13
+          ],
+          "texture": "#gold"
+        },
+        "south": {
+          "uv": [
+            13.25,
+            12.5,
+            15.75,
+            13
+          ],
+          "texture": "#gold"
+        },
+        "west": {
+          "uv": [
+            13.5,
+            12.5,
+            15.5,
+            13
+          ],
+          "texture": "#gold"
+        },
+        "east": {
+          "uv": [
+            13.5,
+            12.5,
+            15.5,
+            13
+          ],
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "upper pillar collar",
+      "from": [
+        13.25,
+        13.5,
+        13.5
+      ],
+      "to": [
+        15.75,
+        14,
+        15.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            13.25,
+            13.5,
+            15.75,
+            15.5
+          ],
+          "texture": "#gold"
+        },
+        "up": {
+          "uv": [
+            13.25,
+            13.5,
+            15.75,
+            15.5
+          ],
+          "texture": "#gold"
+        },
+        "north": {
+          "uv": [
+            13.25,
+            2,
+            15.75,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "south": {
+          "uv": [
+            13.25,
+            2,
+            15.75,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "west": {
+          "uv": [
+            13.5,
+            2,
+            15.5,
+            2.5
+          ],
+          "texture": "#gold"
+        },
+        "east": {
+          "uv": [
+            13.5,
+            2,
+            15.5,
+            2.5
+          ],
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "marble roof frame",
+      "from": [
+        0,
+        14.5,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        2
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            2
+          ],
+          "texture": "#marble"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            2
+          ],
+          "texture": "#marble"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            2
+          ],
+          "texture": "#marble"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            2
+          ],
+          "texture": "#marble"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "texture": "#marble"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "texture": "#marble"
+        }
+      }
+    },
+    {
+      "name": "gilded roof rim",
+      "from": [
+        0,
+        14,
+        0
+      ],
+      "to": [
+        16,
+        14.5,
+        2
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            2
+          ],
+          "texture": "#gold"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            2
+          ],
+          "texture": "#gold"
+        },
+        "north": {
+          "uv": [
+            0,
+            1.5,
+            16,
+            2
+          ],
+          "texture": "#gold"
+        },
+        "south": {
+          "uv": [
+            0,
+            1.5,
+            16,
+            2
+          ],
+          "texture": "#gold"
+        },
+        "west": {
+          "uv": [
+            0,
+            1.5,
+            2,
+            2
+          ],
+          "texture": "#gold"
+        },
+        "east": {
+          "uv": [
+            0,
+            1.5,
+            2,
+            2
+          ],
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "marble roof frame",
+      "from": [
+        0,
+        14.5,
+        14
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            14,
+            16,
+            16
+          ],
+          "texture": "#marble"
+        },
+        "up": {
+          "uv": [
+            0,
+            14,
+            16,
+            16
+          ],
+          "texture": "#marble"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            2
+          ],
+          "texture": "#marble"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            2
+          ],
+          "texture": "#marble"
+        },
+        "west": {
+          "uv": [
+            14,
+            0,
+            16,
+            2
+          ],
+          "texture": "#marble"
+        },
+        "east": {
+          "uv": [
+            14,
+            0,
+            16,
+            2
+          ],
+          "texture": "#marble"
+        }
+      }
+    },
+    {
+      "name": "gilded roof rim",
+      "from": [
+        0,
+        14,
+        14
+      ],
+      "to": [
+        16,
+        14.5,
+        16
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            14,
+            16,
+            16
+          ],
+          "texture": "#gold"
+        },
+        "up": {
+          "uv": [
+            0,
+            14,
+            16,
+            16
+          ],
+          "texture": "#gold"
+        },
+        "north": {
+          "uv": [
+            0,
+            1.5,
+            16,
+            2
+          ],
+          "texture": "#gold"
+        },
+        "south": {
+          "uv": [
+            0,
+            1.5,
+            16,
+            2
+          ],
+          "texture": "#gold"
+        },
+        "west": {
+          "uv": [
+            14,
+            1.5,
+            16,
+            2
+          ],
+          "texture": "#gold"
+        },
+        "east": {
+          "uv": [
+            14,
+            1.5,
+            16,
+            2
+          ],
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "marble roof frame",
+      "from": [
+        0,
+        14.5,
+        2
+      ],
+      "to": [
+        2,
+        16,
+        14
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            2,
+            2,
+            14
+          ],
+          "texture": "#marble"
+        },
+        "up": {
+          "uv": [
+            0,
+            2,
+            2,
+            14
+          ],
+          "texture": "#marble"
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "texture": "#marble"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "texture": "#marble"
+        },
+        "west": {
+          "uv": [
+            2,
+            0,
+            14,
+            2
+          ],
+          "texture": "#marble"
+        },
+        "east": {
+          "uv": [
+            2,
+            0,
+            14,
+            2
+          ],
+          "texture": "#marble"
+        }
+      }
+    },
+    {
+      "name": "gilded roof rim",
+      "from": [
+        0,
+        14,
+        2
+      ],
+      "to": [
+        2,
+        14.5,
+        14
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            2,
+            2,
+            14
+          ],
+          "texture": "#gold"
+        },
+        "up": {
+          "uv": [
+            0,
+            2,
+            2,
+            14
+          ],
+          "texture": "#gold"
+        },
+        "north": {
+          "uv": [
+            0,
+            1.5,
+            2,
+            2
+          ],
+          "texture": "#gold"
+        },
+        "south": {
+          "uv": [
+            0,
+            1.5,
+            2,
+            2
+          ],
+          "texture": "#gold"
+        },
+        "west": {
+          "uv": [
+            2,
+            1.5,
+            14,
+            2
+          ],
+          "texture": "#gold"
+        },
+        "east": {
+          "uv": [
+            2,
+            1.5,
+            14,
+            2
+          ],
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "marble roof frame",
+      "from": [
+        14,
+        14.5,
+        2
+      ],
+      "to": [
+        16,
+        16,
+        14
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            14,
+            2,
+            16,
+            14
+          ],
+          "texture": "#marble"
+        },
+        "up": {
+          "uv": [
+            14,
+            2,
+            16,
+            14
+          ],
+          "texture": "#marble"
+        },
+        "north": {
+          "uv": [
+            14,
+            0,
+            16,
+            2
+          ],
+          "texture": "#marble"
+        },
+        "south": {
+          "uv": [
+            14,
+            0,
+            16,
+            2
+          ],
+          "texture": "#marble"
+        },
+        "west": {
+          "uv": [
+            2,
+            0,
+            14,
+            2
+          ],
+          "texture": "#marble"
+        },
+        "east": {
+          "uv": [
+            2,
+            0,
+            14,
+            2
+          ],
+          "texture": "#marble"
+        }
+      }
+    },
+    {
+      "name": "gilded roof rim",
+      "from": [
+        14,
+        14,
+        2
+      ],
+      "to": [
+        16,
+        14.5,
+        14
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            14,
+            2,
+            16,
+            14
+          ],
+          "texture": "#gold"
+        },
+        "up": {
+          "uv": [
+            14,
+            2,
+            16,
+            14
+          ],
+          "texture": "#gold"
+        },
+        "north": {
+          "uv": [
+            14,
+            1.5,
+            16,
+            2
+          ],
+          "texture": "#gold"
+        },
+        "south": {
+          "uv": [
+            14,
+            1.5,
+            16,
+            2
+          ],
+          "texture": "#gold"
+        },
+        "west": {
+          "uv": [
+            2,
+            1.5,
+            14,
+            2
+          ],
+          "texture": "#gold"
+        },
+        "east": {
+          "uv": [
+            2,
+            1.5,
+            14,
+            2
+          ],
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "ME network socket",
+      "from": [
+        7,
+        0.1,
+        -0.02
+      ],
+      "to": [
+        9,
+        1.9,
+        0
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            7,
+            0,
+            9,
+            0.05
+          ],
+          "texture": "#port"
+        },
+        "up": {
+          "uv": [
+            7,
+            0,
+            9,
+            0.05
+          ],
+          "texture": "#port"
+        },
+        "north": {
+          "uv": [
+            7,
+            14.1,
+            9,
+            15.9
+          ],
+          "texture": "#port"
+        },
+        "south": {
+          "uv": [
+            7,
+            14.1,
+            9,
+            15.9
+          ],
+          "texture": "#port"
+        },
+        "west": {
+          "uv": [
+            0,
+            14.1,
+            0.05,
+            15.9
+          ],
+          "texture": "#port"
+        },
+        "east": {
+          "uv": [
+            0,
+            14.1,
+            0.05,
+            15.9
+          ],
+          "texture": "#port"
+        }
+      }
+    },
+    {
+      "name": "ME network socket",
+      "from": [
+        7,
+        0.1,
+        16
+      ],
+      "to": [
+        9,
+        1.9,
+        16.02
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            7,
+            15.95,
+            9,
+            16
+          ],
+          "texture": "#port"
+        },
+        "up": {
+          "uv": [
+            7,
+            15.95,
+            9,
+            16
+          ],
+          "texture": "#port"
+        },
+        "north": {
+          "uv": [
+            7,
+            14.1,
+            9,
+            15.9
+          ],
+          "texture": "#port"
+        },
+        "south": {
+          "uv": [
+            7,
+            14.1,
+            9,
+            15.9
+          ],
+          "texture": "#port"
+        },
+        "west": {
+          "uv": [
+            15.95,
+            14.1,
+            16,
+            15.9
+          ],
+          "texture": "#port"
+        },
+        "east": {
+          "uv": [
+            15.95,
+            14.1,
+            16,
+            15.9
+          ],
+          "texture": "#port"
+        }
+      }
+    },
+    {
+      "name": "ME network socket",
+      "from": [
+        -0.02,
+        0.1,
+        7
+      ],
+      "to": [
+        0,
+        1.9,
+        9
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            7,
+            0.05,
+            9
+          ],
+          "texture": "#port"
+        },
+        "up": {
+          "uv": [
+            0,
+            7,
+            0.05,
+            9
+          ],
+          "texture": "#port"
+        },
+        "north": {
+          "uv": [
+            0,
+            14.1,
+            0.05,
+            15.9
+          ],
+          "texture": "#port"
+        },
+        "south": {
+          "uv": [
+            0,
+            14.1,
+            0.05,
+            15.9
+          ],
+          "texture": "#port"
+        },
+        "west": {
+          "uv": [
+            7,
+            14.1,
+            9,
+            15.9
+          ],
+          "texture": "#port"
+        },
+        "east": {
+          "uv": [
+            7,
+            14.1,
+            9,
+            15.9
+          ],
+          "texture": "#port"
+        }
+      }
+    },
+    {
+      "name": "ME network socket",
+      "from": [
+        16,
+        0.1,
+        7
+      ],
+      "to": [
+        16.02,
+        1.9,
+        9
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            15.95,
+            7,
+            16,
+            9
+          ],
+          "texture": "#port"
+        },
+        "up": {
+          "uv": [
+            15.95,
+            7,
+            16,
+            9
+          ],
+          "texture": "#port"
+        },
+        "north": {
+          "uv": [
+            15.95,
+            14.1,
+            16,
+            15.9
+          ],
+          "texture": "#port"
+        },
+        "south": {
+          "uv": [
+            15.95,
+            14.1,
+            16,
+            15.9
+          ],
+          "texture": "#port"
+        },
+        "west": {
+          "uv": [
+            7,
+            14.1,
+            9,
+            15.9
+          ],
+          "texture": "#port"
+        },
+        "east": {
+          "uv": [
+            7,
+            14.1,
+            9,
+            15.9
+          ],
+          "texture": "#port"
+        }
+      }
+    },
+    {
+      "name": "upper ME network socket",
+      "from": [
+        6,
+        15.1,
+        6
+      ],
+      "to": [
+        10,
+        15.65,
+        10
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ],
+          "texture": "#gold"
+        },
+        "up": {
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ],
+          "texture": "#gold"
+        },
+        "north": {
+          "uv": [
+            6,
+            0,
+            10,
+            0.9000000000000004
+          ],
+          "texture": "#gold"
+        },
+        "south": {
+          "uv": [
+            6,
+            0,
+            10,
+            0.9000000000000004
+          ],
+          "texture": "#gold"
+        },
+        "west": {
+          "uv": [
+            6,
+            0,
+            10,
+            0.9000000000000004
+          ],
+          "texture": "#gold"
+        },
+        "east": {
+          "uv": [
+            6,
+            0,
+            10,
+            0.9000000000000004
+          ],
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "name": "central starlight collector",
+      "from": [
+        6.5,
+        15.65,
+        6.5
+      ],
+      "to": [
+        9.5,
+        16,
+        9.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            6.5,
+            6.5,
+            9.5,
+            9.5
+          ],
+          "texture": "#crystal"
+        },
+        "up": {
+          "uv": [
+            6.5,
+            6.5,
+            9.5,
+            9.5
+          ],
+          "texture": "#crystal"
+        },
+        "north": {
+          "uv": [
+            6.5,
+            0,
+            9.5,
+            0.8499999999999996
+          ],
+          "texture": "#crystal"
+        },
+        "south": {
+          "uv": [
+            6.5,
+            0,
+            9.5,
+            0.8499999999999996
+          ],
+          "texture": "#crystal"
+        },
+        "west": {
+          "uv": [
+            6.5,
+            0,
+            9.5,
+            0.8499999999999996
+          ],
+          "texture": "#crystal"
+        },
+        "east": {
+          "uv": [
+            6.5,
+            0,
+            9.5,
+            0.8499999999999996
+          ],
+          "texture": "#crystal"
+        }
+      }
+    },
+    {
+      "name": "bottom ME network socket",
+      "from": [
+        6,
+        -0.02,
+        6
+      ],
+      "to": [
+        10,
+        0,
+        10
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ],
+          "texture": "#port"
+        },
+        "up": {
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ],
+          "texture": "#port"
+        },
+        "north": {
+          "uv": [
+            6,
+            15.95,
+            10,
+            16
+          ],
+          "texture": "#port"
+        },
+        "south": {
+          "uv": [
+            6,
+            15.95,
+            10,
+            16
+          ],
+          "texture": "#port"
+        },
+        "west": {
+          "uv": [
+            6,
+            15.95,
+            10,
+            16
+          ],
+          "texture": "#port"
+        },
+        "east": {
+          "uv": [
+            6,
+            15.95,
+            10,
+            16
+          ],
+          "texture": "#port"
+        }
+      }
+    }
+  ],
+  "textures": {
+    "particle": "astralsorcery:block/marble_raw",
+    "marble": "astralsorcery:block/marble_raw",
+    "pillar": "astralsorcery:block/marble_pillar",
+    "rune": "astralsorcery:block/marble_runed",
+    "gold": "minecraft:block/gold_block",
+    "dark": "astralsorcery:block/sooty_marble_raw",
+    "glass": "ae2:block/glass/quartz_glass_a",
+    "lens": "astralsorcery:block/focus_relay/focus_relay_glass",
+    "port": "ae2:block/molecular_assembler",
+    "crystal": "minecraft:block/diamond_block"
+  }
+}
