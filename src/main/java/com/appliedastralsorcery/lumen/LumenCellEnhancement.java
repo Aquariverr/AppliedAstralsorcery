@@ -1,5 +1,8 @@
 package com.appliedastralsorcery.lumen;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
 import java.util.stream.Stream;
 
 import com.appliedastralsorcery.AppliedAstralsorcery;
@@ -23,6 +26,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class LumenCellEnhancement {
     public static final int MAX_LEVEL = 10;
     private static final DeferredRegister.DataComponents COMPONENTS =

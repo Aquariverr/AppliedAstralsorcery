@@ -1,5 +1,8 @@
 package com.appliedastralsorcery.mixin;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
 import com.appliedastralsorcery.gateway.MECelestialGatewayBlock;
 import hellfirepvp.astralsorcery.common.lib.BlocksAS;
 import hellfirepvp.astralsorcery.common.structure.PatternCelestialGateway;
@@ -14,6 +17,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = PatternCelestialGateway.class, remap = false)
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public abstract class CelestialGatewayStructureMixin {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void appliedas$acceptMEGateway(CallbackInfo ci) {

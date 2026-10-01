@@ -1,5 +1,9 @@
 package com.appliedastralsorcery.lumen;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nullable;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
 import com.appliedastralsorcery.ModContent;
 import com.mojang.serialization.MapCodec;
 import hellfirepvp.astralsorcery.common.block.tile.LumenArrayBlock;
@@ -18,6 +22,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class MELumenArrayBlock extends LumenArrayBlock {
     public static final BooleanProperty LIT = BooleanProperty.create("lit");
     public static final BooleanProperty WORKING = BooleanProperty.create("working");
@@ -49,7 +55,7 @@ public class MELumenArrayBlock extends LumenArrayBlock {
         }
         return InteractionResult.sidedSuccess(level.isClientSide());
     }
-    @Override public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    @Override public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
         if (placer instanceof Player player && level.getBlockEntity(pos) instanceof MELumenArrayBlockEntity array) {
             array.getMainNode().setOwningPlayer(player);

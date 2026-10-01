@@ -22,6 +22,8 @@ public final class MELumenAlchemyArrayData extends MELumenArrayData {
             instance -> lumenArrayFields(instance).apply(instance, MELumenAlchemyArrayData::new))
             .xmap(data -> data, data -> (MELumenAlchemyArrayData) data);
 
+    // Matches the native codec's optional owner field and superclass constructor.
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private MELumenAlchemyArrayData(long ticks, boolean structure, Map<BlockPos, Boolean> sky, Optional<UUID> owner,
             LumenStackList lumen, FluidContainerList fluid, InventoryStackList inventory, boolean extended, Lumen assigned) {
         super(ticks, structure, sky, owner, lumen, fluid, inventory, extended, assigned);

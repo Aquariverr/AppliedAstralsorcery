@@ -35,8 +35,12 @@ public final class SpatialReturnPortalBlockEntity extends TileCelestialGateway {
 
     public boolean isBoundTo(GlobalPos gateway) { return gateway.equals(returnGateway); }
 
+    // The gateway owns its Level; binding only reads its dimension.
+    @SuppressWarnings("resource")
     public void bind(MECelestialGatewayBlockEntity gateway, int plotId, Component cellName) {
-        var source = GlobalPos.of(gateway.getLevel().dimension(), gateway.getBlockPos());
+        var gatewayLevel = gateway.getLevel();
+        if (gatewayLevel == null) return;
+        var source = GlobalPos.of(gatewayLevel.dimension(), gateway.getBlockPos());
         boolean changed = !source.equals(returnGateway) || this.plotId != plotId;
         returnGateway = source;
         this.plotId = plotId;
@@ -59,7 +63,7 @@ public final class SpatialReturnPortalBlockEntity extends TileCelestialGateway {
         var info = cell.get(AEComponents.SPATIAL_PLOT_INFO);
         if (info == null || info.id() != plotId || !SpatialCellAccess.accepts(cell) || SpatialCellAccess.isFormatting(cell)
                 || !cell.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).contains(PORTAL)
-                || cell.get(DataComponents.CUSTOM_DATA).copyTag().getLong(PORTAL) != worldPosition.asLong()
+                || cell.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getLong(PORTAL) != worldPosition.asLong()
                 || SpatialCellAccess.plot(cell) == null || !gate.hasStructure() || !gate.doesSeeSky()) return null;
         return gate;
     }
@@ -141,12 +145,14 @@ public final class SpatialReturnPortalBlockEntity extends TileCelestialGateway {
         if (destination == null) return MECelestialGatewayBlockEntity.message(player, "blocked");
         return true;
     }
-    public boolean returnPlayer(ServerPlayer player) {
-        if (player.isSpectator() || player.level() != level || player.distanceToSqr(worldPosition.getCenter()) > 64) return false;
+    // Player and server levels are borrowed and must not be closed here.
+    @SuppressWarnings("resource")
+    public void returnPlayer(ServerPlayer player) {
+        if (player.isSpectator() || player.serverLevel() != level || player.distanceToSqr(worldPosition.getCenter()) > 64) return;
         var source = returnGateway;
-        if (source == null) return MECelestialGatewayBlockEntity.message(player, "no_return");
-        var target = player.getServer().getLevel(source.dimension());
-        if (target == null) return MECelestialGatewayBlockEntity.message(player, "no_return");
+        if (source == null) { MECelestialGatewayBlockEntity.message(player, "no_return"); return; }
+        var target = player.serverLevel().getServer().getLevel(source.dimension());
+        if (target == null) { MECelestialGatewayBlockEntity.message(player, "no_return"); return; }
         // Loading the entrance also allows return after its chunk unloaded. The saved return survives cell removal.
         target.getChunkAt(source.pos());
         var destination = arrival(target, source.pos());
@@ -156,24 +162,24 @@ public final class SpatialReturnPortalBlockEntity extends TileCelestialGateway {
                 if (destination != null) break;
             }
         }
-        if (destination == null) return MECelestialGatewayBlockEntity.message(player, "blocked");
-        return transfer(player, target, destination);
+        if (destination == null) { MECelestialGatewayBlockEntity.message(player, "blocked"); return; }
+        transfer(player, target, destination);
     }
-    private static boolean transfer(ServerPlayer player, ServerLevel target, Vec3 pos) {
+    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    private static void transfer(ServerPlayer player, ServerLevel target, Vec3 pos) {
         player.closeContainer();
-        if (player.level() == target) {
-            if (!player.teleportTo(target, pos.x, pos.y, pos.z, java.util.Set.of(), player.getYRot(), player.getXRot())) return false;
+        if (player.serverLevel() == target) {
+            if (!player.teleportTo(target, pos.x, pos.y, pos.z, java.util.Set.of(), player.getYRot(), player.getXRot())) return;
         } else {
             player.stopRiding();
             if (player.isSleeping()) player.stopSleepInBed(true, true);
             // Unlike teleportTo's boolean overload, changeDimension reports a cancelled travel event.
             var transition = new net.minecraft.world.level.portal.DimensionTransition(target, pos, Vec3.ZERO,
                     player.getYRot(), player.getXRot(), net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING);
-            if (player.changeDimension(transition) == null) return false;
+            if (player.changeDimension(transition) == null) return;
         }
         player.setDeltaMovement(Vec3.ZERO);
         player.fallDistance = 0;
-        return true;
     }
     @Override protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);

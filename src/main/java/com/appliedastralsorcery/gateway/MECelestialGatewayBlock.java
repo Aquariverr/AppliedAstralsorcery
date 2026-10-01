@@ -1,5 +1,9 @@
 package com.appliedastralsorcery.gateway;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nullable;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
 import com.appliedastralsorcery.ModContent;
 import com.mojang.serialization.MapCodec;
 import hellfirepvp.astralsorcery.common.block.tile.CelestialGatewayBlock;
@@ -18,6 +22,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class MECelestialGatewayBlock extends CelestialGatewayBlock {
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     public static final MapCodec<MECelestialGatewayBlock> CODEC = simpleCodec(MECelestialGatewayBlock::new);
@@ -34,7 +40,7 @@ public final class MECelestialGatewayBlock extends CelestialGatewayBlock {
     @Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new MECelestialGatewayBlockEntity(pos, state);
     }
-    @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+    @Override @Nullable public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return createTickerHelper(type, ModContent.GATEWAY_ENTITY.get(), (world, pos, blockState, gate) -> {
             if (world instanceof ServerLevel server) gate.serverTick(server); else gate.clientTick(world);
         });

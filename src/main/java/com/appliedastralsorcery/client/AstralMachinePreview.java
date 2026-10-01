@@ -2,7 +2,6 @@ package com.appliedastralsorcery.client;
 
 import com.appliedastralsorcery.ModContent;
 import com.appliedastralsorcery.chalice.MEChaliceBlock;
-import com.appliedastralsorcery.transmutation.StarlightTransmutationBlock;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -16,8 +15,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -25,10 +22,6 @@ import net.neoforged.neoforge.fluids.FluidStack;
 /** GUI miniatures using the same models, textures and fluid geometry as the world blocks. */
 final class AstralMachinePreview {
     private AstralMachinePreview() {}
-
-    static void array(GuiGraphics graphics, int x, int y, int starlight) {
-        array(graphics, x, y, starlight, false);
-    }
 
     static void array(GuiGraphics graphics, int x, int y, int starlight, boolean alchemy) {
         begin(graphics, x, y, 32F);
@@ -79,39 +72,6 @@ final class AstralMachinePreview {
         }
     }
 
-    static void chisel(GuiGraphics graphics, int x, int y) {
-        begin(graphics, x, y, 32F);
-        try {
-            block(graphics, ModContent.AUTO_CHISEL.get().defaultBlockState());
-        } finally {
-            end(graphics);
-        }
-    }
-
-    static void transmutation(GuiGraphics graphics, int x, int y, ItemStack workpiece, boolean working, float partialTick) {
-        begin(graphics, x, y, 42F);
-        try {
-            if (!workpiece.isEmpty()) {
-                var pose = graphics.pose();
-                float time = ClientProxy.getClientTick() + partialTick;
-                pose.pushPose();
-                pose.translate(0.5F, 0.53F + Math.sin(time / 16F) * 0.035F, 0.5F);
-                pose.mulPose(Axis.YP.rotationDegrees(time * 1.5F % 360));
-                pose.scale(0.48F, 0.48F, 0.48F);
-                Minecraft.getInstance().getItemRenderer().renderStatic(workpiece, ItemDisplayContext.GROUND,
-                        LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, pose, graphics.bufferSource(),
-                        Minecraft.getInstance().level, 0);
-                pose.popPose();
-                graphics.flush();
-            }
-            // Render the item before the composite model's translucent glass enclosure.
-            block(graphics, ModContent.STARLIGHT_TRANSMUTATION_CHAMBER.get().defaultBlockState()
-                    .setValue(StarlightTransmutationBlock.WORKING, working));
-        } finally {
-            end(graphics);
-        }
-    }
-
     private static void begin(GuiGraphics graphics, int x, int y, float scale) {
         graphics.flush();
         var pose = graphics.pose();
@@ -124,6 +84,8 @@ final class AstralMachinePreview {
         Lighting.setupFor3DItems();
     }
 
+    // NeoForge uses a null render type to select all model layers, including translucent glass.
+    @SuppressWarnings("DataFlowIssue")
     private static void block(GuiGraphics graphics, BlockState state) {
         Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state, graphics.pose(),
                 graphics.bufferSource(), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY,
@@ -141,22 +103,22 @@ final class AstralMachinePreview {
         var buffer = graphics.bufferSource().getBuffer(RenderTypesAS.TER_CHALICE_LIQUID);
         // The world cube helper hardcodes an upward normal for every face. GUI lighting needs
         // the actual transformed face normals to keep the fluid bright and visibly three-dimensional.
-        fluidFace(graphics, buffer, uv, color, -0.5F, -0.5F, 0.5F, 1, 0, 0, 0, 0, -1);
-        fluidFace(graphics, buffer, uv, color, -0.5F, 0.5F, -0.5F, 1, 0, 0, 0, 0, 1);
-        fluidFace(graphics, buffer, uv, color, -0.5F, -0.5F, -0.5F, 1, 0, 0, 0, 1, 0);
-        fluidFace(graphics, buffer, uv, color, 0.5F, -0.5F, 0.5F, -1, 0, 0, 0, 1, 0);
-        fluidFace(graphics, buffer, uv, color, -0.5F, -0.5F, -0.5F, 0, 1, 0, 0, 0, 1);
-        fluidFace(graphics, buffer, uv, color, 0.5F, -0.5F, -0.5F, 0, 0, 1, 0, 1, 0);
+        fluidFace(graphics, buffer, uv, color, -0.5F, -0.5F, 0.5F, 1, 0, 0, 0, -1);
+        fluidFace(graphics, buffer, uv, color, -0.5F, 0.5F, -0.5F, 1, 0, 0, 0, 1);
+        fluidFace(graphics, buffer, uv, color, -0.5F, -0.5F, -0.5F, 1, 0, 0, 1, 0);
+        fluidFace(graphics, buffer, uv, color, 0.5F, -0.5F, 0.5F, -1, 0, 0, 1, 0);
+        fluidFace(graphics, buffer, uv, color, -0.5F, -0.5F, -0.5F, 0, 1, 0, 0, 1);
+        fluidFace(graphics, buffer, uv, color, 0.5F, -0.5F, -0.5F, 0, 0, 1, 1, 0);
     }
 
     private static void fluidFace(GuiGraphics graphics, VertexConsumer buffer, UVFrame uv, int color,
-            float x, float y, float z, int ux, int uy, int uz, int vx, int vy, int vz) {
+            float x, float y, float z, int ux, int uy, int uz, int vy, int vz) {
         int nx = vy * uz - vz * uy;
-        int ny = vz * ux - vx * uz;
-        int nz = vx * uy - vy * ux;
+        int ny = vz * ux;
+        int nz = -vy * ux;
         fluidVertex(graphics, buffer, color, x, y, z, uv.u(), uv.v(), nx, ny, nz);
-        fluidVertex(graphics, buffer, color, x + vx, y + vy, z + vz, uv.u(), uv.v() + uv.vHeight(), nx, ny, nz);
-        fluidVertex(graphics, buffer, color, x + ux + vx, y + uy + vy, z + uz + vz,
+        fluidVertex(graphics, buffer, color, x, y + vy, z + vz, uv.u(), uv.v() + uv.vHeight(), nx, ny, nz);
+        fluidVertex(graphics, buffer, color, x + ux, y + uy + vy, z + uz + vz,
                 uv.u() + uv.uWidth(), uv.v() + uv.vHeight(), nx, ny, nz);
         fluidVertex(graphics, buffer, color, x + ux, y + uy, z + uz, uv.u() + uv.uWidth(), uv.v(), nx, ny, nz);
     }

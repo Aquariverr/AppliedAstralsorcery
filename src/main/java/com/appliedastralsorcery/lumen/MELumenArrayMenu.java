@@ -1,5 +1,9 @@
 package com.appliedastralsorcery.lumen;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nullable;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
 import java.util.Comparator;
 import java.util.List;
 import com.appliedastralsorcery.ModContent;
@@ -12,6 +16,8 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class MELumenArrayMenu extends AbstractContainerMenu {
     public static final int REDSTONE_BUTTON = 4, REDSTONE_DATA = 10;
     private final MELumenArrayBlockEntity array;
@@ -19,12 +25,12 @@ public final class MELumenArrayMenu extends AbstractContainerMenu {
     private final ContainerData data;
     private final List<Lumen> types = RegistriesAS.REGISTRY_LUMEN.stream()
             .filter(type -> type != LumenAS.NONE.get())
-            .sorted(Comparator.comparing(type -> RegistriesAS.REGISTRY_LUMEN.getKey(type).toString())).toList();
+            .sorted(Comparator.comparing(type -> type.getRegistryKey().orElseThrow().location().toString())).toList();
     public MELumenArrayMenu(int id, Inventory inventory) { this(id, inventory, null); }
-    public MELumenArrayMenu(int id, Inventory inventory, MELumenArrayBlockEntity array) {
+    public MELumenArrayMenu(int id, Inventory inventory, @Nullable MELumenArrayBlockEntity array) {
         this(id, inventory, array, array != null && array.isAlchemyArray());
     }
-    public MELumenArrayMenu(int id, Inventory inventory, MELumenArrayBlockEntity array, boolean alchemy) {
+    public MELumenArrayMenu(int id, Inventory inventory, @Nullable MELumenArrayBlockEntity array, boolean alchemy) {
         super(alchemy ? ModContent.ALCHEMY_ARRAY_MENU.get() : ModContent.ARRAY_MENU.get(), id);
         this.array = array;
         owner = inventory.player;
@@ -62,14 +68,16 @@ public final class MELumenArrayMenu extends AbstractContainerMenu {
     public int value(int index) { return data.get(index); }
     public boolean isAlchemyArray() { return getType() == ModContent.ALCHEMY_ARRAY_MENU.get(); }
     public List<Lumen> getTypes() { return types; }
-    public Lumen getSelectedLumen() {
+    @Nullable public Lumen getSelectedLumen() {
         int index = value(0) - 1;
         return index >= 0 && index < types.size() ? types.get(index) : null;
     }
-    public Lumen getActiveLumen() {
+    @Nullable public Lumen getActiveLumen() {
         int index = value(8) - 1;
         return index >= 0 && index < types.size() ? types.get(index) : null;
     }
+    // The player owns its Level; menu interactions only borrow it.
+    @SuppressWarnings("resource")
     @Override public boolean clickMenuButton(Player player, int button) {
         if (array == null || player.level().isClientSide() || !stillValid(player)) return false;
         if (button >= 10000 && button <= 14000) array.setPullTarget(button - 10000);
@@ -82,6 +90,8 @@ public final class MELumenArrayMenu extends AbstractContainerMenu {
         broadcastChanges();
         return true;
     }
+    // World lifetime belongs to Minecraft, not this menu.
+    @SuppressWarnings("resource")
     @Override public boolean stillValid(Player player) {
         if (player != owner || player.isSpectator()) return false;
         return array == null ? player.level().isClientSide() : !array.isRemoved()

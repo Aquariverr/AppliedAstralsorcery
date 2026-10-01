@@ -1,5 +1,9 @@
 package com.appliedastralsorcery.chisel;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nullable;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
 import com.appliedastralsorcery.ModContent;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -21,6 +25,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class AutoChiselBlock extends BaseEntityBlock {
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     public static final BooleanProperty LIT = BooleanProperty.create("lit");
@@ -51,7 +57,7 @@ public final class AutoChiselBlock extends BaseEntityBlock {
         return SHAPE;
     }
     @Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) { return new AutoChiselBlockEntity(pos, state); }
-    @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+    @Override @Nullable public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide ? null : createTickerHelper(type, ModContent.AUTO_CHISEL_ENTITY.get(),
                 (world, pos, blockState, entity) -> entity.serverTick());
     }

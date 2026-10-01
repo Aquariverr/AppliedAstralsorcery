@@ -20,6 +20,6 @@ public abstract class GatewaySourceUiMixin {
             "Lhellfirepvp/astralsorcery/common/data/sync/client/CelestialGatewayClientData;getEntry(Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/core/BlockPos;)Ljava/util/Optional;"))
     private static Optional<GatewayEntry> appliedas$localSource(CelestialGatewayClientData data, ResourceKey<Level> key,
             BlockPos pos, Operation<Optional<GatewayEntry>> original, @Local(argsOnly = true) Level level) {
-        return GatewaySourceEntry.resolve(level, pos, original.call(data, key, pos));
+        return GatewaySourceEntry.resolve(level, pos).or(() -> original.call(data, key, pos));
     }
 }

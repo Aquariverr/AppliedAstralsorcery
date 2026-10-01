@@ -27,11 +27,13 @@ public abstract class LumenArrayCraftingMixin {
 
     @Inject(method = "doCraftingCycle", at = @At("HEAD"), cancellable = true)
     private void appliedas$meCraftingControl(ServerLevel level, CallbackInfo ci) {
-        if ((Object) this instanceof MELumenArrayBlockEntity array && !array.isWorkAllowed()) {
+        // Mixin merges this method into TileLumenArray; inspect the target's actual runtime type.
+        var tile = (TileLumenArray) (Object) this;
+        if (tile instanceof MELumenArrayBlockEntity array && !array.isWorkAllowed()) {
             ci.cancel();
             return;
         }
-        if ((Object) this instanceof MELumenAlchemyArrayBlockEntity array) {
+        if (tile instanceof MELumenAlchemyArrayBlockEntity array) {
             array.craftFromNetwork(level, recipe -> getLumenGenerationAttempts(recipe.getProductionAttemptMultiplier()));
             ci.cancel();
         }

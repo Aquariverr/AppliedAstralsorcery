@@ -29,7 +29,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 /** Native AS array with an independent, bottom-only ME node. */
 public class MELumenArrayBlockEntity extends TileLumenArray implements IGridConnectedBlockEntity {
     private final IManagedGridNode mainNode = GridHelper.createManagedNode(this,
-            (IGridNodeListener<MELumenArrayBlockEntity>) (owner, node) -> owner.setChanged())
+            (owner, node) -> owner.setChanged())
             .setInWorldNode(true).setExposedOnSides(Set.of(Direction.DOWN))
             .setFlags(GridFlags.REQUIRE_CHANNEL).setIdlePowerUsage(1.0);
     private Lumen selected;
@@ -86,7 +86,7 @@ public class MELumenArrayBlockEntity extends TileLumenArray implements IGridConn
                     net.minecraft.world.level.block.Block.UPDATE_CLIENTS);
     }
     public int getStoredAmount() {
-        return getTileData().getLumenHandler().getContainedLumen().stream().mapToInt(s -> s.getAmount()).sum();
+        return getTileData().getLumenHandler().getContainedLumen().stream().mapToInt(LumenStack::getAmount).sum();
     }
     public void setPullTarget(int target) { pullTarget = Math.clamp(target, 0, Data.LUMEN_TANK_CAPACITY); setChanged(); }
     public void setExportEnabled(boolean value) { export = value; setChanged(); }
@@ -273,14 +273,14 @@ public class MELumenArrayBlockEntity extends TileLumenArray implements IGridConn
         super.saveAdditional(tag, registries);
         mainNode.saveToNBT(tag);
         var settings = new CompoundTag();
-        if (selected != null) settings.putString("lumen", RegistriesAS.REGISTRY_LUMEN.getKey(selected).toString());
+        if (selected != null) settings.putString("lumen", selected.getRegistryKey().orElseThrow().location().toString());
         settings.putInt("target", pullTarget);
         settings.putBoolean("export", export);
         settings.putBoolean("items", supplyItems);
         settings.putBoolean("filaments", interactWithFilaments);
         settings.putBoolean("redstoneControl", redstoneControl);
         if (!pendingOutput.isEmpty()) {
-            settings.putString("outputLumen", RegistriesAS.REGISTRY_LUMEN.getKey(pendingOutput.getLumen()).toString());
+            settings.putString("outputLumen", pendingOutput.getLumen().getRegistryKey().orElseThrow().location().toString());
             settings.putInt("outputAmount", pendingOutput.getAmount());
         }
         tag.put("meArray", settings);

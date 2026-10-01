@@ -11,6 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class GatewayDestinationSyncMixin {
     @Inject(method = {"receiveAll", "receiveChanges", "clear"}, at = @At("RETURN"))
     private void appliedas$refreshStars(CallbackInfo ci) {
-        ((GatewayUiAccessor) (Object) GatewayInterfaceRenderHelper.getInstance()).appliedas$setCurrentUI(null);
+        ((GatewayUiAccessor) GatewayInterfaceRenderHelper.getInstance()).appliedas$setCurrentUI(null);
     }
 }

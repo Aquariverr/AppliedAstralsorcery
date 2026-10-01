@@ -1,5 +1,9 @@
 package com.appliedastralsorcery.client;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nullable;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
 import com.appliedastralsorcery.ModContent;
 import com.appliedastralsorcery.integration.jei.GhostIngredientResolver;
 import java.util.List;
@@ -22,6 +26,8 @@ import net.minecraft.world.item.ItemStack;
 import org.lwjgl.glfw.GLFW;
 
 /** An Astral Sorcery marble altar, set in infused wood, gold and aquamarine. */
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArrayMenu> {
     private static final int SIDE_MARGIN = 12;
     private static final int CONTENT_WIDTH = 264 - 2 * SIDE_MARGIN;
@@ -203,8 +209,9 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
         if (isHovering(102, 30, 124, 20, mx, my)) {
             g.renderTooltip(font, selectedName(), mx, my);
         } else if (isHovering(19, 84, 18, 18, mx, my)) {
-            g.renderTooltip(font, menu.getActiveLumen() == null ? selectedName() :
-                    tr("active", LumenKey.of(menu.getActiveLumen()).getDisplayName()), mx, my);
+            var activeLumen = menu.getActiveLumen();
+            g.renderTooltip(font, activeLumen == null ? selectedName() :
+                    tr("active", LumenKey.of(activeLumen).getDisplayName()), mx, my);
         } else if (isHovering(44, 84, 18, 18, mx, my) && !menu.getSlot(0).hasItem()) {
             if (!catalystMarker.isEmpty()) {
                 g.renderComponentTooltip(font, List.of(tr("catalyst_for", selectedName()),
@@ -226,7 +233,8 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
     }
 
     private Component selectedName() {
-        return menu.getSelectedLumen() == null ? tr("choose") : LumenKey.of(menu.getSelectedLumen()).getDisplayName();
+        var selected = menu.getSelectedLumen();
+        return selected == null ? tr("choose") : LumenKey.of(selected).getDisplayName();
     }
 
     private void updateCatalystMarker() {
@@ -246,8 +254,9 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
         });
     }
 
-    private Lumen displayedLumen() {
-        return menu.getActiveLumen() == null ? menu.getSelectedLumen() : menu.getActiveLumen();
+    @Nullable private Lumen displayedLumen() {
+        var activeLumen = menu.getActiveLumen();
+        return activeLumen == null ? menu.getSelectedLumen() : activeLumen;
     }
 
     private int lumenColor() {
@@ -311,10 +320,11 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
         // Keep the marker and catalyst below the miniature so the original silhouette stays visible.
         g.fill(x + 19, y + 84, x + 37, y + 102, 0xFF304A53);
         g.renderOutline(x + 19, y + 84, 18, 18, GOLD);
-        if (displayedLumen() != null) {
+        var lumen = displayedLumen();
+        if (lumen != null && minecraft != null) {
             // Full tint opacity, preserving the native rune sprite's transparent silhouette.
             var sprite = minecraft.getModelManager().getAtlas(TexturesAS.ATLAS_LUMEN)
-                    .getSprite(displayedLumen().getRegistryKey().orElseThrow().location());
+                    .getSprite(lumen.getRegistryKey().orElseThrow().location());
             int color = lumenColor();
             g.blit(x + 20, y + 85, 0, 16, 16, sprite,
                     ((color >> 16) & 255) / 255F, ((color >> 8) & 255) / 255F,

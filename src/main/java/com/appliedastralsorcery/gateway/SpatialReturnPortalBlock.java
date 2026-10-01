@@ -1,5 +1,9 @@
 package com.appliedastralsorcery.gateway;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nullable;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,6 +23,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.*;
 
 /** A small native gateway destination whose only outbound interaction returns to its ME gateway. */
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class SpatialReturnPortalBlock extends BaseEntityBlock {
     public static final MapCodec<SpatialReturnPortalBlock> CODEC = simpleCodec(SpatialReturnPortalBlock::new);
     public SpatialReturnPortalBlock() {
@@ -27,7 +33,7 @@ public final class SpatialReturnPortalBlock extends BaseEntityBlock {
     private SpatialReturnPortalBlock(Properties properties) { super(properties); }
     @Override protected MapCodec<? extends BaseEntityBlock> codec() { return CODEC; }
     @Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) { return new SpatialReturnPortalBlockEntity(pos, state); }
-    @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+    @Override @Nullable public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide() ? null : createTickerHelper(type, ModContent.RETURN_PORTAL_ENTITY.get(),
                 (world, pos, blockState, portal) -> portal.serverTick((ServerLevel) world));
     }

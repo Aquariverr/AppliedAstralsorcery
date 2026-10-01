@@ -1,5 +1,9 @@
 package com.appliedastralsorcery.gateway;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nullable;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
 import com.appliedastralsorcery.ModContent;
 import net.minecraft.world.entity.player.*;
 import net.minecraft.world.inventory.*;
@@ -7,11 +11,13 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class MECelestialGatewayMenu extends AbstractContainerMenu {
     private final MECelestialGatewayBlockEntity gate;
     private final ContainerData data;
     public MECelestialGatewayMenu(int id, Inventory inventory) { this(id, inventory, null); }
-    public MECelestialGatewayMenu(int id, Inventory inventory, MECelestialGatewayBlockEntity gate) {
+    public MECelestialGatewayMenu(int id, Inventory inventory, @Nullable MECelestialGatewayBlockEntity gate) {
         super(ModContent.GATEWAY_MENU.get(), id);
         this.gate = gate;
         var handler = gate == null ? new ItemStackHandler(1) : gate.getInventory();
@@ -34,6 +40,8 @@ public final class MECelestialGatewayMenu extends AbstractContainerMenu {
     }
     public boolean active() { return data.get(0) != 0; }
     public int progress() { return data.get(1); }
+    // Both levels are borrowed from game objects; the menu must never close them.
+    @SuppressWarnings("resource")
     @Override public boolean stillValid(Player player) {
         return gate == null || !gate.isRemoved() && player.level() == gate.getLevel() && gate.canUse(player)
                 && player.distanceToSqr(gate.getBlockPos().getCenter()) <= 64;

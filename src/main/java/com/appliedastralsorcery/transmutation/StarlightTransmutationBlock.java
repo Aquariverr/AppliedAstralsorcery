@@ -1,5 +1,9 @@
 package com.appliedastralsorcery.transmutation;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nullable;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
 import com.appliedastralsorcery.ModContent;
 import com.mojang.serialization.MapCodec;
 import hellfirepvp.astralsorcery.common.block.tile.base.BaseTickTileBlock;
@@ -27,6 +31,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class StarlightTransmutationBlock extends BaseTickTileBlock<StarlightTransmutationBlockEntity> {
     public static final MapCodec<StarlightTransmutationBlock> CODEC = simpleCodec(StarlightTransmutationBlock::new);
     public static final BooleanProperty WORKING = BooleanProperty.create("working");
@@ -54,7 +60,7 @@ public final class StarlightTransmutationBlock extends BaseTickTileBlock<Starlig
                     Component.translatable("block.appliedas.starlight_transmutation_chamber")));
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
-    @Override public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    @Override public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
         if (placer instanceof Player player && level.getBlockEntity(pos) instanceof StarlightTransmutationBlockEntity entity)
             entity.getMainNode().setOwningPlayer(player);

@@ -24,6 +24,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.crafting.RecipeHolder;
 
 /** A source-only AS array: combination ingredients are obtained exclusively from ME. */
 public final class MELumenAlchemyArrayBlockEntity extends MELumenArrayBlockEntity {
@@ -53,7 +54,7 @@ public final class MELumenAlchemyArrayBlockEntity extends MELumenArrayBlockEntit
             return;
         }
         if (server.getGameTime() % 20 != 0) return;
-        var recipe = data.findMatchingRecipe(catalyst).map(holder -> holder.value()).orElse(null);
+        var recipe = data.findMatchingRecipe(catalyst).map(RecipeHolder::value).orElse(null);
         if (recipe == null) return;
 
         int attempts = generationAttempts.applyAsInt(recipe);
@@ -138,7 +139,7 @@ public final class MELumenAlchemyArrayBlockEntity extends MELumenArrayBlockEntit
     @Override protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         var pending = new CompoundTag();
-        ingredients.forEach((lumen, amount) -> pending.putInt(RegistriesAS.REGISTRY_LUMEN.getKey(lumen).toString(), amount));
+        ingredients.forEach((lumen, amount) -> pending.putInt(lumen.getRegistryKey().orElseThrow().location().toString(), amount));
         tag.put("meAlchemyIngredients", pending);
     }
     @Override protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {

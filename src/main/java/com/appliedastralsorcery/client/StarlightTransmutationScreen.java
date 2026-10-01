@@ -1,5 +1,9 @@
 package com.appliedastralsorcery.client;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nullable;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.function.BooleanSupplier;
@@ -35,6 +39,8 @@ import static com.appliedastralsorcery.client.AstralGuiArt.*;
  * The chamber's console in the Auto Chisel's marble and gilt: a night-sky header, the incoming constellation in an
  * observatory between the trays, and the chamber's starlit pillars flanking the stock and inventory.
  */
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class StarlightTransmutationScreen extends AbstractContainerScreen<StarlightTransmutationMenu> {
     public static final int RECIPE_X = 86, RECIPE_Y = 34, RECIPE_WIDTH = 92, RECIPE_HEIGHT = 78;
     // JEI's recipe hint stays above the pointer; place the constellation name below it.
@@ -73,7 +79,7 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
         overclockButton.setTooltip(Tooltip.create(tr("overclock_hint")));
         autoPullButton.setMessage(modeLabel());
         overclockButton.setMessage(overclockLabel());
-        if (amountEditor != null) amountEditor.init(minecraft, width, height);
+        if (amountEditor != null && minecraft != null) amountEditor.init(minecraft, width, height);
     }
     private Button toggle(int y, int id, BooleanSupplier lamp) {
         return addRenderableWidget(new Plaque(leftPos + TOGGLE_X, topPos + y, TOGGLE_WIDTH, TOGGLE_HEIGHT, Component.empty(),
@@ -110,11 +116,12 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
     }
     private void openAmountEditor(int slot) {
         var marker = menu.getPullMarker(slot);
-        if (marker.isEmpty()) return;
+        if (marker.isEmpty() || minecraft == null) return;
         amountEditor = new AmountEditor(slot, marker.copy());
         amountEditor.init(minecraft, width, height);
     }
     @Override public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (minecraft == null || minecraft.player == null) return false;
         if (amountEditor != null) {
             amountEditor.mouseClicked(mouseX, mouseY, button);
             return true;
@@ -142,7 +149,7 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
     }
     @Override public boolean keyPressed(int key, int scanCode, int modifiers) {
         if (amountEditor != null) { amountEditor.keyPressed(key, scanCode, modifiers); return true; }
-        if (menu.isAutoPull() && hoveredSlot != null && hoveredSlot.index >= StarlightTransmutationMenu.MARKER_SLOT_START
+        if (minecraft != null && menu.isAutoPull() && hoveredSlot != null && hoveredSlot.index >= StarlightTransmutationMenu.MARKER_SLOT_START
                 && minecraft.options.keyPickItem.matches(key, scanCode)) {
             openAmountEditor(hoveredSlot.index - StarlightTransmutationMenu.MARKER_SLOT_START);
             return true;
@@ -400,7 +407,7 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
     private final class Plaque extends Button {
         private final BooleanSupplier lamp;
 
-        private Plaque(int x, int y, int width, int height, Component message, OnPress onPress, BooleanSupplier lamp) {
+        private Plaque(int x, int y, int width, int height, Component message, OnPress onPress, @Nullable BooleanSupplier lamp) {
             super(x, y, width, height, message, onPress, DEFAULT_NARRATION);
             this.lamp = lamp;
         }

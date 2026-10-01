@@ -1,5 +1,8 @@
 package com.appliedastralsorcery.lumen;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
 import com.appliedastralsorcery.ModContent;
 import com.mojang.serialization.MapCodec;
 import hellfirepvp.astralsorcery.common.util.data.TileRegistryObject;
@@ -12,6 +15,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class MELumenAlchemyArrayBlock extends MELumenArrayBlock {
     public static final MapCodec<MELumenAlchemyArrayBlock> CODEC = simpleCodec(MELumenAlchemyArrayBlock::new);
     private static final VoxelShape SHAPE = Block.box(-1, 0, -1, 17, 17, 17);

@@ -1,5 +1,8 @@
 package com.appliedastralsorcery.gateway;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
 import appeng.api.features.IPlayerRegistry;
 import appeng.api.ids.AEComponents;
 import com.appliedastralsorcery.ModContent;
@@ -16,6 +19,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 /** Native gateway source; only its inserted cell is published as a destination. */
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class MECelestialGatewayBlockEntity extends TileCelestialGateway {
     private BlockPos publishedPortal;
     private boolean destinationDirty = true;
@@ -38,7 +43,8 @@ public final class MECelestialGatewayBlockEntity extends TileCelestialGateway {
         return !player.isSpectator() && (!getTileData().isLocked() || !getTileData().hasOwner() || getTileData().isOwner(player));
     }
     @Override public Component getName() {
-        return hasCustomName() ? getCustomName() : Component.translatable("block.appliedas.me_celestial_gateway");
+        var customName = getCustomName();
+        return customName != null ? customName : Component.translatable("block.appliedas.me_celestial_gateway");
     }
     @Override public void serverTick(ServerLevel server) {
         // Keep native tick/structure/sky synchronization, but never advertise the ME block as a destination.

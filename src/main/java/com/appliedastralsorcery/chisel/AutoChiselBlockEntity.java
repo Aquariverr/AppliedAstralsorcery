@@ -1,11 +1,16 @@
 package com.appliedastralsorcery.chisel;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nullable;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.UUID;
 
 import com.appliedastralsorcery.ModContent;
@@ -22,6 +27,7 @@ import hellfirepvp.astralsorcery.common.util.LumenUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -40,6 +46,8 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class AutoChiselBlockEntity extends BlockEntity {
     public static final int OUTPUT_SLOTS = 9;
     public static final int WORK_TICKS = 40;
@@ -105,7 +113,9 @@ public final class AutoChiselBlockEntity extends BlockEntity {
 
     public ItemStackHandler getInventory() { return inventory; }
     public ILumenHandler getLumenHandler() { return lumen; }
-    public IItemHandler getItemHandler(Direction side) { return side == null ? unsidedItems : sidedItems.get(side); }
+    public IItemHandler getItemHandler(@Nullable Direction side) {
+        return side == null ? unsidedItems : Objects.requireNonNull(sidedItems.get(side));
+    }
     public int getLumenAmount() { return lumenContents.getLumenStack(LumenAS.EVORSIO.get()).map(LumenStack::getAmount).orElse(0); }
     public int getProgress() { return progress; }
     public int getFortuneLevel() {
@@ -147,10 +157,6 @@ public final class AutoChiselBlockEntity extends BlockEntity {
         setChanged();
     }
 
-    public void cycleSide(Direction side) {
-        cycleSide(side, false);
-    }
-
     public void cycleSide(Direction side, boolean reverse) {
         sideModes[side.ordinal()] = getSideMode(side).cycle(reverse);
         // Cached views also check the current mode on every call.
@@ -163,16 +169,16 @@ public final class AutoChiselBlockEntity extends BlockEntity {
         if (droppedItemMode) return dropStatus;
         if (inventory.getStackInSlot(0).isEmpty()) return Status.IDLE;
         if (!ChiselProcessing.canProcess(inventory.getStackInSlot(0))) return Status.UNSPLITTABLE;
-        if (!hasOutputRoom()) return Status.OUTPUT_FULL;
+        if (isOutputFull()) return Status.OUTPUT_FULL;
         if (getLumenAmount() < LUMEN_COST) return Status.NO_LUMEN;
         return Status.WORKING;
     }
 
     // Reserve two empty slots before rolling random outputs: blocked jobs cannot reroll or lose products.
-    private boolean hasOutputRoom() {
+    private boolean isOutputFull() {
         int empty = 0;
         for (int slot = 1; slot <= OUTPUT_SLOTS; slot++) if (inventory.getStackInSlot(slot).isEmpty()) empty++;
-        return empty >= 2;
+        return empty < 2;
     }
 
     public void serverTick() {
@@ -194,7 +200,7 @@ public final class AutoChiselBlockEntity extends BlockEntity {
             tickDroppedItems(server);
             return;
         }
-        if (server.getGameTime() % 5 == 0) transferItems();
+        if (server.getGameTime() % 5 == 0) transferItems(server);
         var input = inventory.getStackInSlot(0);
         if (input.getItem() instanceof RockCrystalItem) {
             var attributes = input.get(DataComponentsAS.CRYSTAL_ATTRIBUTES);
@@ -207,7 +213,7 @@ public final class AutoChiselBlockEntity extends BlockEntity {
             if (progress != 0) { progress = 0; setChanged(); }
             return;
         }
-        if (!hasOutputRoom()) return;
+        if (isOutputFull()) return;
         if (getLumenAmount() < LUMEN_COST) return;
         progress++;
         setChanged();
@@ -241,9 +247,11 @@ public final class AutoChiselBlockEntity extends BlockEntity {
 
     /** Only item centers inside a loaded, adjacent input block qualify. */
     private boolean isInDropInput(Vec3 position) {
+        if (!(level instanceof ServerLevel server)) return false;
         for (var side : Direction.values()) {
             var pos = worldPosition.relative(side);
-            if (getSideMode(side).allowsInput() && level.hasChunkAt(pos) && new AABB(pos).contains(position)) return true;
+            if (getSideMode(side).allowsInput() && server.hasChunk(SectionPos.blockToSectionCoord(pos.getX()),
+                    SectionPos.blockToSectionCoord(pos.getZ())) && new AABB(pos).contains(position)) return true;
         }
         return false;
     }
@@ -256,11 +264,12 @@ public final class AutoChiselBlockEntity extends BlockEntity {
         return stack.getItem() instanceof RockCrystalItem && attributes != null && attributes.isEmpty();
     }
 
-    private ItemEntity selectDrop(ServerLevel server) {
+    @Nullable private ItemEntity selectDrop(ServerLevel server) {
         var candidates = new ArrayList<ItemEntity>();
         for (var side : Direction.values()) {
             var pos = worldPosition.relative(side);
-            if (!getSideMode(side).allowsInput() || !server.hasChunkAt(pos)) continue;
+            if (!getSideMode(side).allowsInput() || !server.hasChunk(SectionPos.blockToSectionCoord(pos.getX()),
+                    SectionPos.blockToSectionCoord(pos.getZ()))) continue;
             var area = new AABB(pos);
             candidates.addAll(server.getEntitiesOfClass(ItemEntity.class, area,
                     entity -> area.contains(entity.position()) && isDropCandidate(entity)));
@@ -276,17 +285,18 @@ public final class AutoChiselBlockEntity extends BlockEntity {
         return candidates.getFirst();
     }
 
-    private ItemEntity currentDrop(ServerLevel server) {
+    @Nullable private ItemEntity currentDrop(ServerLevel server) {
         if (activeTarget == null) return null;
         if (server.getEntity(activeTarget) instanceof ItemEntity entity && isDropCandidate(entity)
                 && ItemStack.matches(activeInput, entity.getItem())) return entity;
         return null;
     }
 
-    private Direction availableDropOutput(ServerLevel server) {
+    @Nullable private Direction availableDropOutput(ServerLevel server) {
         for (var side : OUTPUT_PRIORITY) {
             var pos = worldPosition.relative(side);
-            if (!getSideMode(side).allowsOutput() || !server.hasChunkAt(pos)) continue;
+            if (!getSideMode(side).allowsOutput() || !server.hasChunk(SectionPos.blockToSectionCoord(pos.getX()),
+                    SectionPos.blockToSectionCoord(pos.getZ()))) continue;
             var center = pos.getCenter();
             var bounds = new AABB(center.x - 0.125, center.y, center.z - 0.125,
                     center.x + 0.125, center.y + 0.25, center.z + 0.125);
@@ -370,14 +380,15 @@ public final class AutoChiselBlockEntity extends BlockEntity {
         return true;
     }
 
-    private void transferItems() {
+    private void transferItems(ServerLevel server) {
         if (!autoInput && !autoOutput) return;
         for (var side : Direction.values()) {
             var mode = getSideMode(side);
             var neighborPos = worldPosition.relative(side);
             if ((!autoInput || !mode.allowsInput()) && (!autoOutput || !mode.allowsOutput())
-                    || !level.hasChunkAt(neighborPos)) continue;
-            var neighbor = level.getCapability(Capabilities.ItemHandler.BLOCK, neighborPos, side.getOpposite());
+                    || !server.hasChunk(SectionPos.blockToSectionCoord(neighborPos.getX()),
+                            SectionPos.blockToSectionCoord(neighborPos.getZ()))) continue;
+            var neighbor = server.getCapability(Capabilities.ItemHandler.BLOCK, neighborPos, side.getOpposite());
             if (neighbor == null) continue;
             // Evaluate both directions independently for a shared input/output face.
             if (autoOutput && mode.allowsOutput()) {
@@ -456,7 +467,7 @@ public final class AutoChiselBlockEntity extends BlockEntity {
 
     private final class SidedItems implements IItemHandler {
         private final Direction side;
-        private SidedItems(Direction side) { this.side = side; }
+        private SidedItems(@Nullable Direction side) { this.side = side; }
         private boolean allows(SideMode mode) {
             return !droppedItemMode && (side == null || (mode == SideMode.INPUT
                     ? getSideMode(side).allowsInput() : getSideMode(side).allowsOutput()));

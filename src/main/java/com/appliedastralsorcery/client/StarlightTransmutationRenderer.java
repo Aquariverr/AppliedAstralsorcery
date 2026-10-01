@@ -1,5 +1,8 @@
 package com.appliedastralsorcery.client;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
 import com.appliedastralsorcery.transmutation.StarlightTransmutationBlock;
 import com.appliedastralsorcery.transmutation.StarlightTransmutationBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -17,6 +20,8 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
 
 /** A floating workpiece above its constellation, with colored starlight confined to the glass chamber. */
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class StarlightTransmutationRenderer implements BlockEntityRenderer<StarlightTransmutationBlockEntity> {
     private final ItemRenderer items;
     public StarlightTransmutationRenderer(BlockEntityRendererProvider.Context context) { items = context.getItemRenderer(); }

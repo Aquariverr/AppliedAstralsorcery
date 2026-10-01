@@ -1,15 +1,19 @@
 package com.appliedastralsorcery.transmutation;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nullable;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 import appeng.api.config.Actionable;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.GridHelper;
 import appeng.api.networking.IGridNode;
-import appeng.api.networking.IGridNodeListener;
 import appeng.api.networking.IManagedGridNode;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.stacks.AEItemKey;
@@ -20,7 +24,7 @@ import com.appliedastralsorcery.lumen.LumenKey;
 import com.mojang.serialization.Codec;
 import hellfirepvp.astralsorcery.common.constellation.BaseConstellation;
 import hellfirepvp.astralsorcery.common.component.CrystalAttributesComponent;
-import hellfirepvp.astralsorcery.common.data.level.FocalPointData;
+import hellfirepvp.astralsorcery.common.focal.node.FocalPointNode;
 import hellfirepvp.astralsorcery.common.lib.DataAS;
 import hellfirepvp.astralsorcery.common.lib.LumenAS;
 import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
@@ -53,6 +57,8 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class StarlightTransmutationBlockEntity
         extends TileEntityNetwork<ForwardingStarlightReceiverNode, TileEntityNetwork.Data>
         implements ForwardingStarlightReceiverNode.ReceiverTile, IGridConnectedBlockEntity {
@@ -62,7 +68,7 @@ public final class StarlightTransmutationBlockEntity
     private static final int STARLIGHT_TIMEOUT = 2;
     public enum Status { IDLE, MISSING_INPUTS, NO_STARLIGHT, WRONG_CONSTELLATION, OFFLINE, OUTPUT_BLOCKED, RUNNING }
     private final IManagedGridNode mainNode = GridHelper.createManagedNode(this,
-            (IGridNodeListener<StarlightTransmutationBlockEntity>) (owner, node) -> owner.setChanged())
+            (owner, node) -> owner.setChanged())
             .setInWorldNode(true).setExposedOnSides(Set.of(Direction.values()))
             .setFlags(GridFlags.REQUIRE_CHANNEL).setIdlePowerUsage(2.0);
     private final Map<BaseConstellation, Long> receivedStarlight = new HashMap<>();
@@ -94,8 +100,8 @@ public final class StarlightTransmutationBlockEntity
     }
     @Override public IManagedGridNode getMainNode() { return mainNode; }
     @Override public void saveChanges() { setChanged(); }
-    @Override public IGridNode getGridNode(Direction side) { return mainNode.getNode(); }
-    @Override public IGridNode getActionableNode() { return mainNode.getNode(); }
+    @Override @Nullable public IGridNode getGridNode(@Nullable Direction side) { return mainNode.getNode(); }
+    @Override @Nullable public IGridNode getActionableNode() { return mainNode.getNode(); }
     public ItemStackHandler getInventory() { return inventory; }
     public ItemStackHandler getPullMarkers() { return pullMarkers; }
     public boolean isAutoPull() { return autoPull; }
@@ -112,15 +118,15 @@ public final class StarlightTransmutationBlockEntity
     public int getDuration() { return duration; }
     public Status getStatus() { return status; }
     public boolean hasStarlight() { return focalConstellation != null || !receivedStarlight.isEmpty(); }
-    public BaseConstellation getDisplayConstellation() { return displayConstellation; }
+    @Nullable public BaseConstellation getDisplayConstellation() { return displayConstellation; }
 
     private Stream<BaseConstellation> availableConstellations() {
         return Stream.concat(receivedStarlight.keySet().stream(), Stream.ofNullable(focalConstellation));
     }
 
-    private BaseConstellation receivedConstellation(FocalCombineRecipe recipe) {
+    @Nullable private BaseConstellation receivedConstellation(@Nullable FocalCombineRecipe recipe) {
         // Stable ordering prevents multiple live beams from making the icon flicker.
-        return availableConstellations().filter(constellation -> constellation != null)
+        return availableConstellations().filter(Objects::nonNull)
                 .filter(constellation -> recipe == null || recipe.isRequiredConstellation(constellation))
                 .min(Comparator.comparingInt(RegistriesAS.REGISTRY_CONSTELLATIONS::getId)).orElse(null);
     }
@@ -137,7 +143,8 @@ public final class StarlightTransmutationBlockEntity
         var preview = getDisplayItem();
         if (!preview.isEmpty()) tag.put("preview", preview.save(registries));
         if (displayConstellation != null)
-            tag.putString("displayConstellation", RegistriesAS.REGISTRY_CONSTELLATIONS.getKey(displayConstellation).toString());
+            tag.putString("displayConstellation", RegistriesAS.REGISTRY_CONSTELLATIONS
+                    .getResourceKey(displayConstellation).orElseThrow().location().toString());
         return tag;
     }
     @Override public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider registries) {
@@ -215,15 +222,15 @@ public final class StarlightTransmutationBlockEntity
         if (!DayTimeHelper.isNight(server)
                 || server.getHeight(Heightmap.Types.WORLD_SURFACE, worldPosition.getX(), worldPosition.getZ())
                         > worldPosition.getY() + 1) return;
-        var focalPoints = (FocalPointData) DataAS.DOMAIN_AS.getData(server, DataAS.KEY_FOCAL_POINT_DATA);
-        focalConstellation = focalPoints.getNode(worldPosition).map(node -> node.getConstellation()).orElse(null);
+        var focalPoints = DataAS.DOMAIN_AS.getData(server, DataAS.KEY_FOCAL_POINT_DATA);
+        focalConstellation = focalPoints.getNode(worldPosition).map(FocalPointNode::getConstellation).orElse(null);
     }
 
     private void clearLegacyCrystalStarlight(ServerLevel server) {
         // The removed compatibility patch persisted source data for ordinary crystals.
         // Undo that state for this chamber's sources when loading, without initializing
         // crystals or changing sources that still have their matching focal point.
-        var focalPoints = (FocalPointData) DataAS.DOMAIN_AS.getData(server, DataAS.KEY_FOCAL_POINT_DATA);
+        var focalPoints = DataAS.DOMAIN_AS.getData(server, DataAS.KEY_FOCAL_POINT_DATA);
         for (var source : StarlightNetworkLevelHelper.get(server).getSourceNodes()) {
             if (!(source instanceof FocusCrystalSourceNode crystal) || crystal.getConstellation().isEmpty()) continue;
             if (focalPoints.getNode(source.getNodePos())
@@ -353,14 +360,18 @@ public final class StarlightTransmutationBlockEntity
             // Only remove what ME accepted; a full network keeps the remainder here.
             int excess = current.isEmpty() ? 0 : matches ? Math.max(0, current.getCount() - target) : current.getCount();
             if (excess > 0) {
-                long inserted = StorageHelper.poweredInsert(energy, storage, AEItemKey.of(current), excess, source);
+                var key = AEItemKey.of(current);
+                if (key == null) continue;
+                long inserted = StorageHelper.poweredInsert(energy, storage, key, excess, source);
                 if (inserted > 0) inventory.extractItem(slot, (int) inserted, false);
                 continue;
             }
             if (target == 0 || !accepts(marker)) continue;
             int missing = target - current.getCount();
             if (missing <= 0) continue;
-            long extracted = StorageHelper.poweredExtraction(energy, storage, AEItemKey.of(marker), missing, source);
+            var key = AEItemKey.of(marker);
+            if (key == null) continue;
+            long extracted = StorageHelper.poweredExtraction(energy, storage, key, missing, source);
             if (extracted > 0) inventory.setStackInSlot(slot, marker.copyWithCount(current.getCount() + (int) extracted));
         }
     }

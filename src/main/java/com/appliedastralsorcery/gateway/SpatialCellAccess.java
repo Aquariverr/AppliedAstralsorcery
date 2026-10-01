@@ -57,7 +57,7 @@ public final class SpatialCellAccess {
     public static int progress(ItemStack stack) {
         var info = stack.get(AEComponents.SPATIAL_PLOT_INFO);
         if (info == null || !isFormatting(stack)) return 100;
-        int elapsed = stack.get(DataComponents.CUSTOM_DATA).copyTag().getInt(ELAPSED);
+        int elapsed = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getInt(ELAPSED);
         return Math.clamp(100L * elapsed / FORMAT_TICKS, 0, 99);
     }
 
@@ -68,7 +68,7 @@ public final class SpatialCellAccess {
         ServerLevel level = SpatialStoragePlotManager.INSTANCE.getLevel();
         var size = plot.getSize();
         int columns = size.getX() * size.getZ();
-        var saved = stack.get(DataComponents.CUSTOM_DATA).copyTag();
+        var saved = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
         int elapsed = Math.clamp(saved.getInt(ELAPSED), 0, FORMAT_TICKS - 1) + 1;
         int start = Math.clamp(saved.getInt(CURSOR), 0, columns);
         // Spread every cell size over five seconds, including partially formatted legacy cells.

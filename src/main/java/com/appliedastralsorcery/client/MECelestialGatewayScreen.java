@@ -1,5 +1,8 @@
 package com.appliedastralsorcery.client;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
+
 import com.appliedastralsorcery.ModContent;
 import com.appliedastralsorcery.gateway.MECelestialGatewayMenu;
 import com.appliedastralsorcery.gateway.SpatialCellAccess;
@@ -14,6 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import static com.appliedastralsorcery.client.AstralGuiArt.*;
 
 /** The gateway's console: the spatial cell set in a window of night sky, beside the way to use it and its state. */
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class MECelestialGatewayScreen extends AbstractContainerScreen<MECelestialGatewayMenu> {
     private static final int WINDOW_X = 12, WINDOW_Y = 34, WINDOW_WIDTH = 44, WINDOW_HEIGHT = 28;
     // Stars around the cell, lit while the gateway is open.

@@ -16,14 +16,16 @@ import org.spongepowered.asm.mixin.injection.At;
 /** Leave native source/destination validation and the star windup intact. */
 @Mixin(value = PktRequestGatewayTeleport.class, remap = false)
 public abstract class GatewaySpatialTeleportMixin {
-    @WrapOperation(method = "*", at = @At(value = "INVOKE", target =
+    // Levels are borrowed from the player/server and must remain open after packet handling.
+    @SuppressWarnings("resource")
+    @WrapOperation(method = "lambda$handle$0", at = @At(value = "INVOKE", target =
             "Lhellfirepvp/astralsorcery/common/util/EntityUtil;transferEntity(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/resources/ResourceKey;Lhellfirepvp/astralsorcery/common/util/data/Vector3;)Lnet/minecraft/world/entity/Entity;"))
     private static Entity appliedas$spatialDestination(Entity entity, ResourceKey<Level> dimension,
             Vector3 destination, Operation<Entity> original) {
         if (entity instanceof ServerPlayer player) {
             // The small pedestal only offers its fixed return action, never an outbound gateway network.
-            if (player.level().getBlockEntity(player.blockPosition()) instanceof SpatialReturnPortalBlockEntity) return entity;
-            var target = player.getServer().getLevel(dimension);
+            if (player.serverLevel().getBlockEntity(player.blockPosition()) instanceof SpatialReturnPortalBlockEntity) return entity;
+            var target = player.serverLevel().getServer().getLevel(dimension);
             if (target != null) {
                 var tile = target.getBlockEntity(destination.toBlockPos());
                 if (tile instanceof MECelestialGatewayBlockEntity) return entity;

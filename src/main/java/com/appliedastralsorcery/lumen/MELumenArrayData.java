@@ -21,6 +21,8 @@ public class MELumenArrayData extends TileLumenArray.Data {
             instance -> lumenArrayFields(instance).apply(instance, MELumenArrayData::new))
             .xmap(data -> data, data -> (MELumenArrayData) data);
 
+    // The native RecordCodecBuilder and superclass represent an absent owner with Optional.
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     protected MELumenArrayData(long ticks, boolean structure, Map<BlockPos, Boolean> sky, Optional<UUID> owner,
             LumenStackList lumen, FluidContainerList fluid, InventoryStackList inventory, boolean extended, Lumen assigned) {
         super(ticks, structure, sky, owner, lumen, fluid, inventory, extended, assigned);
@@ -36,19 +38,19 @@ public class MELumenArrayData extends TileLumenArray.Data {
         markForUpdate();
     }
 
-    private boolean switching() {
-        return getOptionalTile(MELumenArrayBlockEntity.class).map(MELumenArrayBlockEntity::isSwitchPending).orElse(false);
+    private boolean acceptsInputs() {
+        return !getOptionalTile(MELumenArrayBlockEntity.class).map(MELumenArrayBlockEntity::isSwitchPending).orElse(false);
     }
 
     @Override protected LumenHandlerViewFactory newLumenHandler() {
         return super.newLumenHandler()
                 .extractFilter((amount, existing) -> true)
-                .inputFilter((incoming, existing) -> !switching()
+                .inputFilter((incoming, existing) -> acceptsInputs()
                         && (assignedLumen == LumenAS.NONE.get() || incoming.is(assignedLumen)));
     }
 
     @Override protected FilteredInventoryViewFactory newInventoryHandler() {
-        return super.newInventoryHandler().inputFilter((slot, incoming, existing) -> !switching()
+        return super.newInventoryHandler().inputFilter((slot, incoming, existing) -> acceptsInputs()
                 && existing.isEmpty() && !getContainedFluid().isEmpty() && findMatchingRecipe(incoming).isPresent());
     }
 }
