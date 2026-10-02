@@ -386,12 +386,21 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
 
     private void fitted(GuiGraphics g, Component text, int x, int y, int width, int color) {
         if (width <= 0) return;
-        String label = text.getString();
-        if (font.width(label) > width) {
-            int ellipsisWidth = font.width("…");
-            label = width < ellipsisWidth ? "" : font.plainSubstrByWidth(label, width - ellipsisWidth) + "…";
+        int textWidth = font.width(text);
+        if (textWidth <= width) {
+            g.drawString(font, text, x, y, color, false);
+            return;
         }
-        g.drawString(font, label, x, y, color, false);
+        // Keep translated labels and toggle states complete within the existing layout.
+        float scale = width / (float) textWidth;
+        g.pose().pushPose();
+        try {
+            g.pose().translate(x, y + (font.lineHeight * (1F - scale)) / 2F, 0);
+            g.pose().scale(scale, scale, 1F);
+            g.drawString(font, text, 0, 0, color, false);
+        } finally {
+            g.pose().popPose();
+        }
     }
 
     /** A stock marker, inlaid with starlight blue while auto pull keeps it, and sealed under a dim star otherwise. */
