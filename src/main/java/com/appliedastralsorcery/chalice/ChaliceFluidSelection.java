@@ -1,5 +1,7 @@
 package com.appliedastralsorcery.chalice;
 
+import javax.annotation.Nonnull;
+
 import com.appliedastralsorcery.AppliedAstralsorcery;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -20,6 +22,7 @@ public record ChaliceFluidSelection(int containerId, FluidStack fluid) implement
             ByteBufCodecs.VAR_INT, ChaliceFluidSelection::containerId,
             FluidStack.OPTIONAL_STREAM_CODEC, ChaliceFluidSelection::fluid, ChaliceFluidSelection::new);
 
+    @Nonnull
     @Override public Type<ChaliceFluidSelection> type() { return TYPE; }
 
     public static void register(RegisterPayloadHandlersEvent event) {
@@ -30,6 +33,7 @@ public record ChaliceFluidSelection(int containerId, FluidStack fluid) implement
         packet.apply(context.player());
     }
 
+    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
     public boolean apply(Player player) {
         if (player.containerMenu instanceof MEChaliceMenu menu && menu.containerId == containerId) {
             var key = AEFluidKey.of(fluid);

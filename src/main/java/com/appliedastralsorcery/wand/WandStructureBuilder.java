@@ -63,13 +63,13 @@ final class WandStructureBuilder {
         if (structure != null) {
             for (var entry : structure.getContents().entrySet()) {
                 var pos = center.offset(entry.getKey());
-                if (!level.hasChunkAt(pos)) {
+                if (!level.isLoaded(pos)) {
                     blocked(player, pos);
                     return;
                 }
                 if (structure.matchesSingleBlock(level, center, entry.getKey())) continue;
                 var target = entry.getValue().getDescriptiveState(0L);
-                if (!addPlacement(plan, player, wand, face, pos, target)) return;
+                if (failedToAddPlacement(plan, player, wand, face, pos, target)) return;
             }
         }
         // AS keeps these pools outside PatternInfuser: they are recipe inputs, not observer blocks.
@@ -84,9 +84,9 @@ final class WandStructureBuilder {
             }
             for (var offset : TileInfuser.getLiquidOffsets()) {
                 var pos = center.offset(offset);
-                if (level.hasChunkAt(pos) && level.getFluidState(pos).isSource()
+                if (level.isLoaded(pos) && level.getFluidState(pos).isSource()
                         && level.getFluidState(pos).getType().isSame(fluid)) continue;
-                if (!addPlacement(plan, player, wand, face, pos, target)) return;
+                if (failedToAddPlacement(plan, player, wand, face, pos, target)) return;
             }
         }
         // Place foundations before decorations, and all solid blocks before fluid sources.
@@ -104,7 +104,7 @@ final class WandStructureBuilder {
             int placed = 0;
             for (var placement : plan) {
                 if (!level.getBlockState(placement.pos()).equals(placement.previous())
-                        || !canPlace(player, wand, face, placement.pos(), placement.state())
+                        || isPlacementBlocked(player, wand, face, placement.pos(), placement.state())
                         || !placement.state().canSurvive(level, placement.pos())) {
                     blocked(player, placement.pos());
                     return;
@@ -150,7 +150,9 @@ final class WandStructureBuilder {
     }
 
     private static MatchableStructure findStructure(TileEntityTick<?> tile, ServerLevel level) {
-        var provider = tile.getRequiredObserver().observer().get();
+        var requiredObserver = tile.getRequiredObserver();
+        if (requiredObserver == null) return null;
+        var provider = requiredObserver.observer().get();
         if (provider instanceof ObserverProviderStructure single) return single.getStructure();
         if (provider instanceof CompoundObserverProviderStructure compound) {
             // Same progression as the native wand: the base altar, then its expanded form.
@@ -161,11 +163,12 @@ final class WandStructureBuilder {
         return null;
     }
 
-    private static boolean addPlacement(List<Placement> plan, ServerPlayer player, ItemStack wand, Direction face,
+    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    private static boolean failedToAddPlacement(List<Placement> plan, ServerPlayer player, ItemStack wand, Direction face,
             BlockPos pos, BlockState target) {
-        if (target.isAir() || !canPlace(player, wand, face, pos, target)) {
+        if (target.isAir() || isPlacementBlocked(player, wand, face, pos, target)) {
             blocked(player, pos);
-            return false;
+            return true;
         }
         AEKey key;
         long amount;
@@ -175,7 +178,7 @@ final class WandStructureBuilder {
         } else {
             if (target.getBlock().asItem() == Items.AIR) {
                 blocked(player, pos);
-                return false;
+                return true;
             }
             key = AEItemKey.of(target.getBlock().asItem());
             amount = target.hasProperty(SlabBlock.TYPE) && target.getValue(SlabBlock.TYPE) == SlabType.DOUBLE ? 2 : 1;
@@ -184,7 +187,7 @@ final class WandStructureBuilder {
         Map<AEKey, Long> recovered = new LinkedHashMap<>();
         if (!previous.isAir() && MEResonatingWandItem.enabled(wand, MEResonatingWandItem.REPLACE_BLOCKS)) {
             // Silk-touch loot preserves ordinary building blocks (stone, glass, ores, slabs).
-            // Block entities and multi-block objects are excluded in canPlace to protect their data and partners.
+            // Block entities and multi-block objects are excluded in isPlacementBlocked to protect their data and partners.
             var tool = new ItemStack(Items.DIAMOND_PICKAXE);
             tool.enchant(player.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH), 1);
             if (!(previous.getBlock() instanceof LiquidBlock)) {
@@ -196,23 +199,23 @@ final class WandStructureBuilder {
             if (oldFluid.isSource()) recovered.merge(AEFluidKey.of(oldFluid.getType()), (long) FluidType.BUCKET_VOLUME, Long::sum);
         }
         plan.add(new Placement(pos.immutable(), target, previous, key, amount, recovered));
-        return true;
+        return false;
     }
 
-    private static boolean canPlace(ServerPlayer player, ItemStack wand, Direction face, BlockPos pos, BlockState target) {
+    private static boolean isPlacementBlocked(ServerPlayer player, ItemStack wand, Direction face, BlockPos pos, BlockState target) {
         var level = player.serverLevel();
-        if (!level.hasChunkAt(pos) || level.isOutsideBuildHeight(pos) || !level.getWorldBorder().isWithinBounds(pos)
-                || !level.mayInteract(player, pos) || !player.mayUseItemAt(pos, face, wand)) return false;
+        if (!level.isLoaded(pos) || !level.getWorldBorder().isWithinBounds(pos)
+                || !level.mayInteract(player, pos) || !player.mayUseItemAt(pos, face, wand)) return true;
         var old = level.getBlockState(pos);
         boolean replace = MEResonatingWandItem.enabled(wand, MEResonatingWandItem.REPLACE_BLOCKS);
         if (level.getBlockEntity(pos) != null || old.getDestroySpeed(level, pos) < 0
                 || old.hasProperty(BlockStateProperties.DOUBLE_BLOCK_HALF) || old.getBlock() instanceof PistonHeadBlock
                 || old.hasProperty(BlockStateProperties.EXTENDED) && old.getValue(BlockStateProperties.EXTENDED)
-                || !replace && !old.canBeReplaced()) return false;
+                || !replace && !old.canBeReplaced()) return true;
         var fluid = old.getFluidState();
         if (!replace && !fluid.isEmpty() && (fluid.isSource() || !(target.getBlock() instanceof LiquidBlock)
-                || !fluid.getType().isSame(target.getFluidState().getType()))) return false;
-        return level.isUnobstructed(target, pos, CollisionContext.empty());
+                || !fluid.getType().isSame(target.getFluidState().getType()))) return true;
+        return !level.isUnobstructed(target, pos, CollisionContext.empty());
     }
 
     private static void blocked(ServerPlayer player, BlockPos pos) {

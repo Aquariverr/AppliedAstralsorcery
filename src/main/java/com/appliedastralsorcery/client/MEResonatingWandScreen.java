@@ -1,5 +1,7 @@
 package com.appliedastralsorcery.client;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import appeng.core.definitions.AEItems;
 import com.appliedastralsorcery.wand.MEResonatingWandItem;
 import com.appliedastralsorcery.wand.MEResonatingWandMenu;
@@ -55,6 +57,7 @@ public final class MEResonatingWandScreen extends AbstractContainerScreen<MEReso
         addRenderableWidget(new SealButton(leftPos + HEADER_X, y, option, key, icon));
     }
 
+    @ParametersAreNonnullByDefault
     @Override public void render(GuiGraphics g, int mx, int my, float partial) {
         super.render(g, mx, my, partial);
         // An unlinked wand explains how to bind it when its status line is hovered.
@@ -119,6 +122,7 @@ public final class MEResonatingWandScreen extends AbstractContainerScreen<MEReso
         }
     }
 
+    @ParametersAreNonnullByDefault
     @Override protected void renderLabels(GuiGraphics g, int mx, int my) {}
 
     private void fitted(GuiGraphics g, Component text, int x, int y, int width, int color) {

@@ -59,7 +59,7 @@ public final class GuideRecipes implements RecipeTypeMappingSupplier {
         var box = LytStandardRecipeBox.builder()
                 .title(altar.getHoverName().getString())
                 .icon(altar)
-                .customBody(new AltarGrid(holder.id(), recipe))
+                .customBody(new AltarGrid(recipe))
                 .addTop(text("guide.appliedas.altar.conditions", recipe.isOnlyNight()
                         ? Component.translatable("guide.appliedas.altar.night")
                         : Component.translatable("guide.appliedas.altar.any_time"), recipe.getDuration() / 20.0));
@@ -94,21 +94,26 @@ public final class GuideRecipes implements RecipeTypeMappingSupplier {
         var modifier = recipe.getOutputModifiers().getFirst();
         ItemStack result;
         String description;
-        if (holder.id().getPath().equals("liquid_starlight/form_astral_fluix_cluster")
-                && modifier instanceof FormAstralFluixCluster) {
-            result = ModContent.ASTRAL_FLUIX_CLUSTER_ITEM.toStack();
-            CelestialCrystalClusterBlockItem.setStage(result, 0);
-            description = "guide.appliedas.liquid_starlight.form";
-        } else if (holder.id().getPath().equals("liquid_starlight/grow_astral_fluix_crystal")
-                && modifier instanceof LiquidStarlightOutputGrowSize) {
-            result = ModContent.ASTRAL_FLUIX_CRYSTAL.toStack();
-            description = "guide.appliedas.liquid_starlight.grow";
-        } else if (holder.id().getPath().equals("liquid_starlight/merge_astral_fluix_crystals")
-                && modifier instanceof LiquidStarlightOutputMergeCrystal) {
-            result = ModContent.ASTRAL_FLUIX_CRYSTAL.toStack();
-            description = "guide.appliedas.liquid_starlight.merge";
-        } else {
-            return null;
+        switch (holder.id().getPath()) {
+            case "liquid_starlight/form_astral_fluix_cluster" -> {
+                if (!(modifier instanceof FormAstralFluixCluster)) return null;
+                result = ModContent.ASTRAL_FLUIX_CLUSTER_ITEM.toStack();
+                CelestialCrystalClusterBlockItem.setStage(result, 0);
+                description = "guide.appliedas.liquid_starlight.form";
+            }
+            case "liquid_starlight/grow_astral_fluix_crystal" -> {
+                if (!(modifier instanceof LiquidStarlightOutputGrowSize)) return null;
+                result = ModContent.ASTRAL_FLUIX_CRYSTAL.toStack();
+                description = "guide.appliedas.liquid_starlight.grow";
+            }
+            case "liquid_starlight/merge_astral_fluix_crystals" -> {
+                if (!(modifier instanceof LiquidStarlightOutputMergeCrystal)) return null;
+                result = ModContent.ASTRAL_FLUIX_CRYSTAL.toStack();
+                description = "guide.appliedas.liquid_starlight.merge";
+            }
+            default -> {
+                return null;
+            }
         }
 
         // Display blank crystals: generating gameplay attributes requires server config.
@@ -132,7 +137,8 @@ public final class GuideRecipes implements RecipeTypeMappingSupplier {
             // unavailable in the title-screen guide. Blank display artifacts need no server state.
             return RegistriesAS.REGISTRY_ARTIFACT_TYPES.stream().map(ArtifactItem::createForDisplay)
                     .peek(stack -> {
-                        stack.set(DataComponentsAS.ARTIFACT, stack.get(DataComponentsAS.ARTIFACT)
+                        stack.set(DataComponentsAS.ARTIFACT, java.util.Objects.requireNonNull(
+                                stack.get(DataComponentsAS.ARTIFACT), "Display artifacts must have artifact data")
                                 .changeStability(ArtifactStability.STABLE));
                         stack.set(net.minecraft.core.component.DataComponents.ITEM_NAME,
                                 Component.translatable("ingredient.astralsorcery.stable_artifact.description")
@@ -150,18 +156,12 @@ public final class GuideRecipes implements RecipeTypeMappingSupplier {
     }
 
     /** Use the tome's background and coordinates, with GuideME's ingredient tooltips. */
-    public static final class AltarGrid extends LytBox {
+    private static final class AltarGrid extends LytBox {
         private record PositionedSlot(LytSlot slot, int x, int y) {}
         private final List<PositionedSlot> slots = new ArrayList<>();
         private final ResourceLocation background;
-        private final ResourceLocation recipeId;
 
-        public ResourceLocation getRecipeId() {
-            return recipeId;
-        }
-
-        private AltarGrid(ResourceLocation recipeId, AltarRecipe recipe) {
-            this.recipeId = recipeId;
+        private AltarGrid(AltarRecipe recipe) {
             background = switch (recipe.getRequiredType()) {
                 case ILLUMINATION -> TexturesAS.SCREEN_TOME_PAGE_GRID_ALTAR_T1.getKey();
                 case RESONANCE -> {

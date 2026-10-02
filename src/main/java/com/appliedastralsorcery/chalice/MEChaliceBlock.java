@@ -1,5 +1,8 @@
 package com.appliedastralsorcery.chalice;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import com.appliedastralsorcery.ModContent;
 import com.mojang.serialization.MapCodec;
 import hellfirepvp.astralsorcery.common.block.tile.ChaliceBlock;
@@ -42,10 +45,12 @@ public final class MEChaliceBlock extends ChaliceBlock {
         super(properties);
         registerDefaultState(stateDefinition.any().setValue(TOP_CONNECTED, false).setValue(BOTTOM_CONNECTED, false));
     }
+    @ParametersAreNonnullByDefault
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(TOP_CONNECTED, BOTTOM_CONNECTED);
     }
+    @Nonnull
     @Override protected MapCodec<? extends BaseEntityBlock> codec() { return CODEC; }
     @Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new MEChaliceBlockEntity(pos, state);
@@ -56,10 +61,12 @@ public final class MEChaliceBlock extends ChaliceBlock {
             else if (world instanceof ServerLevel server) chalice.serverTick(server);
         });
     }
+    @Nonnull
     @Override protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         int mask = (state.getValue(TOP_CONNECTED) ? 2 : 0) | (state.getValue(BOTTOM_CONNECTED) ? 1 : 0);
         return SHAPES[mask];
     }
+    @Nonnull
     @Override protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level,
             BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         // Buckets and other fluid containers keep their ordinary right-click interaction.
@@ -67,6 +74,8 @@ public final class MEChaliceBlock extends ChaliceBlock {
             return super.useItemOn(stack, state, level, pos, player, hand, hit);
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
+    @Nonnull
+    @ParametersAreNonnullByDefault
     @Override protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
             Player player, BlockHitResult hit) {
         if (player.isSpectator()) return InteractionResult.PASS;

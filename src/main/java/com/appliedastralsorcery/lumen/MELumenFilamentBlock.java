@@ -1,5 +1,8 @@
 package com.appliedastralsorcery.lumen;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -57,16 +60,20 @@ public final class MELumenFilamentBlock extends AEBaseEntityBlock<MELumenFilamen
     }
 
     @Override
+    @Nonnull
     protected BlockState rotate(BlockState state, Rotation rotation) {
         return state.setValue(BASE_FACE, rotation.rotate(state.getValue(BASE_FACE)));
     }
 
     @Override
+    @Nonnull
     protected BlockState mirror(BlockState state, Mirror mirror) {
         return state.setValue(BASE_FACE, mirror.mirror(state.getValue(BASE_FACE)));
     }
 
     @Override
+    @Nonnull
+    @ParametersAreNonnullByDefault
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPES.get(state.getValue(BASE_FACE));
     }
@@ -105,6 +112,7 @@ public final class MELumenFilamentBlock extends AEBaseEntityBlock<MELumenFilamen
     }
 
     @Override
+    @Nonnull
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player,
             BlockHitResult hit) {
         if (player.isSpectator()) return InteractionResult.PASS;

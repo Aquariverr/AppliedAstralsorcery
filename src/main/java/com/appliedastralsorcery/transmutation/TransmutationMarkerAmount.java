@@ -1,5 +1,7 @@
 package com.appliedastralsorcery.transmutation;
 
+import javax.annotation.Nonnull;
+
 import com.appliedastralsorcery.AppliedAstralsorcery;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -22,6 +24,7 @@ public record TransmutationMarkerAmount(int containerId, int slot, ItemStack exp
             ByteBufCodecs.VAR_INT, TransmutationMarkerAmount::amount,
             ByteBufCodecs.BOOL, TransmutationMarkerAmount::relative, TransmutationMarkerAmount::new);
 
+    @Nonnull
     @Override public Type<TransmutationMarkerAmount> type() { return TYPE; }
     public static void register(RegisterPayloadHandlersEvent event) {
         event.registrar("1").playToServer(TYPE, STREAM_CODEC, (packet, context) -> packet.apply(context.player()));

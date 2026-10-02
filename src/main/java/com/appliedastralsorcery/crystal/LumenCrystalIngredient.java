@@ -1,5 +1,7 @@
 package com.appliedastralsorcery.crystal;
 
+import javax.annotation.Nonnull;
+
 import java.util.stream.Stream;
 
 import com.appliedastralsorcery.ModContent;
@@ -28,6 +30,7 @@ public final class LumenCrystalIngredient implements ICustomIngredient {
     }
 
     @Override
+    @Nonnull
     public Stream<ItemStack> getItems() {
         return RegistriesAS.REGISTRY_LUMEN.holders()
                 .filter(lumen -> !lumen.is(LumenAS.NONE))
@@ -40,6 +43,7 @@ public final class LumenCrystalIngredient implements ICustomIngredient {
     }
 
     @Override
+    @Nonnull
     public IngredientType<?> getType() {
         return ModContent.LUMEN_CRYSTAL_INGREDIENT.get();
     }

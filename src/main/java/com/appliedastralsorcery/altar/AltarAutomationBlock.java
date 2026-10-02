@@ -1,5 +1,8 @@
 package com.appliedastralsorcery.altar;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import com.appliedastralsorcery.ModContent;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -27,23 +30,30 @@ public final class AltarAutomationBlock extends BaseEntityBlock {
     private AltarAutomationBlock(Properties properties) { super(properties); }
 
     @Override
+    @Nonnull
     protected MapCodec<? extends BaseEntityBlock> codec() { return CODEC; }
 
     @Override
+    @Nonnull
+    @ParametersAreNonnullByDefault
     protected RenderShape getRenderShape(BlockState state) { return RenderShape.MODEL; }
 
     @Override
+    @ParametersAreNonnullByDefault
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new AltarAutomationBlockEntity(pos, state);
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide ? null : createTickerHelper(type, ModContent.ALTAR_AUTOMATION_ENTITY.get(),
                 (world, pos, blockState, entity) -> entity.serverTick());
     }
 
     @Override
+    @Nonnull
+    @ParametersAreNonnullByDefault
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player,
             BlockHitResult hit) {
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof AltarAutomationBlockEntity entity) {
@@ -53,6 +63,7 @@ public final class AltarAutomationBlock extends BaseEntityBlock {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState next, boolean moving) {
         if (!state.is(next.getBlock()) && level.getBlockEntity(pos) instanceof AltarAutomationBlockEntity entity) {
             entity.dropContents();

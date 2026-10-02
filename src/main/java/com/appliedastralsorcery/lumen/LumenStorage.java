@@ -30,7 +30,7 @@ public final class LumenStorage extends ExternalStorageFacade {
     }
 
     public static int clampAmount(long amount) {
-        return (int) Math.clamp(amount, 0, Integer.MAX_VALUE);
+        return Math.clamp(amount, 0, Integer.MAX_VALUE);
     }
 
     @Override

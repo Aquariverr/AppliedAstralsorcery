@@ -31,16 +31,13 @@ public final class ChiselProcessing {
     }
 
     /** Works exclusively on copies. Returns both crystal halves without consuming the caller's source. */
-    public static List<ItemStack> process(ItemStack input, RandomSource random) {
-        return process(input, random, 0);
-    }
-
     public static List<ItemStack> process(ItemStack input, RandomSource random, int fortuneLevel) {
         if (!canProcess(input)) return List.of();
         int fortune = Math.max(0, fortuneLevel);
         var original = input.copyWithCount(1);
         if (original.getItem() instanceof RockCrystalItem crystal) {
             var remaining = original.get(DataComponentsAS.CRYSTAL_ATTRIBUTES);
+            if (remaining == null) return List.of();
             int splitCount = (remaining.getTotalTierCount() + 1) / 2;
             int lost = 0;
             if (splitCount > 1 && random.nextFloat() < 0.9F / (fortune + 1)) {

@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 final class WandNetwork {
     private WandNetwork() {}
 
+    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
     static IGrid findGrid(ServerPlayer player, ItemStack wand) {
         var target = wand.get(AEComponents.WIRELESS_LINK_TARGET);
         if (target == null) {
@@ -18,7 +19,7 @@ final class WandNetwork {
         }
         var level = player.server.getLevel(target.dimension());
         // Never load chunks or dimensions just to resolve a wireless link.
-        if (level == null || !level.hasChunkAt(target.pos())
+        if (level == null || !level.isLoaded(target.pos())
                 || !(level.getBlockEntity(target.pos()) instanceof IWirelessAccessPoint accessPoint)
                 || accessPoint.getGrid() == null) {
             MEResonatingWandItem.message(player, "unavailable");

@@ -1,10 +1,11 @@
 package com.appliedastralsorcery.crystal;
 
+import javax.annotation.Nonnull;
+
 import com.appliedastralsorcery.ModContent;
 import com.mojang.serialization.MapCodec;
 import hellfirepvp.astralsorcery.common.block.tile.CelestialCrystalClusterBlock;
 import hellfirepvp.astralsorcery.common.lib.SoundsAS;
-import hellfirepvp.astralsorcery.common.lib.DataComponentsAS;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,6 +32,7 @@ public final class AstralFluixClusterBlock extends CelestialCrystalClusterBlock 
     }
 
     @Override
+    @Nonnull
     protected MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
     }
@@ -47,7 +49,7 @@ public final class AstralFluixClusterBlock extends CelestialCrystalClusterBlock 
             // Native cluster items start with an empty 0/0 budget. Creative placement must
             // generate usable crystals, while pick-block stacks keep their existing traits.
             var attributes = cluster.getTileData().getCrystalAttributes();
-            var properties = ModContent.ASTRAL_FLUIX_CRYSTAL.toStack().get(DataComponentsAS.CRYSTAL_ATTRIBUTES).getProperties();
+            var properties = AstralFluixCrystalItem.DEFAULT_ATTRIBUTES.getProperties();
             cluster.getTileData().setCrystalAttributes(attributes.setProperties(properties));
             cluster.generateProperties();
         }

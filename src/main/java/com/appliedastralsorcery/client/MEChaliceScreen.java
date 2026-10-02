@@ -1,5 +1,7 @@
 package com.appliedastralsorcery.client;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import com.appliedastralsorcery.ModContent;
 import com.appliedastralsorcery.chalice.MEChaliceMenu;
 import com.appliedastralsorcery.chalice.ChaliceFluidMarker;
@@ -178,6 +180,7 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
         return super.keyPressed(key, scanCode, modifiers);
     }
 
+    @ParametersAreNonnullByDefault
     @Override public void render(GuiGraphics g, int mx, int my, float tick) {
         if (!reserveDrag.isDragging() && lastTarget != menu.getPullTarget() && !target.isFocused()) {
             target.setValue(Integer.toString(menu.getPullTarget()));
@@ -227,6 +230,7 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
         return fluid.isEmpty() ? 0xFF8CB6BF : IClientFluidTypeExtensions.of(fluid.getFluid()).getTintColor(fluid);
     }
 
+    @ParametersAreNonnullByDefault
     @Override protected void renderBg(GuiGraphics g, float tick, int mx, int my) {
         plate(g, leftPos, topPos, imageWidth, imageHeight);
         g.fill(leftPos + 5, topPos + 5, leftPos + 259, topPos + 233, 0x24FFF8E5);
@@ -301,6 +305,7 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
         g.fill(marker, y - 1, marker + 1, y + 6, GOLD);
     }
 
+    @ParametersAreNonnullByDefault
     @Override protected void renderLabels(GuiGraphics g, int mx, int my) {
         fitted(g, title, SIDE_MARGIN + 25, 13, 174, INK);
         fitted(g, selectedName(), 103, 36, 142, INK);

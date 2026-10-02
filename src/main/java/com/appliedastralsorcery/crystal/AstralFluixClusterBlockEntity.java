@@ -3,7 +3,6 @@ package com.appliedastralsorcery.crystal;
 import com.appliedastralsorcery.ModContent;
 import hellfirepvp.astralsorcery.common.block.tile.CelestialCrystalClusterBlock;
 import hellfirepvp.astralsorcery.common.crystal.CrystalPropertyGenerator;
-import hellfirepvp.astralsorcery.common.lib.DataComponentsAS;
 import hellfirepvp.astralsorcery.common.tile.TileCelestialCrystalCluster;
 import hellfirepvp.astralsorcery.common.util.data.TileRegistryObject;
 import net.minecraft.core.BlockPos;
@@ -13,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public final class AstralFluixClusterBlockEntity extends TileCelestialCrystalCluster {
     public AstralFluixClusterBlockEntity(BlockPos pos, BlockState state) {
         super(new TileRegistryObject<>(ModContent.ASTRAL_FLUIX_CLUSTER_ENTITY), pos, state);
-        getTileData().setCrystalAttributes(ModContent.ASTRAL_FLUIX_CRYSTAL.toStack().get(DataComponentsAS.CRYSTAL_ATTRIBUTES));
+        getTileData().setCrystalAttributes(AstralFluixCrystalItem.DEFAULT_ATTRIBUTES);
     }
 
     public void generateProperties() {

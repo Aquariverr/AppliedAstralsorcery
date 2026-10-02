@@ -1,5 +1,8 @@
 package com.appliedastralsorcery.wand;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import java.util.List;
 import com.mojang.serialization.Codec;
 
@@ -56,6 +59,8 @@ public final class MEResonatingWandItem extends WandItem {
     public static void setOptions(ItemStack wand, int options) { wand.set(OPTIONS, options & 7); }
 
     @Override
+    @Nonnull
+    @ParametersAreNonnullByDefault
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         var wand = player.getItemInHand(hand);
         if (player.isSpectator() || getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE).getType() != HitResult.Type.MISS) {
@@ -88,6 +93,7 @@ public final class MEResonatingWandItem extends WandItem {
     }
 
     @Override
+    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
     public boolean doBlockInteract(LogicalSide side, Player player, InteractionHand hand, BlockPos pos,
             BlockHitResult hitResult, Direction blockFace) {
         var level = player.level();
@@ -116,6 +122,7 @@ public final class MEResonatingWandItem extends WandItem {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag flag) {
         var target = stack.get(AEComponents.WIRELESS_LINK_TARGET);
         if (target == null) {

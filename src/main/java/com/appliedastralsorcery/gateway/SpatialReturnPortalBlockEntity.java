@@ -36,7 +36,6 @@ public final class SpatialReturnPortalBlockEntity extends TileCelestialGateway {
     public boolean isBoundTo(GlobalPos gateway) { return gateway.equals(returnGateway); }
 
     // The gateway owns its Level; binding only reads its dimension.
-    @SuppressWarnings("resource")
     public void bind(MECelestialGatewayBlockEntity gateway, int plotId, Component cellName) {
         var gatewayLevel = gateway.getLevel();
         if (gatewayLevel == null) return;

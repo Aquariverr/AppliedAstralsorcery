@@ -16,13 +16,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ItemPickupStrategy.class, remap = false)
 public abstract class NonEmptyItemPickupMixin {
+    @SuppressWarnings("UnstableApiUsage") // AE2's pickup hook exposes experimental API types.
     @Inject(method = "tryPickup", at = @At(value = "INVOKE", target =
             "Lappeng/parts/automation/ItemPickupStrategy;calculateEnergyUsage(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Ljava/util/List;)F"),
             cancellable = true)
     private void appliedas$skipEmptyDrops(IEnergySource energySource, PickupSink sink,
-            CallbackInfoReturnable<PickupStrategy.Result> cir, @Local List<ItemStack> items) {
+            CallbackInfoReturnable<PickupStrategy.Result> cir, @Local(name = "items") List<ItemStack> items) {
         // Inspect the actual loot roll used by AE2, including its tool and enchantments.
         // Do not roll loot again, consume power, or destroy the block when it has no output.
+        // After transformation, this is ItemPickupStrategy and may be our subclass.
+        //noinspection ConstantValue
         if ((Object) this instanceof NonEmptyItemPickupStrategy && items.stream().allMatch(ItemStack::isEmpty)) {
             cir.setReturnValue(PickupStrategy.Result.CANT_PICKUP);
         }

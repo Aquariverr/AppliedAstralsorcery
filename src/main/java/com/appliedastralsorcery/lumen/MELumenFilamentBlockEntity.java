@@ -172,7 +172,7 @@ public final class MELumenFilamentBlockEntity extends AENetworkedBlockEntity imp
     @Override
     protected void writeToStream(RegistryFriendlyByteBuf data) {
         super.writeToStream(data);
-        data.writeUtf(RegistriesAS.REGISTRY_LUMEN.getKey(getRecentlyTransmittedLumen()).toString());
+        data.writeUtf(getRecentlyTransmittedLumen().getRegistryKey().orElseThrow().location().toString());
         data.writeLong(transmittedLumenGameTime);
     }
 
@@ -206,11 +206,11 @@ public final class MELumenFilamentBlockEntity extends AENetworkedBlockEntity imp
 
     private CompoundTag saveFilament(boolean includeBuffer) {
         var tag = new CompoundTag();
-        if (selected != null) tag.putString("selected", RegistriesAS.REGISTRY_LUMEN.getKey(selected).toString());
+        if (selected != null) tag.putString("selected", selected.getRegistryKey().orElseThrow().location().toString());
         if (includeBuffer && !pending.getLumenStacks().isEmpty()) {
             var stack = pending.getLumenStacks().getFirst();
             if (!stack.isEmpty()) {
-                tag.putString("pending_type", RegistriesAS.REGISTRY_LUMEN.getKey(stack.getLumen()).toString());
+                tag.putString("pending_type", stack.getLumen().getRegistryKey().orElseThrow().location().toString());
                 tag.putInt("pending_amount", stack.getAmount());
             }
         }

@@ -15,6 +15,9 @@ import org.spongepowered.asm.mixin.injection.At;
 /** AS tests exact item identity in these blocks instead of accepting WandItem subclasses. */
 @Mixin(value = {AltarBlock.class, InfuserBlock.class}, remap = false)
 public abstract class ResonatingWandRecognitionMixin {
+    // AS invokes this overload inside synthetic lambda$useItemOn$2 methods in both targets.
+    // Minecraft Development cannot resolve these wildcard targets; keep Mixin's runtime checks enabled.
+    @SuppressWarnings("MixinAnnotationTarget")
     @WrapOperation(method = "*", at = @At(value = "INVOKE", target =
             "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/core/Holder;)Z"))
     private static boolean appliedas$recognizeWand(ItemStack stack, Holder<Item> expected, Operation<Boolean> original) {

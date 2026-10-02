@@ -1,6 +1,7 @@
 package com.appliedastralsorcery.parts;
 
 import java.util.List;
+import java.util.Objects;
 
 import appeng.api.behaviors.PickupStrategy;
 import appeng.api.parts.IPartItem;
@@ -45,17 +46,20 @@ public class NonEmptyAnnihilationPlanePart extends AnnihilationPlanePart {
     }
 
     @Override
+    @SuppressWarnings("UnstableApiUsage") // Extending AE2's pickup strategies requires its experimental API.
     protected List<PickupStrategy> getPickupStrategies() {
         boolean initialize = pickupStrategies == null;
         var strategies = super.getPickupStrategies();
         if (initialize && pickupStrategies != null) {
             var host = getBlockEntity();
-            var node = getMainNode().getNode();
+            // AE2 only initializes strategies after the part is attached and its node exists.
+            var node = Objects.requireNonNull(getMainNode().getNode(), "Initialized pickup strategies need a grid node");
+            var side = Objects.requireNonNull(getSide(), "Initialized pickup strategies need an attached side");
             // Keep fluid and addon strategies, and all of AE2's normal item pickup behavior.
             pickupStrategies = strategies.stream().map(strategy ->
                     strategy.getClass() == ItemPickupStrategy.class
-                            ? (PickupStrategy) new NonEmptyItemPickupStrategy((ServerLevel) host.getLevel(),
-                                    host.getBlockPos().relative(getSide()), getSide().getOpposite(), host,
+                            ? new NonEmptyItemPickupStrategy((ServerLevel) host.getLevel(),
+                                    host.getBlockPos().relative(side), side.getOpposite(), host,
                                     getEnchantments(), node.getOwningPlayerProfileId())
                             : strategy).toList();
             return pickupStrategies;

@@ -1,5 +1,7 @@
 package com.appliedastralsorcery.client;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,6 +137,7 @@ public final class MELumenFilamentScreen extends AbstractContainerScreen<MELumen
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         updateButtons();
         super.render(graphics, mouseX, mouseY, partialTick);
@@ -172,6 +175,7 @@ public final class MELumenFilamentScreen extends AbstractContainerScreen<MELumen
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
         drawFitted(graphics, title, 34, 13, imageWidth - 68, PALE);
         drawFitted(graphics, currentType(), 14, 34, imageWidth - 88, TEXT);
@@ -249,6 +253,7 @@ public final class MELumenFilamentScreen extends AbstractContainerScreen<MELumen
         }
 
         @Override
+        @ParametersAreNonnullByDefault
         protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
             woodFrame(graphics, getX(), getY(), width, height);
             tile(graphics, SOOTY_MARBLE, getX() + 3, getY() + 3, width - 6, height - 6);
@@ -316,6 +321,7 @@ public final class MELumenFilamentScreen extends AbstractContainerScreen<MELumen
         }
 
         @Override
+        @ParametersAreNonnullByDefault
         protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
             boolean selected = key.lumen() == menu.getSelectedLumen();
             marblePlate(graphics, getX(), getY(), width, height);

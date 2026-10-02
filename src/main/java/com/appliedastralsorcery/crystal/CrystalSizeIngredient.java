@@ -1,5 +1,7 @@
 package com.appliedastralsorcery.crystal;
 
+import javax.annotation.Nonnull;
+
 import java.util.stream.Stream;
 
 import com.appliedastralsorcery.ModContent;
@@ -30,6 +32,7 @@ public record CrystalSizeIngredient(int size) implements ICustomIngredient {
     }
 
     @Override
+    @Nonnull
     public Stream<ItemStack> getItems() {
         var stack = ModContent.ASTRAL_FLUIX_CRYSTAL.toStack();
         // No random properties in recipe viewers; purity and cut do not affect the yield.
@@ -44,6 +47,7 @@ public record CrystalSizeIngredient(int size) implements ICustomIngredient {
     }
 
     @Override
+    @Nonnull
     public IngredientType<?> getType() {
         return ModContent.CRYSTAL_SIZE_INGREDIENT.get();
     }

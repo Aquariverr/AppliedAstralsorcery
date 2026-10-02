@@ -1,5 +1,8 @@
 package com.appliedastralsorcery.chisel;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import com.appliedastralsorcery.ModContent;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Inventory;
@@ -33,12 +36,14 @@ public final class AutoChiselMenu extends AbstractContainerMenu {
         owner = inventory.player;
         var items = machine == null ? new ItemStackHandler(MACHINE_SLOTS) : machine.getInventory();
         addSlot(new SlotItemHandler(items, 0, 23, 78) {
+            @ParametersAreNonnullByDefault
             @Override public boolean mayPlace(ItemStack stack) { return !isDroppedItemMode() && ChiselProcessing.accepts(stack); }
             @Override public boolean isActive() { return !configurationOpen; }
         });
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 addSlot(new SlotItemHandler(items, 1 + row * 3 + col, 181 + col * 18, 60 + row * 18) {
+                    @ParametersAreNonnullByDefault
                     @Override public boolean mayPlace(ItemStack stack) { return false; }
                     @Override public boolean isActive() { return !configurationOpen; }
                 });
@@ -87,6 +92,8 @@ public final class AutoChiselMenu extends AbstractContainerMenu {
         return AutoChiselBlockEntity.SideMode.values()[Math.clamp(data.get(3 + side.ordinal()), 0,
                 AutoChiselBlockEntity.SideMode.values().length - 1)];
     }
+    @ParametersAreNonnullByDefault
+    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
     @Override public boolean clickMenuButton(Player player, int button) {
         if (machine == null || player.level().isClientSide || !stillValid(player) || button < 0 || button == 7
                 || button >= REVERSE_SIDE_BASE + 6) return false;
@@ -103,6 +110,8 @@ public final class AutoChiselMenu extends AbstractContainerMenu {
         broadcastChanges();
         return true;
     }
+    @ParametersAreNonnullByDefault
+    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
     @Override public boolean stillValid(Player player) {
         if (player != owner || player.isSpectator()) return false;
         if (machine == null) return player.level().isClientSide;
@@ -110,6 +119,8 @@ public final class AutoChiselMenu extends AbstractContainerMenu {
                 && player.level().getBlockEntity(machine.getBlockPos()) == machine
                 && player.distanceToSqr(machine.getBlockPos().getCenter()) <= 64;
     }
+    @Nonnull
+    @ParametersAreNonnullByDefault
     @Override public ItemStack quickMoveStack(Player player, int index) {
         if (!stillValid(player) || index < 0 || index >= slots.size()) return ItemStack.EMPTY;
         var slot = slots.get(index);

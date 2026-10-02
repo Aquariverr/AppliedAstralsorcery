@@ -1,5 +1,7 @@
 package com.appliedastralsorcery.client;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import java.util.EnumMap;
 import java.util.List;
 import java.util.function.BooleanSupplier;
@@ -12,6 +14,7 @@ import hellfirepvp.astralsorcery.client.ClientProxy;
 import hellfirepvp.astralsorcery.client.lib.TexturesAS;
 import hellfirepvp.astralsorcery.common.lib.LumenAS;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
@@ -96,7 +99,9 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
     }
 
     private void send(int id) {
-        if (minecraft.gameMode != null) minecraft.gameMode.handleInventoryButtonClick(menu.containerId, id);
+        if (minecraft != null && minecraft.gameMode != null) {
+            minecraft.gameMode.handleInventoryButtonClick(menu.containerId, id);
+        }
     }
 
     private Button setting(int x, int y, int width, int id, BooleanSupplier lamp) {
@@ -125,6 +130,7 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
         sides.values().forEach(face -> face.update(open));
     }
 
+    @ParametersAreNonnullByDefault
     @Override public void render(GuiGraphics g, int mx, int my, float partial) {
         updateSettings();
         super.render(g, mx, my, partial);
@@ -237,7 +243,7 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
         int color = 0xFF000000 | evorsio.getColor(ClientProxy.getClientTick()).getColor();
         g.fill(x + 19, y + 5, x + 37, y + 23, 0xFFEDE3CF);
         g.renderOutline(x + 19, y + 5, 18, 18, GOLD);
-        var sprite = minecraft.getModelManager().getAtlas(TexturesAS.ATLAS_LUMEN)
+        var sprite = Minecraft.getInstance().getModelManager().getAtlas(TexturesAS.ATLAS_LUMEN)
                 .getSprite(evorsio.getRegistryKey().orElseThrow().location());
         g.blit(x + 20, y + 6, 0, 16, 16, sprite, ((color >> 16) & 255) / 255F, ((color >> 8) & 255) / 255F,
                 (color & 255) / 255F, 1F);
@@ -292,6 +298,7 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
         star(g, textX + textWidth + 4, textY + 3, 2, GOLD_SHADE);
     }
 
+    @ParametersAreNonnullByDefault
     @Override protected void renderLabels(GuiGraphics g, int mx, int my) {}
 
     private static int faceColor(AutoChiselBlockEntity.SideMode mode) {
@@ -476,11 +483,12 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
 
         @Override public boolean mouseClicked(double mouseX, double mouseY, int button) {
             if (!visible || !active || (button != 0 && button != 1) || !clicked(mouseX, mouseY)) return false;
-            playDownSound(minecraft.getSoundManager());
+            playDownSound(Minecraft.getInstance().getSoundManager());
             send(button == 0 ? side.ordinal() : AutoChiselMenu.REVERSE_SIDE_BASE + side.ordinal());
             return true;
         }
 
+        @ParametersAreNonnullByDefault
         @Override protected void renderWidget(GuiGraphics g, int mx, int my, float partial) {
             int x = getX(), y = getY();
             boolean hover = isHoveredOrFocused();

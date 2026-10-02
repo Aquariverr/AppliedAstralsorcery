@@ -1,5 +1,7 @@
 package com.appliedastralsorcery.crystal;
 
+import javax.annotation.Nonnull;
+
 import com.appliedastralsorcery.AppliedAstralsorcery;
 import com.appliedastralsorcery.ModContent;
 import hellfirepvp.astralsorcery.common.component.CrystalAttributesComponent;
@@ -17,10 +19,11 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 public final class AstralFluixCrystalItem extends RockCrystalItem {
     // Match the azure lit rim of the item texture; the native light fan fades toward a brighter cyan-blue.
     public static final ColorWrapper COLOR = ColorWrapper.opaque(0x7CC8FF);
+    public static final CrystalAttributesComponent DEFAULT_ATTRIBUTES = CrystalAttributesComponent.empty(6, 14);
 
     public AstralFluixCrystalItem() {
         // Use the same initial property budget and growth limit as celestial crystals.
-        super(CrystalAttributesComponent.empty(6, 14));
+        super(DEFAULT_ATTRIBUTES);
     }
 
     @Override
@@ -39,6 +42,7 @@ public final class AstralFluixCrystalItem extends RockCrystalItem {
     }
 
     @Override
+    @Nonnull
     public RockCrystalItem getCrystalSplitItem() {
         return this;
     }

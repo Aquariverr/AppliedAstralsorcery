@@ -1,5 +1,8 @@
 package com.appliedastralsorcery.chalice;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -68,6 +71,7 @@ public final class MEChaliceMenu extends AbstractContainerMenu {
             data.set(0, key == null ? 0 : types.indexOf(key.getFluid()) + 1);
         }
     }
+    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
     public boolean setFluidMarker(Player player, AEFluidKey key) {
         if (chalice == null || player.level().isClientSide() || !stillValid(player)
                 || key != null && !types.contains(key.getFluid())) return false;
@@ -90,8 +94,10 @@ public final class MEChaliceMenu extends AbstractContainerMenu {
     }
     public FluidStack getStoredFluid() {
         var fluid = BuiltInRegistries.FLUID.byId(value(3));
-        return fluid == null || fluid == Fluids.EMPTY || value(2) == 0 ? FluidStack.EMPTY : new FluidStack(fluid, value(2));
+        return fluid == Fluids.EMPTY || value(2) == 0 ? FluidStack.EMPTY : new FluidStack(fluid, value(2));
     }
+    @ParametersAreNonnullByDefault
+    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
     @Override public boolean clickMenuButton(Player player, int button) {
         if (chalice == null || player.level().isClientSide() || !stillValid(player)) return false;
         if (button >= TARGET_BUTTON_BASE && button <= TARGET_BUTTON_BASE + MEChaliceBlockEntity.CAPACITY)
@@ -110,12 +116,16 @@ public final class MEChaliceMenu extends AbstractContainerMenu {
         broadcastChanges();
         return true;
     }
+    @ParametersAreNonnullByDefault
+    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
     @Override public boolean stillValid(Player player) {
         if (player != owner || player.isSpectator()) return false;
         return chalice == null ? player.level().isClientSide() : !chalice.isRemoved()
                 && chalice.getLevel() == player.level() && player.level().getBlockEntity(chalice.getBlockPos()) == chalice
                 && player.distanceToSqr(chalice.getBlockPos().getCenter()) <= 64;
     }
+    @Nonnull
+    @ParametersAreNonnullByDefault
     @Override public ItemStack quickMoveStack(Player player, int index) {
         if (index < 0 || index >= slots.size() || !stillValid(player)) return ItemStack.EMPTY;
         var slot = slots.get(index);

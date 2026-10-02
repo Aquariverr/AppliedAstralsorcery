@@ -1,5 +1,8 @@
 package com.appliedastralsorcery.transmutation;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import com.appliedastralsorcery.ModContent;
 import hellfirepvp.astralsorcery.common.constellation.BaseConstellation;
 import hellfirepvp.astralsorcery.common.lib.RegistriesAS;
@@ -33,6 +36,7 @@ public final class StarlightTransmutationMenu extends AbstractContainerMenu {
                 for (int col = 0; col < 3; col++) {
                     int slot = group * 9 + row * 3 + col;
                     addSlot(new SlotItemHandler(items, slot, 22 + group * 164 + col * 18, 53 + row * 18) {
+                        @ParametersAreNonnullByDefault
                         @Override public boolean mayPlace(ItemStack stack) {
                             return getSlotIndex() < StarlightTransmutationBlockEntity.INPUT_SLOTS
                                     && (machine == null || machine.accepts(stack));
@@ -49,7 +53,9 @@ public final class StarlightTransmutationMenu extends AbstractContainerMenu {
         for (int slot = 0; slot < 9; slot++) {
             addSlot(new SlotItemHandler(markers, slot, 51 + slot * 18, 155) {
                 @Override public boolean isActive() { return isAutoPull(); }
+                @ParametersAreNonnullByDefault
                 @Override public boolean mayPlace(ItemStack stack) { return false; }
+                @ParametersAreNonnullByDefault
                 @Override public boolean mayPickup(Player player) { return false; }
             });
         }
@@ -95,12 +101,15 @@ public final class StarlightTransmutationMenu extends AbstractContainerMenu {
         int count = (int) Math.clamp(requested, 0L, Math.min(64, marker.getMaxStackSize()));
         return setPullMarker(player, slot, count == 0 ? ItemStack.EMPTY : marker.copyWithCount(count));
     }
+    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
     public boolean setPullMarker(Player player, int slot, ItemStack stack) {
         if (machine == null || player.level().isClientSide || !stillValid(player) || !isAutoPull()) return false;
         if (!machine.setPullMarker(slot, stack)) return false;
         broadcastChanges();
         return true;
     }
+    @ParametersAreNonnullByDefault
+    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
     @Override public boolean clickMenuButton(Player player, int button) {
         if (machine == null || player.level().isClientSide || !stillValid(player)) return false;
         if (button == AUTO_PULL_BUTTON) machine.toggleAutoPull();
@@ -109,6 +118,7 @@ public final class StarlightTransmutationMenu extends AbstractContainerMenu {
         broadcastChanges();
         return true;
     }
+    @ParametersAreNonnullByDefault
     @Override public void clicked(int slot, int button, ClickType type, Player player) {
         if (!stillValid(player)) return;
         if (slot >= MARKER_SLOT_START && slot < MARKER_SLOT_START + 9) {
@@ -134,6 +144,7 @@ public final class StarlightTransmutationMenu extends AbstractContainerMenu {
         }
         super.clicked(slot, button, type, player);
     }
+    @ParametersAreNonnullByDefault
     @Override public boolean canTakeItemForPickAll(ItemStack stack, Slot slot) {
         return slot.index < MARKER_SLOT_START && slot.isActive() && super.canTakeItemForPickAll(stack, slot);
     }
@@ -141,6 +152,8 @@ public final class StarlightTransmutationMenu extends AbstractContainerMenu {
         int id = data.get(7) & 0xFFFF;
         return id == 0 ? null : RegistriesAS.REGISTRY_CONSTELLATIONS.byId(id - 1);
     }
+    @ParametersAreNonnullByDefault
+    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
     @Override public boolean stillValid(Player player) {
         if (player != owner || player.isSpectator()) return false;
         if (machine == null) return player.level().isClientSide;
@@ -148,6 +161,8 @@ public final class StarlightTransmutationMenu extends AbstractContainerMenu {
                 && player.level().getBlockEntity(machine.getBlockPos()) == machine
                 && player.distanceToSqr(machine.getBlockPos().getCenter()) <= 64;
     }
+    @Nonnull
+    @ParametersAreNonnullByDefault
     @Override public ItemStack quickMoveStack(Player player, int index) {
         if (!stillValid(player) || index < 0 || index >= MARKER_SLOT_START || !slots.get(index).isActive()) return ItemStack.EMPTY;
         var slot = slots.get(index);

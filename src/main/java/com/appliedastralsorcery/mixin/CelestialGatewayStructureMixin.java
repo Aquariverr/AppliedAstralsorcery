@@ -1,6 +1,7 @@
 package com.appliedastralsorcery.mixin;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nullable;
 import net.minecraft.MethodsReturnNonnullByDefault;
 
 import com.appliedastralsorcery.gateway.MECelestialGatewayBlock;
@@ -24,7 +25,7 @@ public abstract class CelestialGatewayStructureMixin {
     private void appliedas$acceptMEGateway(CallbackInfo ci) {
         // Keep the native pattern/observer (and wand previews); only extend its center matcher.
         ((StructureBlockArray) (Object) this).addBlock(new SimpleMatchableBlock(BlocksAS.CELESTIAL_GATEWAY.get()) {
-            @Override public boolean matches(BlockGetter reader, BlockPos pos, BlockState state) {
+            @Override public boolean matches(@Nullable BlockGetter reader, BlockPos pos, BlockState state) {
                 return state.getBlock() instanceof MECelestialGatewayBlock || super.matches(reader, pos, state);
             }
         }, BlockPos.ZERO);

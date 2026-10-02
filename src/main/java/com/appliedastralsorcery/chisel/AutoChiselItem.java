@@ -1,5 +1,7 @@
 package com.appliedastralsorcery.chisel;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import hellfirepvp.astralsorcery.common.lib.ItemsAS;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.BlockItem;
@@ -16,14 +18,17 @@ public final class AutoChiselItem extends BlockItem {
         return stack.getCount() == 1;
     }
 
+    @ParametersAreNonnullByDefault
     @Override public int getEnchantmentValue(ItemStack stack) {
         return ItemsAS.CHISEL.toStack().getEnchantmentValue();
     }
 
+    @ParametersAreNonnullByDefault
     @Override public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
         return ItemsAS.CHISEL.toStack().supportsEnchantment(enchantment);
     }
 
+    @ParametersAreNonnullByDefault
     @Override public boolean isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment) {
         return ItemsAS.CHISEL.toStack().isPrimaryItemFor(enchantment);
     }

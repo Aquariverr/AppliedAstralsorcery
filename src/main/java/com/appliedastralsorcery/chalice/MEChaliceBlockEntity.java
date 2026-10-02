@@ -18,14 +18,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
 
 /** Keeps the original chalice tank and all its native interactions. */
 public final class MEChaliceBlockEntity extends TileChalice implements IGridConnectedBlockEntity {
     public static final int CAPACITY = 64_000;
     private final IManagedGridNode mainNode = GridHelper.createManagedNode(this,
-            (IGridNodeListener<MEChaliceBlockEntity>) (owner, node) -> owner.setChanged())
+            (owner, node) -> owner.setChanged())
             .setInWorldNode(true).setExposedOnSides(Set.of(Direction.UP, Direction.DOWN))
             .setFlags(GridFlags.REQUIRE_CHANNEL).setIdlePowerUsage(1.0);
     private AEFluidKey selected;

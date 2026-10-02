@@ -1,5 +1,7 @@
 package com.appliedastralsorcery.parts;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import java.util.List;
 
 import appeng.core.definitions.AEParts;
@@ -14,21 +16,25 @@ public final class NonEmptyAnnihilationPlaneItem extends PartItem<NonEmptyAnnihi
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean isEnchantable(ItemStack stack) {
         return AEParts.ANNIHILATION_PLANE.asItem().isEnchantable(stack);
     }
 
     @Override
-    public int getEnchantmentValue() {
-        return AEParts.ANNIHILATION_PLANE.asItem().getEnchantmentValue();
+    @ParametersAreNonnullByDefault
+    public int getEnchantmentValue(ItemStack stack) {
+        return AEParts.ANNIHILATION_PLANE.asItem().getEnchantmentValue(stack);
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
         return AEParts.ANNIHILATION_PLANE.asItem().isBookEnchantable(stack, book);
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag flag) {
         AEParts.ANNIHILATION_PLANE.asItem().appendHoverText(stack, context, lines, flag);
         lines.add(Component.translatable("tooltip.appliedas.non_empty_annihilation_plane"));

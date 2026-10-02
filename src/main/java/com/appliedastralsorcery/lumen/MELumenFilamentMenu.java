@@ -1,5 +1,8 @@
 package com.appliedastralsorcery.lumen;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import java.util.Comparator;
 import java.util.List;
 
@@ -34,7 +37,7 @@ public final class MELumenFilamentMenu extends AbstractContainerMenu {
         // Registry names give the server and client the same ordering, including addon lumen types.
         availableLumen = RegistriesAS.REGISTRY_LUMEN.stream()
                 .filter(lumen -> lumen != LumenAS.NONE.get())
-                .sorted(Comparator.comparing(lumen -> RegistriesAS.REGISTRY_LUMEN.getKey(lumen).toString()))
+                .sorted(Comparator.comparing(lumen -> lumen.getRegistryKey().orElseThrow().location().toString()))
                 .toList();
         data = filament == null ? new SimpleContainerData(DATA_COUNT) : new ContainerData() {
             @Override
@@ -80,6 +83,8 @@ public final class MELumenFilamentMenu extends AbstractContainerMenu {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
+    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
     public boolean clickMenuButton(Player player, int button) {
         if (filament == null || player.level().isClientSide() || !stillValid(player)
                 || button < 0 || button > availableLumen.size()) {
@@ -91,6 +96,8 @@ public final class MELumenFilamentMenu extends AbstractContainerMenu {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
+    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
     public boolean stillValid(Player player) {
         if (player != owner || player.isSpectator()) return false;
         if (filament == null) return player.level().isClientSide();
@@ -101,6 +108,8 @@ public final class MELumenFilamentMenu extends AbstractContainerMenu {
     }
 
     @Override
+    @Nonnull
+    @ParametersAreNonnullByDefault
     public ItemStack quickMoveStack(Player player, int slot) {
         return ItemStack.EMPTY;
     }

@@ -1,5 +1,8 @@
 package com.appliedastralsorcery.wand;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import appeng.api.ids.AEComponents;
 import com.appliedastralsorcery.ModContent;
 import net.minecraft.world.InteractionHand;
@@ -37,6 +40,8 @@ public final class MEResonatingWandMenu extends AbstractContainerMenu {
     public boolean enabled(int option) { return (data.get(0) & option) != 0; }
     public boolean isLinked() { return data.get(1) == 1; }
 
+    @ParametersAreNonnullByDefault
+    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
     @Override public boolean clickMenuButton(Player player, int button) {
         if (hand == null || player.level().isClientSide() || !stillValid(player)
                 || button != MEResonatingWandItem.USE_ME_ITEMS && button != MEResonatingWandItem.BUILD_FLUIDS
@@ -47,11 +52,15 @@ public final class MEResonatingWandMenu extends AbstractContainerMenu {
         return true;
     }
 
+    @ParametersAreNonnullByDefault
+    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
     @Override public boolean stillValid(Player player) {
         if (player != owner || player.isSpectator()) return false;
         return hand == null ? player.level().isClientSide()
                 : player.getItemInHand(hand) == wand && wand.is(ModContent.ME_RESONATING_WAND);
     }
 
+    @Nonnull
+    @ParametersAreNonnullByDefault
     @Override public ItemStack quickMoveStack(Player player, int slot) { return ItemStack.EMPTY; }
 }

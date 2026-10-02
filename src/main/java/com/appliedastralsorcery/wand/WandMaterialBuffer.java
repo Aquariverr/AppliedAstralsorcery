@@ -65,7 +65,7 @@ final class WandMaterialBuffer {
             long needed = Math.max(0, entry.getValue() - contents.getOrDefault(entry.getKey(), 0L));
             if (needed == 0) continue;
             long fromNetwork = networkReservations.get(entry.getKey());
-            long extracted = fromNetwork == 0 ? 0 : StorageHelper.poweredExtraction(
+            long extracted = fromNetwork == 0 || grid == null || inventory == null ? 0 : StorageHelper.poweredExtraction(
                     grid.getEnergyService(), inventory, entry.getKey(), fromNetwork, source);
             if (entry.getKey() instanceof AEItemKey item && extracted < needed) {
                 long fromInventory = inventoryItems(item, needed - extracted, true);

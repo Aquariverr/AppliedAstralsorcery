@@ -1,5 +1,7 @@
 package com.appliedastralsorcery.transmutation;
 
+import javax.annotation.Nonnull;
+
 import com.appliedastralsorcery.AppliedAstralsorcery;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -19,6 +21,7 @@ public record TransmutationFilterSelection(int containerId, int slot, ItemStack 
             ByteBufCodecs.VAR_INT, TransmutationFilterSelection::slot,
             ItemStack.OPTIONAL_STREAM_CODEC, TransmutationFilterSelection::stack, TransmutationFilterSelection::new);
 
+    @Nonnull
     @Override public Type<TransmutationFilterSelection> type() { return TYPE; }
     public static void register(RegisterPayloadHandlersEvent event) {
         event.registrar("1").playToServer(TYPE, STREAM_CODEC, (packet, context) -> packet.apply(context.player()));

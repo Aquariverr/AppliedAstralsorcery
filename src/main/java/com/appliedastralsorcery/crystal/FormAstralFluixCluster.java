@@ -9,7 +9,6 @@ import hellfirepvp.astralsorcery.common.recipe.liquid.LiquidStarlightRecipe;
 import hellfirepvp.astralsorcery.common.recipe.liquid.LiquidStarlightRecipeInput;
 import hellfirepvp.astralsorcery.common.recipe.liquid.output.LiquidStarlightOutputFormCrystalCluster;
 import hellfirepvp.astralsorcery.common.recipe.liquid.output.LiquidStarlightRecipeOutputModifier;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -43,6 +42,7 @@ public final class FormAstralFluixCluster extends LiquidStarlightRecipeOutputMod
     }
 
     @Override
+    @SuppressWarnings("resource") // Minecraft manages the trigger entity's world lifetime.
     public void createOutput(LiquidStarlightRecipe recipe, LiquidStarlightRecipeInput input) {
         var trigger = input.getTriggerEntity();
         var level = trigger.level();
