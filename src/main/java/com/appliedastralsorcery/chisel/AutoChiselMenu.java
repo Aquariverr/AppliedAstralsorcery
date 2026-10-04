@@ -17,7 +17,7 @@ import net.neoforged.neoforge.items.SlotItemHandler;
 
 public final class AutoChiselMenu extends AbstractContainerMenu {
     private static final int MACHINE_SLOTS = 1 + AutoChiselBlockEntity.OUTPUT_SLOTS;
-    private static final int DATA_COUNT = 14;
+    private static final int DATA_COUNT = 17;
     public static final int MODE_BUTTON = 6;
     // Button 7 and data slot 10 are reserved for the removed target-direction setting.
     public static final int ROUND_ROBIN_BUTTON = 8;
@@ -57,13 +57,16 @@ public final class AutoChiselMenu extends AbstractContainerMenu {
             @Override public int get(int index) {
                 return switch (index) {
                     case 0 -> machine.getLumenAmount();
-                    case 1 -> machine.getProgress();
+                    case 1 -> machine.getProgress() & 0xFFFF;
                     case 2 -> machine.getStatus().ordinal();
                     case 9 -> machine.isDroppedItemMode() ? 1 : 0;
                     case 10 -> 0;
                     case 11 -> machine.isRoundRobin() ? 1 : 0;
                     case 12 -> machine.isAutoInput() ? 1 : 0;
                     case 13 -> machine.isAutoOutput() ? 1 : 0;
+                    case 14 -> machine.getProgress() >>> 16;
+                    case 15 -> machine.getDuration() & 0xFFFF;
+                    case 16 -> machine.getDuration() >>> 16;
                     default -> machine.getSideMode(Direction.values()[index - 3]).ordinal();
                 };
             }
@@ -73,7 +76,8 @@ public final class AutoChiselMenu extends AbstractContainerMenu {
         addDataSlots(data);
     }
     public int getLumenAmount() { return data.get(0); }
-    public int getProgress() { return data.get(1); }
+    public int getProgress() { return (data.get(1) & 0xFFFF) | (data.get(14) & 0xFFFF) << 16; }
+    public int getDuration() { return (data.get(15) & 0xFFFF) | (data.get(16) & 0xFFFF) << 16; }
     public boolean isDroppedItemMode() { return data.get(9) != 0; }
     public boolean isRoundRobin() { return data.get(11) != 0; }
     public boolean isAutoInput() { return data.get(12) != 0; }

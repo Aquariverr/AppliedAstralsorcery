@@ -14,6 +14,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import com.appliedastralsorcery.ModContent;
+import com.appliedastralsorcery.ModConfig;
 import hellfirepvp.astralsorcery.common.crystal.CrystalPropertyGenerator;
 import hellfirepvp.astralsorcery.common.item.crystal.RockCrystalItem;
 import hellfirepvp.astralsorcery.common.lib.DataComponentsAS;
@@ -50,7 +51,6 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 @MethodsReturnNonnullByDefault
 public final class AutoChiselBlockEntity extends BlockEntity {
     public static final int OUTPUT_SLOTS = 9;
-    public static final int WORK_TICKS = 40;
     public static final int LUMEN_COST = 25;
     public static final int LUMEN_CAPACITY = 2000;
     private static final Direction[] OUTPUT_PRIORITY = {
@@ -118,6 +118,7 @@ public final class AutoChiselBlockEntity extends BlockEntity {
     }
     public int getLumenAmount() { return lumenContents.getLumenStack(LumenAS.EVORSIO.get()).map(LumenStack::getAmount).orElse(0); }
     public int getProgress() { return progress; }
+    public int getDuration() { return ModConfig.AUTO_CHISEL_TICKS.get(); }
     public int getFortuneLevel() {
         // BlockItem imports these components on placement; BlockEntity persists them with the world.
         return level == null ? 0 : components().getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY)
@@ -215,9 +216,9 @@ public final class AutoChiselBlockEntity extends BlockEntity {
         }
         if (isOutputFull()) return;
         if (getLumenAmount() < LUMEN_COST) return;
-        progress++;
+        progress = Math.min(progress, getDuration() - 1) + 1;
         setChanged();
-        if (progress < WORK_TICKS) return;
+        if (progress < getDuration()) return;
         List<ItemStack> results = ChiselProcessing.process(input, server.random, getFortuneLevel());
         if (results.isEmpty()) { progress = 0; return; }
         // All products fit in the slots reserved above; mutation stays within this server tick.
@@ -334,14 +335,14 @@ public final class AutoChiselBlockEntity extends BlockEntity {
         }
         if (getLumenAmount() < LUMEN_COST) { dropStatus = Status.NO_LUMEN; return; }
         dropStatus = Status.WORKING;
-        progress++;
+        progress = Math.min(progress, getDuration() - 1) + 1;
         setChanged();
-        if (progress < WORK_TICKS) return;
+        if (progress < getDuration()) return;
         var results = ChiselProcessing.process(target.getItem(), server.random, getFortuneLevel());
         if (results.isEmpty()) { resetDropJob(); return; }
         if (!spawnDropResults(server, outputSide, results)) {
             // Entity-join cancellation rolls back all products; retain the input and lumen.
-            progress = WORK_TICKS - 1;
+            progress = getDuration() - 1;
             dropStatus = Status.OUTPUT_BLOCKED;
             return;
         }
@@ -443,7 +444,7 @@ public final class AutoChiselBlockEntity extends BlockEntity {
         inventory.deserializeNBT(registries, tag.getCompound("inventory"));
         lumenContents.clear();
         lumenContents.setLumenStack(LumenAS.EVORSIO.stack(Math.clamp(tag.getInt("lumen"), 0, LUMEN_CAPACITY)));
-        progress = Math.clamp(tag.getInt("progress"), 0, WORK_TICKS - 1);
+        progress = Math.max(0, tag.getInt("progress"));
         int[] savedSides = tag.getIntArray("sides");
         for (int i = 0; i < Math.min(savedSides.length, sideModes.length); i++) {
             if (tag.getInt("sideModeVersion") < 2) {
