@@ -22,6 +22,8 @@ Connect any face to a powered ME network with one available channel. Supply star
 
 Place ingredients in the input slots, or supply them from any face with hoppers, ME Export Buses or Pattern Providers. Products go directly to ME, or stay in the output slots if ME storage is full.
 
+By default, direct focal-point starlight takes **1,200 ticks (60 seconds)** per operation. Crystals and other transmitted starlight take **200 ticks (10 seconds)**. Matching transmitted starlight takes priority when both sources are available. In a local singleplayer world, use **Mods → Applied Astralsorcery → Config → Server Settings → Machine Processing Times** to adjust them. You can also edit `processing.transmutationFocalTicks` and `processing.transmutationStarlightTicks` in `config/appliedas-server.toml`; an existing `serverconfig/appliedas-server.toml` in the world save takes priority.
+
 Transmutation pauses when the output slots cannot hold the products, ME goes offline or starlight is interrupted. It resumes when conditions return.
 
 ## Auto pull
@@ -32,4 +34,4 @@ Enable **Auto pull** to replenish ingredients from ME according to the configura
 
 ## Overclock
 
-Enable **Overclock** to consume **5 Lm of Aion** from ME at the start of each operation and set its duration to **1 second**. If lumen is insufficient, the recipe's original duration applies.
+Enable **Overclock** to consume **5 Lm of Aion** from ME at the start of each operation. Its duration defaults to **20 ticks (1 second)**, configurable with `processing.transmutationOverclockTicks` in the same file. If lumen is insufficient, the current starlight source's processing time applies.

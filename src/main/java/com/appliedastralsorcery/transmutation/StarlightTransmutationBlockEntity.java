@@ -20,6 +20,7 @@ import appeng.api.stacks.AEItemKey;
 import appeng.api.storage.StorageHelper;
 import appeng.me.helpers.IGridConnectedBlockEntity;
 import com.appliedastralsorcery.ModContent;
+import com.appliedastralsorcery.ModConfig;
 import com.appliedastralsorcery.lumen.LumenKey;
 import com.mojang.serialization.Codec;
 import hellfirepvp.astralsorcery.common.constellation.BaseConstellation;
@@ -63,7 +64,7 @@ public final class StarlightTransmutationBlockEntity
         extends TileEntityNetwork<ForwardingStarlightReceiverNode, TileEntityNetwork.Data>
         implements ForwardingStarlightReceiverNode.ReceiverTile, IGridConnectedBlockEntity {
     public static final int INPUT_SLOTS = 9, OUTPUT_SLOTS = 9;
-    public static final int OVERCLOCK_LUMEN_COST = 5, OVERCLOCK_DURATION = 20;
+    public static final int OVERCLOCK_LUMEN_COST = 5;
     // Transmission is live light, not a stored energy resource. Allow the network's tick ordering.
     private static final int STARLIGHT_TIMEOUT = 2;
     public enum Status { IDLE, MISSING_INPUTS, NO_STARLIGHT, WRONG_CONSTELLATION, OFFLINE, OUTPUT_BLOCKED, RUNNING }
@@ -276,18 +277,17 @@ public final class StarlightTransmutationBlockEntity
             recipeId = selected.id();
         }
         displayConstellation = receivedConstellation(selected.value());
-        // Recipe reloads may change normal duration, but paid jobs always take 20 ticks.
-        duration = jobOverclocked ? OVERCLOCK_DURATION : Math.max(1, selected.value().getDuration());
+        duration = processingDuration(selected.value());
         if (!mainNode.isOnline()) { status = Status.OFFLINE; return; }
         var output = TransmutationPlan.output(selected.value().getOutputs(), inventory, INPUT_SLOTS, OUTPUT_SLOTS);
         if (output == null) { status = Status.OUTPUT_BLOCKED; return; }
-        // Decide once at the start. Insufficient lumen falls back to the native recipe duration.
+        // Decide once at the start. Insufficient lumen uses the current starlight source's duration.
         if (progress == 0) {
             jobOverclocked = lumenOverclock && chargeOverclock();
-            duration = jobOverclocked ? OVERCLOCK_DURATION : Math.max(1, selected.value().getDuration());
+            duration = processingDuration(selected.value());
         }
         status = Status.RUNNING;
-        progress = Math.min(progress + 1, duration);
+        progress = Math.min(progress, duration - 1) + 1;
         setChanged(false);
         if (progress < duration) return;
         // No inventory mutation happens until both the full input and full output plans exist.
@@ -305,6 +305,13 @@ public final class StarlightTransmutationBlockEntity
         resetProgress();
         markForUpdate(false);
         exportOutputs();
+    }
+
+    private int processingDuration(FocalCombineRecipe recipe) {
+        if (jobOverclocked) return ModConfig.TRANSMUTATION_OVERCLOCK_TICKS.get();
+        // Only beams that satisfy this recipe can replace direct focal-point starlight.
+        return receivedStarlight.keySet().stream().anyMatch(recipe::isRequiredConstellation)
+                ? ModConfig.TRANSMUTATION_STARLIGHT_TICKS.get() : ModConfig.TRANSMUTATION_FOCAL_TICKS.get();
     }
 
     private void resetProgress() {

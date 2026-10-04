@@ -8,6 +8,7 @@ item_ids:
   - appliedas:lumen_processor_press
   - appliedas:printed_lumen_processor
   - appliedas:lumen_processor
+  - appliedas:lumen_crystal_block
 ---
 # Lumen Processor
 
@@ -32,5 +33,15 @@ Each operation consumes one crystal, produces one Lumen Circuit Board and retain
 Place a Lumen Circuit Board and Printed Silicon in the outer slots, with Redstone Dust in the middle. This consumes one of each material and produces one Lumen Processor.
 
 <Recipe id="appliedas:inscriber/lumen_processor" />
+
+## Crystal blocks and Extended AE
+
+Combine any 9 Lumen Crystals in a crafting table to make a Lumen Crystal Block. Different lumen types, including Prismatic, can be mixed; the block does not retain their lumen types.
+
+<Recipe id="appliedas:lumen_crystal_block" />
+
+With Extended AE installed, the Circuit Slicer turns 1 Lumen Crystal Block into 9 Lumen Circuit Boards without a press.
+
+The Crystal Assembler consumes 4 Lumen Circuit Boards, 4 Printed Silicon and 4 Redstone Dust to produce 4 Lumen Processors. No fluid is required.
 
 [Back to Applied Astralsorcery](index.md)

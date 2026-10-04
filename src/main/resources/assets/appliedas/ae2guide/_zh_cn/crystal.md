@@ -7,6 +7,7 @@ navigation:
 item_ids:
   - appliedas:astral_fluix_crystal
   - appliedas:astral_fluix_cluster
+  - appliedas:astral_fluix_block
 ---
 # 异辉水晶石
 
@@ -81,5 +82,13 @@ item_ids:
 过于脆弱的水晶石无法分割，时运能减轻损耗。
 
 将分割后的水晶石分开放入星能液池，便能继续培育。
+
+## 水晶石块
+
+在工作台中放满任意 9 颗异辉水晶石，即可合成异辉水晶石块。尺寸、纯度和抛光不同的水晶可以混用，合成后的方块不保留这些属性。
+
+<Recipe id="appliedas:astral_fluix_block" />
+
+安装 Extended AE 后，电路切片机可以将 1 个方块切成 9 个[异辉电路板](processor.md)，无需压印模板。切片产量固定，不享受压印机的尺寸增产。
 
 [返回应用星辉](index.md)

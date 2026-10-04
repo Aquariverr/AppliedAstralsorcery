@@ -128,6 +128,12 @@ dependencies {
 
     compileOnly "maven.modrinth:jade:${jade_version}"
     localRuntime "maven.modrinth:jade:${jade_version}"
+
+    // Optional AE2 addons and their runtime requirements for local development.
+    localRuntime "maven.modrinth:extended-ae:${extended_ae_version}"
+    localRuntime "maven.modrinth:advancedae:${advanced_ae_version}"
+    localRuntime "maven.modrinth:glodium:${glodium_version}"
+    localRuntime "maven.modrinth:geckolib:${geckolib_version_id}"
 }
 
 def generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {

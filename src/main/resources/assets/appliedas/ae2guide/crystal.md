@@ -7,6 +7,7 @@ navigation:
 item_ids:
   - appliedas:astral_fluix_crystal
   - appliedas:astral_fluix_cluster
+  - appliedas:astral_fluix_block
 ---
 # Aberrant Crystal
 
@@ -81,5 +82,13 @@ The split crystal remains an Aberrant Crystal. Its qualities are divided, with s
 A crystal too fragile to split will resist the chisel. Fortune reduces these losses.
 
 Place the resulting crystals in separate pools of Liquid Starlight to keep growing them.
+
+## Crystal blocks
+
+Combine any 9 Aberrant Crystals in a crafting table to make an Aberrant Crystal Block. Crystals with different Size, Purity and Cut attributes can be mixed; the block does not retain those attributes.
+
+<Recipe id="appliedas:astral_fluix_block" />
+
+With Extended AE installed, its Circuit Slicer cuts one block into 9 [Aberrant Circuit Boards](processor.md) without a press. This fixed yield does not receive the Inscriber's Size bonus.
 
 [Back to Applied Astralsorcery](index.md)

@@ -47,4 +47,10 @@ Place an Aberrant Circuit Board and Printed Silicon in the outer slots, with Red
 
 <Recipe id="appliedas:inscriber/astral_processor" />
 
+## Extended AE automation
+
+With Extended AE installed, the Circuit Slicer turns 1 [Aberrant Crystal Block](crystal.md) into 9 Aberrant Circuit Boards without a press. Each block is crafted from any 9 Aberrant Crystals; its fixed slicing yield does not depend on the original crystals' Size.
+
+The Crystal Assembler consumes 4 Aberrant Circuit Boards, 4 Printed Silicon and 4 Redstone Dust to produce 4 Aberrant Processors. No fluid is required.
+
 [Back to Applied Astralsorcery](index.md)

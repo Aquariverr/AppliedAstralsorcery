@@ -47,4 +47,10 @@ item_ids:
 
 <Recipe id="appliedas:inscriber/astral_processor" />
 
+## Extended AE 自动化
+
+安装 Extended AE 后，电路切片机可以将 1 个[异辉水晶石块](crystal.md)切成 9 个异辉电路板，无需压印模板。每个方块由任意 9 颗异辉水晶石合成，切片产量固定，不受原水晶尺寸影响。
+
+水晶装配器每批消耗 4 个异辉电路板、4 个硅板和 4 个红石粉，产出 4 个异辉处理器，无需流体。
+
 [返回应用星辉](index.md)

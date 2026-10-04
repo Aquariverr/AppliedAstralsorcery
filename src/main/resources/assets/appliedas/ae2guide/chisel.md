@@ -19,7 +19,7 @@ The Focus Relays below the grid follow the bottom of the native Lumen Filament r
 
 ## Usage
 
-Insert rock, celestial or aberrant crystals, starmetal ingots, or artifacts into the left input slot. Each operation takes **2 seconds** and **25 Lm of Evorsio**. No separate tool or repairs are needed.
+Insert rock, celestial or aberrant crystals, starmetal ingots, or artifacts into the left input slot. Each operation takes **40 ticks (2 seconds)** by default and **25 Lm of Evorsio**. In a local singleplayer world, use **Mods → Applied Astralsorcery → Config → Server Settings → Machine Processing Times** to adjust the time for both inventory and dropped-item modes. You can also edit `processing.autoChiselTicks` in `config/appliedas-server.toml`; an existing `serverconfig/appliedas-server.toml` in the world save takes priority. No separate tool or repairs are needed.
 
 The machine stores **2,000 Lm**. Supply Evorsio through an ME export bus on any face, or a nearby lumen relay network. Lumen relays still need to meet their range and line-of-sight requirements.
 

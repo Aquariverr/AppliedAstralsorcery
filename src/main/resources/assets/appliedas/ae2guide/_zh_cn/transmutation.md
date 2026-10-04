@@ -22,6 +22,8 @@ item_ids:
 
 将材料放入输入槽，也可用漏斗、ME 输出总线或样板供应器从任意面输入。产物自动送入 ME 网络；网络空间不足时留在输出槽。
 
+默认情况下，直接使用降星点星能时，每次耗时 **1200 tick（60 秒）**；使用水晶及其他传输星能时，每次耗时 **200 tick（10 秒）**。两种来源同时可用时，优先使用满足配方星座要求的传输星能。在本地单人世界中，可通过 **模组 → Applied Astralsorcery → 配置 → 服务端设置 → 机器加工时间** 调整。也可编辑 `config/appliedas-server.toml` 中的 `processing.transmutationFocalTicks` 和 `processing.transmutationStarlightTicks`；存档中已有的 `serverconfig/appliedas-server.toml` 会优先使用。
+
 输出槽无法容纳产物、ME 网络离线或星能中断时，嬗变暂停，条件恢复后继续。
 
 ## 自动拉取
@@ -32,4 +34,4 @@ item_ids:
 
 ## 流明超频
 
-开启**流明超频**后，每次开始嬗变时从 ME 消耗 **5 Lm 永时流明**，耗时设为 **1 秒**；流明不足时按原配方耗时进行。
+开启**流明超频**后，每次开始嬗变时从 ME 消耗 **5 Lm 永时流明**，默认耗时 **20 tick（1 秒）**，可通过同一配置文件中的 `processing.transmutationOverclockTicks` 调整；流明不足时按当前星能来源对应的时间进行。

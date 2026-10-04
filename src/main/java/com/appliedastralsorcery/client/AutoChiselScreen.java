@@ -139,7 +139,7 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
             if (isHovering(LUMEN_X, LOWER_Y, LUMEN_WIDTH, LOWER_HEIGHT, mx, my)) {
                 g.renderTooltip(font, tr("lumen", menu.getLumenAmount(), AutoChiselBlockEntity.LUMEN_CAPACITY), mx, my);
             } else if (isHovering(52, 64, 114, 36, mx, my)) {
-                g.renderTooltip(font, tr("processing_cost", AutoChiselBlockEntity.WORK_TICKS / 20,
+                g.renderTooltip(font, tr("processing_cost", menu.getDuration() / 20.0,
                         AutoChiselBlockEntity.LUMEN_COST), mx, my);
             }
         }
@@ -215,7 +215,8 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
         var input = menu.slots.getFirst();
         Component label = tr("input");
         g.drawString(font, label, x + input.x + 8 - font.width(label) / 2, y + input.y - 12, MUTED, false);
-        float progress = Math.clamp(menu.getProgress() / (float) AutoChiselBlockEntity.WORK_TICKS, 0F, 1F);
+        float progress = menu.getDuration() <= 0 ? 0F
+                : Math.clamp(menu.getProgress() / (float) menu.getDuration(), 0F, 1F);
         String percentage = Math.round(progress * 100) + "%";
         g.drawString(font, percentage, x + 110 - font.width(percentage) / 2, y + 68, MUTED, false);
         channel(g, x + 52, x + 168, y + 84, progress);

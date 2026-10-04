@@ -8,6 +8,7 @@ item_ids:
   - appliedas:lumen_processor_press
   - appliedas:printed_lumen_processor
   - appliedas:lumen_processor
+  - appliedas:lumen_crystal_block
 ---
 # 流明处理器
 
@@ -32,5 +33,15 @@ item_ids:
 将流明电路板和硅板分别放入上下槽，中槽放红石粉。每次各消耗 1 个，得到 1 个流明处理器。
 
 <Recipe id="appliedas:inscriber/lumen_processor" />
+
+## 水晶石块与 Extended AE
+
+在工作台中放满任意 9 颗流明水晶石，即可合成流明水晶石块。包括棱彩在内的不同流明种类可以混用，合成后的方块不保留原水晶的流明种类。
+
+<Recipe id="appliedas:lumen_crystal_block" />
+
+安装 Extended AE 后，电路切片机可以将 1 个流明水晶石块切成 9 个流明电路板，无需压印模板。
+
+水晶装配器每批消耗 4 个流明电路板、4 个硅板和 4 个红石粉，产出 4 个流明处理器，无需流体。
 
 [返回应用星辉](index.md)

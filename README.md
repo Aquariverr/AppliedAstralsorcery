@@ -18,13 +18,12 @@ An addon for **Astral Sorcery** and **Applied Energistics 2 (AE2)** that lets ME
 - **ME Resonating Wand**: Build Astral Sorcery multiblocks using materials from ME and your inventory, and return replaced blocks to ME.
 - **Aberrant Crystal**: Grow crystals in Liquid Starlight that can be merged or split and have Size, Purity and Cut attributes.
 - **Aberrant Processor and Lumen Processor**: Craft processors from Aberrant Crystals and Lumen Crystals using the Inscriber.
+- **Crystal Blocks and Extended AE**: Combine any 9 Aberrant Crystals or any 9 Lumen Crystals into their respective blocks. Extended AE's Circuit Slicer turns each block into 9 circuit boards, and its Crystal Assembler crafts processors in batches of 4.
 - **Constellation Core**: Crafted on an Iridescent Crafting Altar from crystals attuned to all 12 constellations.
 - **Altar Automation Interface**: Automate altar crafting through an ME Pattern Provider, supplying items, fluids and lumen and returning products to the provider.
 - **Automatic Starmetal Chisel**: Automatically process crystals, Starmetal Ingots and artifacts using Evorsio lumen.
 - **Starlight Transmutation Chamber**: Automate starlight item transmutation using a linked Collector Crystal or Lens, and send products to ME.
 - **Non-Empty Annihilation Plane**: Collect blocks only if they drop items, while retaining AE2's fluid and dropped-item collection.
-
-Recipes and usage instructions are available in the in-game AE2 guide in English and Chinese, with recipes also viewable in JEI.
 
 ## Requirements
 
