@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": ["CCC", "CCC", "CCC"],
+  "key": {
+    "C": { "item": "appliedas:astral_fluix_crystal" }
+  },
+  "result": { "id": "appliedas:astral_fluix_block", "count": 1 }
+}

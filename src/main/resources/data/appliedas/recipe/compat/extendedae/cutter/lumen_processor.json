@@ -1,0 +1,18 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "extendedae"
+    }
+  ],
+  "type": "extendedae:circuit_cutter",
+  "input": {
+    "ingredient": {
+      "item": "appliedas:lumen_crystal_block"
+    }
+  },
+  "output": {
+    "count": 9,
+    "id": "appliedas:printed_lumen_processor"
+  }
+}

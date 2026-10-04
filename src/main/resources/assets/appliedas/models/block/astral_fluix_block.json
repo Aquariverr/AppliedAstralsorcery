@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "appliedas:block/astral_fluix_cluster_core"
+  }
+}

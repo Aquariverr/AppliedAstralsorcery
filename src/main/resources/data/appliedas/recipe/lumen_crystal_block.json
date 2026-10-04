@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": ["CCC", "CCC", "CCC"],
+  "key": {
+    "C": { "type": "appliedas:lumen_crystal" }
+  },
+  "result": { "id": "appliedas:lumen_crystal_block", "count": 1 }
+}
