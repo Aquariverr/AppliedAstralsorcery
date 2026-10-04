@@ -149,6 +149,14 @@ public final class ModContent {
 
     public static final DeferredItem<AstralFluixCrystalItem> ASTRAL_FLUIX_CRYSTAL =
             ITEMS.register("astral_fluix_crystal", AstralFluixCrystalItem::new);
+    public static final DeferredBlock<Block> ASTRAL_FLUIX_BLOCK = BLOCKS.register("astral_fluix_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE)
+                    .strength(4, 6).sound(SoundType.AMETHYST).requiresCorrectToolForDrops()));
+    public static final DeferredItem<BlockItem> ASTRAL_FLUIX_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(ASTRAL_FLUIX_BLOCK);
+    public static final DeferredBlock<Block> LUMEN_CRYSTAL_BLOCK = BLOCKS.register("lumen_crystal_block",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN)
+                    .strength(4, 6).sound(SoundType.AMETHYST).requiresCorrectToolForDrops().lightLevel(state -> 7)));
+    public static final DeferredItem<BlockItem> LUMEN_CRYSTAL_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(LUMEN_CRYSTAL_BLOCK);
     public static final DeferredBlock<AstralFluixClusterBlock> ASTRAL_FLUIX_CLUSTER =
             BLOCKS.register("astral_fluix_cluster", AstralFluixClusterBlock::new);
     public static final DeferredItem<CelestialCrystalClusterBlockItem> ASTRAL_FLUIX_CLUSTER_ITEM =
@@ -259,6 +267,8 @@ public final class ModContent {
                     output.accept(ME_CELESTIAL_GATEWAY_ITEM);
                     output.accept(NON_EMPTY_ANNIHILATION_PLANE);
                     output.accept(ASTRAL_FLUIX_CRYSTAL);
+                    output.accept(ASTRAL_FLUIX_BLOCK_ITEM);
+                    output.accept(LUMEN_CRYSTAL_BLOCK_ITEM);
                     output.accept(ASTRAL_FLUIX_CLUSTER_ITEM);
                     output.accept(STARLIGHT_MYSTERIOUS_CUBE_ITEM);
                     output.accept(ASTRAL_PROCESSOR_PRESS);
