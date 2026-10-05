@@ -30,7 +30,6 @@ public final class AttunementProcessing {
     public static ItemStack attune(Level level, ItemStack input, BaseConstellation constellation) {
         if (!accepts(input)) return ItemStack.EMPTY;
         var result = input.copyWithCount(1);
-        // Match native attunement, preserving crystal attributes and all other components.
         if (input.getItem() instanceof AttuneableItem item) {
             result = ItemUtil.swapItem(level.registryAccess(), result, item.getAttunedItem()).orElse(ItemStack.EMPTY);
         }

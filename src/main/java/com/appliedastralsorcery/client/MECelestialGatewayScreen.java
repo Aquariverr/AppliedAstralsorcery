@@ -16,12 +16,10 @@ import net.minecraft.world.item.ItemStack;
 
 import static com.appliedastralsorcery.client.AstralGuiArt.*;
 
-/** The gateway's console: the spatial cell set in a window of night sky, beside the way to use it and its state. */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public final class MECelestialGatewayScreen extends AbstractContainerScreen<MECelestialGatewayMenu> {
     private static final int WINDOW_X = 12, WINDOW_Y = 34, WINDOW_WIDTH = 44, WINDOW_HEIGHT = 28;
-    // Stars around the cell, lit while the gateway is open.
     private static final int[][] STARS = {{18, 40}, {50, 39}, {17, 53}, {49, 55}, {22, 47}, {46, 46}};
     private final ItemStack gateway = ModContent.ME_CELESTIAL_GATEWAY_ITEM.toStack();
 
@@ -66,7 +64,6 @@ public final class MECelestialGatewayScreen extends AbstractContainerScreen<MECe
         }
     }
 
-    /** The cell in a gilt socket under the night sky; starlight fills the window's foot while the cell is formatted. */
     private void renderWindow(GuiGraphics g, int x, int y, boolean active, boolean formatting) {
         skyBand(g, x, y, WINDOW_WIDTH, WINDOW_HEIGHT, 210, 150);
         float time = Util.getMillis() / 600F;
@@ -89,7 +86,6 @@ public final class MECelestialGatewayScreen extends AbstractContainerScreen<MECe
         }
     }
 
-    /** The state between gilt rules, with a lamp: starlight while formatting, aquamarine when open, amber otherwise. */
     private void renderStatus(GuiGraphics g, int x, int y, boolean active, boolean formatting) {
         Component text = formatting ? tr("progress", menu.progress()) : tr(active ? "ready" : "inactive");
         int textWidth = Math.min(font.width(text), imageWidth - 60), total = textWidth + 9, left = x + (imageWidth - total) / 2;

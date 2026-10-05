@@ -14,15 +14,12 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 
-/** A distinct crystal material with Astral Sorcery's native crystal attributes and splitting. */
 @EventBusSubscriber(modid = AppliedAstralsorcery.MOD_ID)
 public final class AstralFluixCrystalItem extends RockCrystalItem {
-    // Match the azure lit rim of the item texture; the native light fan fades toward a brighter cyan-blue.
     public static final ColorWrapper COLOR = ColorWrapper.opaque(0x7CC8FF);
     public static final CrystalAttributesComponent DEFAULT_ATTRIBUTES = CrystalAttributesComponent.empty(6, 14);
 
     public AstralFluixCrystalItem() {
-        // Use the same initial property budget and growth limit as celestial crystals.
         super(DEFAULT_ATTRIBUTES);
     }
 

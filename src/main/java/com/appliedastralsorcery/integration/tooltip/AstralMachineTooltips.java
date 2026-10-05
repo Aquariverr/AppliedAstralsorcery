@@ -17,8 +17,7 @@ import com.appliedastralsorcery.transmutation.StarlightTransmutationBlock;
 import com.appliedastralsorcery.transmutation.StarlightTransmutationBlockEntity;
 import net.minecraft.resources.ResourceLocation;
 
-/** Use AE2's native server data, device status text, colors and Jade settings. */
-@SuppressWarnings("UnstableApiUsage") // AE2's tooltip integration API is explicitly experimental.
+@SuppressWarnings("UnstableApiUsage")
 public final class AstralMachineTooltips implements TooltipProvider {
     private static final GridNodeStateDataProvider GRID_STATE = new GridNodeStateDataProvider();
 

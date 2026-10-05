@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-/** The native five growth stages, shape, support and starlight interactions. */
 public final class AstralFluixClusterBlock extends CelestialCrystalClusterBlock {
     public static final MapCodec<AstralFluixClusterBlock> CODEC = simpleCodec(AstralFluixClusterBlock::new);
 

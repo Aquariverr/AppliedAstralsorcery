@@ -71,7 +71,7 @@ public final class MEChaliceMenu extends AbstractContainerMenu {
             data.set(0, key == null ? 0 : types.indexOf(key.getFluid()) + 1);
         }
     }
-    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    @SuppressWarnings("resource")
     public boolean setFluidMarker(Player player, AEFluidKey key) {
         if (chalice == null || player.level().isClientSide() || !stillValid(player)
                 || key != null && !types.contains(key.getFluid())) return false;
@@ -97,7 +97,7 @@ public final class MEChaliceMenu extends AbstractContainerMenu {
         return fluid == Fluids.EMPTY || value(2) == 0 ? FluidStack.EMPTY : new FluidStack(fluid, value(2));
     }
     @ParametersAreNonnullByDefault
-    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    @SuppressWarnings("resource")
     @Override public boolean clickMenuButton(Player player, int button) {
         if (chalice == null || player.level().isClientSide() || !stillValid(player)) return false;
         if (button >= TARGET_BUTTON_BASE && button <= TARGET_BUTTON_BASE + MEChaliceBlockEntity.CAPACITY)
@@ -117,7 +117,7 @@ public final class MEChaliceMenu extends AbstractContainerMenu {
         return true;
     }
     @ParametersAreNonnullByDefault
-    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    @SuppressWarnings("resource")
     @Override public boolean stillValid(Player player) {
         if (player != owner || player.isSpectator()) return false;
         return chalice == null ? player.level().isClientSide() : !chalice.isRemoved()

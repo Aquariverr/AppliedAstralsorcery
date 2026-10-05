@@ -25,7 +25,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import org.lwjgl.glfw.GLFW;
 
-/** An Astral Sorcery marble altar, set in infused wood, gold and aquamarine. */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArrayMenu> {
@@ -269,7 +268,6 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
     }
 
     @Override protected void renderBg(GuiGraphics g, float tick, int mx, int my) {
-        // Marble is the main surface; wood and gold form the altar's structural borders.
         plate(g, leftPos, topPos, imageWidth, imageHeight);
         g.fill(leftPos + 5, topPos + 5, leftPos + 259, topPos + 233, 0x24FFF8E5);
         tile(g, WOOD, leftPos + SIDE_MARGIN, topPos + 6, CONTENT_WIDTH, 22);
@@ -286,18 +284,15 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
         g.fill(leftPos + 102, topPos + 33, leftPos + 226, topPos + 48, 0x508BD2DD);
         g.fill(leftPos + 104, topPos + 49, leftPos + 224, topPos + 50, GOLD_SHADE);
         bar(g, 80, 64, 168, menu.value(2), 4000, lumenColor());
-        // The gilt marker indicates the configured reserve.
         int marker = 81 + 165 * Math.clamp(getDisplayedPullTarget(), 0, 4000) / 4000;
         g.fill(leftPos + marker - 1, topPos + 63, leftPos + marker + 2, topPos + 70, GOLD_SHADE);
         g.fill(leftPos + marker, topPos + 63, leftPos + marker + 1, topPos + 69, GOLD);
         bar(g, 80, 82, 168, menu.value(3), 2000, AQUA_LIGHT);
         inset(g, leftPos + 108, topPos + 91, 65, 16);
-        // The native EditBox draws a text shadow: a wood recess keeps the digits crisp.
         tile(g, WOOD, leftPos + 111, topPos + 93, 59, 12);
         g.fill(leftPos + 111, topPos + 93, leftPos + 170, topPos + 105, 0xA033291B);
         if (target.isFocused()) g.renderOutline(leftPos + 108, topPos + 91, 65, 16, AQUA);
 
-        // Recessed stone slots in a gilt, wood-bound marble tray.
         inset(g, leftPos + SIDE_MARGIN, topPos + 154, 171, 80);
         g.fill(leftPos + 18, topPos + 211, leftPos + 178, topPos + 212, GOLD_SHADE);
         g.fill(leftPos + 18, topPos + 212, leftPos + 178, topPos + 213, GOLD);
@@ -317,12 +312,10 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
         inset(g, x + SIDE_MARGIN, y + 31, 56, 76);
         g.fillGradient(x + 16, y + 35, x + 64, y + 81, 0x60455965, 0x183B6670);
         AstralMachinePreview.array(g, x + 40, y + 57, menu.value(3), menu.isAlchemyArray());
-        // Keep the marker and catalyst below the miniature so the original silhouette stays visible.
         g.fill(x + 19, y + 84, x + 37, y + 102, 0xFF304A53);
         g.renderOutline(x + 19, y + 84, 18, 18, GOLD);
         var lumen = displayedLumen();
         if (lumen != null && minecraft != null) {
-            // Full tint opacity, preserving the native rune sprite's transparent silhouette.
             var sprite = minecraft.getModelManager().getAtlas(TexturesAS.ATLAS_LUMEN)
                     .getSprite(lumen.getRegistryKey().orElseThrow().location());
             int color = lumenColor();
@@ -413,7 +406,6 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
     }
 
     private static void lamp(GuiGraphics g, int x, int y, int color) {
-        // A small faceted aquamarine set in gold, dimmed when the feature is off.
         g.fill(x + 1, y - 1, x + 3, y + 5, GOLD_SHADE);
         g.fill(x - 1, y + 1, x + 5, y + 3, GOLD_SHADE);
         g.fill(x, y, x + 4, y + 4, color);
@@ -440,7 +432,6 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
             int textY = y + (h - font.lineHeight) / 2;
             boolean hover = active && isHoveredOrFocused();
             int border = hover ? AQUA : GOLD_SHADE;
-            // Keep the frame, shadow and hit box within the same bounds.
             g.fill(x + 1, y + 1, x + w - 1, y + h, 0xFF98907C);
             g.fill(x, y + 1, x + w, y + h - 2, border);
             g.fill(x + 1, y, x + w - 1, y + h - 1, border);

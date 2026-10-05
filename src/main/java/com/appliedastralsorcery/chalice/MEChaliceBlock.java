@@ -69,7 +69,6 @@ public final class MEChaliceBlock extends ChaliceBlock {
     @Nonnull
     @Override protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level,
             BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        // Buckets and other fluid containers keep their ordinary right-click interaction.
         if (stack.getCapability(Capabilities.FluidHandler.ITEM) != null)
             return super.useItemOn(stack, state, level, pos, player, hand, hit);
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

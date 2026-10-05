@@ -97,7 +97,7 @@ public final class AutoChiselMenu extends AbstractContainerMenu {
                 AutoChiselBlockEntity.SideMode.values().length - 1)];
     }
     @ParametersAreNonnullByDefault
-    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    @SuppressWarnings("resource")
     @Override public boolean clickMenuButton(Player player, int button) {
         if (machine == null || player.level().isClientSide || !stillValid(player) || button < 0 || button == 7
                 || button >= REVERSE_SIDE_BASE + 6) return false;
@@ -115,7 +115,7 @@ public final class AutoChiselMenu extends AbstractContainerMenu {
         return true;
     }
     @ParametersAreNonnullByDefault
-    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    @SuppressWarnings("resource")
     @Override public boolean stillValid(Player player) {
         if (player != owner || player.isSpectator()) return false;
         if (machine == null) return player.level().isClientSide;

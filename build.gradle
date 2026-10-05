@@ -40,7 +40,6 @@ neoForge {
                     file('src/main/resources/').getAbsolutePath()
         }
         configureEach {
-            // Keep Java logging and the IDE/Gradle console on the same encoding on Windows.
             systemProperty 'file.encoding', 'UTF-8'
             systemProperty 'stdout.encoding', 'UTF-8'
             systemProperty 'stderr.encoding', 'UTF-8'
@@ -99,8 +98,6 @@ configurations {
 }
 
 dependencies {
-    // Main integrations: compile against Astral Sorcery and AE2's cell/bus implementations,
-    // and load their full mods only in the local development game.
     compileOnly "hellfirepvp.astralsorcery:AstralSorcery:${astral_sorcery_version}"
     localRuntime "hellfirepvp.astralsorcery:AstralSorcery:${astral_sorcery_version}"
 
@@ -110,26 +107,21 @@ dependencies {
     compileOnly "org.appliedenergistics:guideme:21.1.1"
     localRuntime "org.appliedenergistics:guideme:21.1.1"
 
-    // Runtime requirements of Astral Sorcery, also available for compilation
-    // when integration code needs their API types.
     compileOnly "hellfirepvp.observerlib:ObserverLib:${observerlib_version}"
     localRuntime "hellfirepvp.observerlib:ObserverLib:${observerlib_version}"
     compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
     localRuntime "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 
-    // Developer helpers: API jars for compilation and full mods in runClient.
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
     localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
-    // Optional AE2/JEI API for lumen conversion; the full mod remains a local runtime dependency.
     compileOnly "curse.maven:ae2-jei-integration-1074338:${ae2_jei_integration_file_id}"
     localRuntime "curse.maven:ae2-jei-integration-1074338:${ae2_jei_integration_file_id}"
 
     compileOnly "maven.modrinth:jade:${jade_version}"
     localRuntime "maven.modrinth:jade:${jade_version}"
 
-    // Optional AE2 addons and their runtime requirements for local development.
     localRuntime "maven.modrinth:extended-ae:${extended_ae_version}"
     localRuntime "maven.modrinth:advancedae:${advanced_ae_version}"
     localRuntime "maven.modrinth:glodium:${glodium_version}"
@@ -162,7 +154,6 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
-// Opt-in integration tests run in a disposable world and never enter the release jar.
 if (providers.gradleProperty('attunementGameTests').isPresent()) {
     sourceSets.main.java.srcDir 'src/gametest/java'
     def generateTestStructure = tasks.register('generateAttunementTestStructure') {

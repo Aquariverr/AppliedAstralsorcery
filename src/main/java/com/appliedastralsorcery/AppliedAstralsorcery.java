@@ -22,6 +22,7 @@ public final class AppliedAstralsorcery {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(LumenIntegration::register);
+        event.enqueueWork(() -> appeng.api.features.P2PTunnelAttunement.registerAttunementTag(ModContent.STARLIGHT_P2P_TUNNEL));
         event.enqueueWork(com.appliedastralsorcery.wand.MEResonatingWandItem::registerLinking);
     }
 }

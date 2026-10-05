@@ -29,6 +29,8 @@ import com.appliedastralsorcery.transmutation.StarlightTransmutationBlockEntity;
 import com.appliedastralsorcery.transmutation.StarlightTransmutationMenu;
 
 import com.appliedastralsorcery.parts.NonEmptyAnnihilationPlaneItem;
+import com.appliedastralsorcery.starlight.StarlightP2PTunnelItem;
+import com.appliedastralsorcery.starlight.StarlightP2PTunnelPart;
 
 import com.appliedastralsorcery.altar.AltarAutomationBlock;
 import com.appliedastralsorcery.altar.AltarAutomationBlockEntity;
@@ -245,6 +247,8 @@ public final class ModContent {
     public static final DeferredItem<Item> LUMEN_CELL_HOUSING = ITEMS.registerSimpleItem("lumen_cell_housing");
     public static final DeferredItem<NonEmptyAnnihilationPlaneItem> NON_EMPTY_ANNIHILATION_PLANE =
             ITEMS.register("non_empty_annihilation_plane", NonEmptyAnnihilationPlaneItem::new);
+    public static final DeferredItem<StarlightP2PTunnelItem> STARLIGHT_P2P_TUNNEL =
+            ITEMS.register("starlight_p2p_tunnel", StarlightP2PTunnelItem::new);
     public static final DeferredItem<MEResonatingWandItem> ME_RESONATING_WAND =
             ITEMS.register("me_resonating_wand", MEResonatingWandItem::new);
     public static final DeferredItem<Item> LUMEN_COMPONENT = ITEMS.registerSimpleItem("lumen_storage_component_1k");
@@ -328,6 +332,7 @@ public final class ModContent {
                     output.accept(ME_RESONATING_WAND);
                     output.accept(ME_CELESTIAL_GATEWAY_ITEM);
                     output.accept(NON_EMPTY_ANNIHILATION_PLANE);
+                    output.accept(STARLIGHT_P2P_TUNNEL);
                     output.accept(ASTRAL_FLUIX_CRYSTAL);
                     output.accept(ASTRAL_FLUIX_BLOCK_ITEM);
                     output.accept(LUMEN_CRYSTAL_BLOCK_ITEM);
@@ -357,6 +362,7 @@ public final class ModContent {
     public static void register(IEventBus bus) {
         com.appliedastralsorcery.attunement.AttunementLayout.register(bus);
         com.appliedastralsorcery.parts.NonEmptyAnnihilationPlanePart.registerModels();
+        StarlightP2PTunnelPart.registerModels();
         MELumenCrystallizerPart.registerModels();
         MELumenCrystalCollectorPart.registerModels();
         LumenCellEnhancement.register(bus);

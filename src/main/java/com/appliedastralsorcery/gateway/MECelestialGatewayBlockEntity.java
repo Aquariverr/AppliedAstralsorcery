@@ -18,7 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
-/** Native gateway source; only its inserted cell is published as a destination. */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public final class MECelestialGatewayBlockEntity extends TileCelestialGateway {

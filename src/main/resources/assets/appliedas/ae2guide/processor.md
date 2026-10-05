@@ -12,45 +12,23 @@ item_ids:
 ---
 # Aberrant Processor
 
-Awaken a mysterious cube with starlight, then inscribe an [Aberrant Crystal](crystal.md) into circuit boards.
+## Obtain the presses
 
-## Obtain the press
+Direct starlight at a **Mysterious Cube** or **Not So Mysterious Cube** to transmute it into a **Starlight Mysterious Cube**. Mine it with a pickaxe for one **Aberrant Inscriber Press** and one [Lumen Inscriber Press](lumen_processor.md).
 
-Direct starlight at a **Mysterious Cube** or **Not So Mysterious Cube**. Starlight transmutation turns either into a **Starlight Mysterious Cube**.
+## Crafting
 
-Mine it with a pickaxe to obtain one **Aberrant Inscriber Press** and one [Lumen Inscriber Press](lumen_processor.md). Silk Touch and Fortune do not change these drops.
-
-## Print circuit boards
-
-Place the press in either outer slot of an AE2 Inscriber and an Aberrant Crystal in the middle slot.
-
-Each operation consumes one crystal and retains the press. Only Size affects the number of boards; Purity and Cut do not.
-
-Size 0 yields 1 board. Each additional Size level adds 1 board, up to 64.
-
-| Crystal Size | Circuit boards |
-| --- | --- |
-| 0 | 1 |
-| 1 | 2 |
-| 2 | 3 |
-| 7 | 8 |
-| 62 | 63 |
-| 63 or higher | 64 |
+Place the press in either outer slot of an AE2 Inscriber and an [Aberrant Crystal](crystal.md) in the middle. Each crystal yields **Size + 1** boards, up to **64**. The press is retained; leave room for the whole batch in the output slot.
 
 <Recipe id="appliedas:inscriber/astral_processor_print_size_0" />
 
-The output slot must have room for the entire batch. A missing Size attribute counts as Size 0.
-
-## Assemble the processor
-
-Place an Aberrant Circuit Board and Printed Silicon in the outer slots, with Redstone Dust in the middle. This consumes one of each material and produces one Aberrant Processor.
+Place the circuit board and Printed Silicon in the outer slots, with Redstone Dust in the middle, to assemble a processor.
 
 <Recipe id="appliedas:inscriber/astral_processor" />
 
-## Extended AE automation
+## Extended AE
 
-With Extended AE installed, the Circuit Slicer turns 1 [Aberrant Crystal Block](crystal.md) into 9 Aberrant Circuit Boards without a press. Each block is crafted from any 9 Aberrant Crystals; its fixed slicing yield does not depend on the original crystals' Size.
+With Extended AE installed:
 
-The Crystal Assembler consumes 4 Aberrant Circuit Boards, 4 Printed Silicon and 4 Redstone Dust to produce 4 Aberrant Processors. No fluid is required.
-
-[Back to Applied Astralsorcery](index.md)
+- **Circuit Slicer:** 1 [Aberrant Crystal Block](crystal.md) → 9 Aberrant Circuit Boards. No press required; Size does not affect the yield.
+- **Crystal Assembler:** 4 each of Aberrant Circuit Boards, Printed Silicon and Redstone Dust → 4 Aberrant Processors. No fluid required.

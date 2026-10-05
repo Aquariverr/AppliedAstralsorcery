@@ -25,7 +25,6 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-/** The native beacon keeps its tree, starlight and lumen behavior; only its harvest destination changes. */
 public final class METreeBeaconBlockEntity extends TileTreeBeacon implements IGridConnectedBlockEntity {
     private final IManagedGridNode mainNode = GridHelper.createManagedNode(this,
             (owner, node) -> owner.setChanged())

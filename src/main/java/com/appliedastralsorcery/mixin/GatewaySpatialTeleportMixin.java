@@ -13,10 +13,8 @@ import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-/** Leave native source/destination validation and the star windup intact. */
 @Mixin(value = PktRequestGatewayTeleport.class, remap = false)
 public abstract class GatewaySpatialTeleportMixin {
-    // Levels are borrowed from the player/server and must remain open after packet handling.
     @SuppressWarnings("resource")
     @WrapOperation(method = "lambda$handle$0", at = @At(value = "INVOKE", target =
             "Lhellfirepvp/astralsorcery/common/util/EntityUtil;transferEntity(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/resources/ResourceKey;Lhellfirepvp/astralsorcery/common/util/data/Vector3;)Lnet/minecraft/world/entity/Entity;"))

@@ -1,6 +1,5 @@
 package com.appliedastralsorcery.client;
 
-/** A local preview; screens submit one validated menu action when the drag is released. */
 public final class ReserveMarkerDrag {
     private boolean dragging;
     private int amount;

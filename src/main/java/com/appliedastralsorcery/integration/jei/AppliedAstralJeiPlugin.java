@@ -57,14 +57,12 @@ public final class AppliedAstralJeiPlugin implements IModPlugin {
         registration.addGhostIngredientHandler(MEChaliceScreen.class, new ChaliceGhostIngredientHandler());
         registration.addGhostIngredientHandler(MELumenFilamentScreen.class, new FilamentGhostIngredientHandler());
         registration.addGhostIngredientHandler(MELumenArrayScreen.class, new ArrayGhostIngredientHandler());
-        // Keep JEI's ingredient list clear of the chisel's configuration tab.
         registration.addGuiContainerHandler(AutoChiselScreen.class, new IGuiContainerHandler<>() {
             @Override public List<Rect2i> getGuiExtraAreas(AutoChiselScreen screen) {
                 return screen.getExtraAreas();
             }
         });
         if (ModList.get().isLoaded("ae2jeiintegration")) {
-            // Extend the existing handler so other addons' ingredient types keep working too.
             LumenIngredientConverter.register();
         } else {
             registration.addGhostIngredientHandler(IOBusScreen.class, new BusGhostIngredientHandler<>());

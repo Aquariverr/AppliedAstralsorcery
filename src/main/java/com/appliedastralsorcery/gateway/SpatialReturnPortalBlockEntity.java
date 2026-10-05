@@ -35,7 +35,6 @@ public final class SpatialReturnPortalBlockEntity extends TileCelestialGateway {
 
     public boolean isBoundTo(GlobalPos gateway) { return gateway.equals(returnGateway); }
 
-    // The gateway owns its Level; binding only reads its dimension.
     public void bind(MECelestialGatewayBlockEntity gateway, int plotId, Component cellName) {
         var gatewayLevel = gateway.getLevel();
         if (gatewayLevel == null) return;
@@ -93,7 +92,6 @@ public final class SpatialReturnPortalBlockEntity extends TileCelestialGateway {
         }
         var origin = plot.getOrigin();
         var size = plot.getSize();
-        // Search the existing interior without deleting blocks, inventories, fluids or ceilings.
         // Low layers are preferred so an empty cell's matrix shell provides the floor.
         for (int y = 0; y < size.getY() - 2; y++) {
             for (int z = 1; z < size.getZ() - 1; z++) for (int x = 1; x < size.getX() - 1; x++) {
@@ -144,7 +142,6 @@ public final class SpatialReturnPortalBlockEntity extends TileCelestialGateway {
         if (destination == null) return MECelestialGatewayBlockEntity.message(player, "blocked");
         return true;
     }
-    // Player and server levels are borrowed and must not be closed here.
     @SuppressWarnings("resource")
     public void returnPlayer(ServerPlayer player) {
         if (player.isSpectator() || player.serverLevel() != level || player.distanceToSqr(worldPosition.getCenter()) > 64) return;
@@ -164,7 +161,7 @@ public final class SpatialReturnPortalBlockEntity extends TileCelestialGateway {
         if (destination == null) { MECelestialGatewayBlockEntity.message(player, "blocked"); return; }
         transfer(player, target, destination);
     }
-    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    @SuppressWarnings("resource")
     private static void transfer(ServerPlayer player, ServerLevel target, Vec3 pos) {
         player.closeContainer();
         if (player.serverLevel() == target) {

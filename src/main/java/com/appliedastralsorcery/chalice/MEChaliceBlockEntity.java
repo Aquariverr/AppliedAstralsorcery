@@ -20,7 +20,6 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
 
-/** Keeps the original chalice tank and all its native interactions. */
 public final class MEChaliceBlockEntity extends TileChalice implements IGridConnectedBlockEntity {
     public static final int CAPACITY = 64_000;
     private final IManagedGridNode mainNode = GridHelper.createManagedNode(this,

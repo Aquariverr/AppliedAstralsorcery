@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 final class WandNetwork {
     private WandNetwork() {}
 
-    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    @SuppressWarnings("resource")
     static IGrid findGrid(ServerPlayer player, ItemStack wand) {
         var target = wand.get(AEComponents.WIRELESS_LINK_TARGET);
         if (target == null) {

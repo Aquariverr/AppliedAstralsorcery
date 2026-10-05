@@ -19,7 +19,6 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.fluids.FluidStack;
 
-/** GUI miniatures using the same models, textures and fluid geometry as the world blocks. */
 final class AstralMachinePreview {
     private AstralMachinePreview() {}
 

@@ -22,7 +22,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
-/** Plans against copies: rejection must never take ownership of a provider's inputs. */
 public record AltarRecipePlan(RecipeHolder<AltarRecipe> recipe, List<ItemStack> grid,
         List<ItemStack> relays, List<ItemStack> additional, List<GenericStack> resources) {
     private record Requirement(int index, int count, Predicate<ItemStack> matches) {}
@@ -70,7 +69,6 @@ public record AltarRecipePlan(RecipeHolder<AltarRecipe> recipe, List<ItemStack> 
             pool.add(item.toStack((int) entry.getLongValue()));
         }
         List<Requirement> requirements = new ArrayList<>();
-        // Match the supplied stacks against native recipe conditions, not the pattern's sample components.
         for (int i = 0; i < 9; i++) {
             var ingredient = recipe.getGrid().getInputs().get(i);
             if (!ingredient.isEmpty()) requirements.add(new Requirement(i, 1, ingredient::test));
@@ -89,7 +87,6 @@ public record AltarRecipePlan(RecipeHolder<AltarRecipe> recipe, List<ItemStack> 
         List<ItemStack> assigned = new ArrayList<>();
         for (int i = 0; i < 34 + recipe.getRequiredAdditionalInputs().size(); i++) assigned.add(ItemStack.EMPTY);
         if (!assign(requirements, 0, pool, assigned, new int[]{10000})) return null;
-        // Output disambiguation happens after all executable input matches have been collected.
         return new AltarRecipePlan(holder, List.copyOf(assigned.subList(0, 9)),
                 List.copyOf(assigned.subList(9, 34)), List.copyOf(assigned.subList(34, assigned.size())),
                 List.copyOf(resources));

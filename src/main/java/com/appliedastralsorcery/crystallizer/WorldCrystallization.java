@@ -35,7 +35,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 
-/** Shared by cable parts and legacy panels; committed growth lives in the actual world block. */
 public final class WorldCrystallization {
     public static final int SEED_CHANCE = 1200;
     public static final int GROWTH_CHANCE = 6000;

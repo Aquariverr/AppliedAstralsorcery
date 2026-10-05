@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
 
-/** A floating workpiece above its constellation, with colored starlight confined to the glass chamber. */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public final class StarlightTransmutationRenderer implements BlockEntityRenderer<StarlightTransmutationBlockEntity> {
@@ -31,7 +30,6 @@ public final class StarlightTransmutationRenderer implements BlockEntityRenderer
         if (stack.isEmpty() || machine.getLevel() == null) return;
         float time = machine.getLevel().getGameTime() % 24000 + partialTick;
         pose.pushPose();
-        // Float between the pedestal crown (5/16) and the hanging focus crystal (11/16).
         pose.translate(0.5, 0.47 + Math.sin(time / 16.0) * 0.035, 0.5);
         pose.mulPose(Axis.YP.rotationDegrees(time * 1.5F % 360));
         pose.scale(0.48F, 0.48F, 0.48F);
@@ -49,7 +47,6 @@ public final class StarlightTransmutationRenderer implements BlockEntityRenderer
         pose.pushPose();
         pose.translate(0.5, 0.335, 0.5);
         pose.mulPose(Axis.YP.rotationDegrees(time * 0.35F % 360));
-        // Use AS's own star map, connection texture and additive starlight render types.
         RenderConstellationUtil.drawConstellationInWorld(constellation, pose, buffers, new Vector3(), 0.52F, 0.65F, pulse);
         pose.popPose();
 

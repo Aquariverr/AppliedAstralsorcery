@@ -45,7 +45,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
-/** Adds Astral Sorcery recipes to AE2's guide through GuideME's service loader. */
 public final class GuideRecipes implements RecipeTypeMappingSupplier {
     @Override
     public void collect(RecipeTypeMappings mappings) {
@@ -69,7 +68,6 @@ public final class GuideRecipes implements RecipeTypeMappingSupplier {
             extra.setGap(4);
             extra.append(text("guide.appliedas.altar.extra"));
             for (var input : recipe.getRequiredAdditionalInputs()) {
-                // Preserve alternative ingredients and stack counts in the hoverable slots.
                 extra.append(new LytSlot(Ingredient.of(displayItems(input.ingredient())
                         .map(stack -> stack.copyWithCount(input.count())))));
             }
@@ -87,7 +85,6 @@ public final class GuideRecipes implements RecipeTypeMappingSupplier {
     private static LytBlock liquidStarlight(RecipeHolder<LiquidStarlightRecipe> holder) {
         var recipe = holder.value();
         // These recipes change crystals through modifiers instead of returning a result stack.
-        // Leave other recipes to their own handlers rather than inventing an output for them.
         if (!holder.id().getNamespace().equals("appliedas") || recipe.getOutputModifiers().size() != 1) {
             return null;
         }
@@ -155,7 +152,6 @@ public final class GuideRecipes implements RecipeTypeMappingSupplier {
         return paragraph;
     }
 
-    /** Use the tome's background and coordinates, with GuideME's ingredient tooltips. */
     private static final class AltarGrid extends LytBox {
         private record PositionedSlot(LytSlot slot, int x, int y) {}
         private final List<PositionedSlot> slots = new ArrayList<>();
@@ -216,7 +212,6 @@ public final class GuideRecipes implements RecipeTypeMappingSupplier {
         }
     }
 
-    /** The tome supplies the slot artwork; only draw the ingredient on top. */
     private static final class TomeSlot extends LytSlot {
         private final ItemStack[] stacks;
 

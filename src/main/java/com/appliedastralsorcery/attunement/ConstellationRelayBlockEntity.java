@@ -158,7 +158,6 @@ public final class ConstellationRelayBlockEntity extends BlockEntity {
                 setChanged();
             }
             // Remember any use of lumen across sky changes and reloads, then charge once on completion.
-            // An entirely natural attunement still works with an empty tank.
             int cost = lumenRequired || !natural ? ModConfig.ATTUNEMENT_LUMEN_PER_CRAFT.get() : 0;
             if (cost == 0 || altar.consumeLumen(cost, true)) {
                 int duration = ModConfig.ATTUNEMENT_TICKS.get();

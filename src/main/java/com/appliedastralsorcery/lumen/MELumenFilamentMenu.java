@@ -84,7 +84,7 @@ public final class MELumenFilamentMenu extends AbstractContainerMenu {
 
     @Override
     @ParametersAreNonnullByDefault
-    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    @SuppressWarnings("resource")
     public boolean clickMenuButton(Player player, int button) {
         if (filament == null || player.level().isClientSide() || !stillValid(player)
                 || button < 0 || button > availableLumen.size()) {
@@ -97,7 +97,7 @@ public final class MELumenFilamentMenu extends AbstractContainerMenu {
 
     @Override
     @ParametersAreNonnullByDefault
-    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    @SuppressWarnings("resource")
     public boolean stillValid(Player player) {
         if (player != owner || player.isSpectator()) return false;
         if (filament == null) return player.level().isClientSide();

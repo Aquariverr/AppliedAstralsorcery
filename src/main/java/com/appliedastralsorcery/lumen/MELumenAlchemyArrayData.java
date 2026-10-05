@@ -16,13 +16,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
-/** Native capacities and storage layout, using only native combination recipes. */
 public final class MELumenAlchemyArrayData extends MELumenArrayData {
     public static final Codec<TileLumenArray.Data> CODEC = RecordCodecBuilder.<MELumenAlchemyArrayData>create(
             instance -> lumenArrayFields(instance).apply(instance, MELumenAlchemyArrayData::new))
             .xmap(data -> data, data -> (MELumenAlchemyArrayData) data);
 
-    // Matches the native codec's optional owner field and superclass constructor.
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private MELumenAlchemyArrayData(long ticks, boolean structure, Map<BlockPos, Boolean> sky, Optional<UUID> owner,
             LumenStackList lumen, FluidContainerList fluid, InventoryStackList inventory, boolean extended, Lumen assigned) {

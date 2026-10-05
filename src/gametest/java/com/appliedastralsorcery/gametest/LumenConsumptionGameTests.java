@@ -37,7 +37,6 @@ public final class LumenConsumptionGameTests {
         int previousCost = ModConfig.AUTO_CHISEL_LUMEN_PER_CRAFT.get();
         try {
             // Run synchronously and restore the shared config before other GameTests can tick.
-            // Costs above and below the default also exercise live changes on the same machine.
             for (int cost : new int[]{37, 9}) {
                 ModConfig.AUTO_CHISEL_LUMEN_PER_CRAFT.set(cost);
                 ItemEntity input = null;

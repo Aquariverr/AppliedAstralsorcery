@@ -73,6 +73,7 @@ public final class StarlightTransmutationBlockEntity
             .setInWorldNode(true).setExposedOnSides(Set.of(Direction.values()))
             .setFlags(GridFlags.REQUIRE_CHANNEL).setIdlePowerUsage(2.0);
     private final Map<BaseConstellation, Long> receivedStarlight = new HashMap<>();
+    private final Map<BaseConstellation, Long> receivedFocalStarlight = new HashMap<>();
     private final ItemStackHandler inventory = new ItemStackHandler(INPUT_SLOTS + OUTPUT_SLOTS) {
         @Override public boolean isItemValid(int slot, ItemStack stack) { return slot < INPUT_SLOTS && accepts(stack); }
         @Override protected void onContentsChanged(int slot) { inventoryChanged(); }
@@ -118,11 +119,14 @@ public final class StarlightTransmutationBlockEntity
     public int getProgress() { return progress; }
     public int getDuration() { return duration; }
     public Status getStatus() { return status; }
-    public boolean hasStarlight() { return focalConstellation != null || !receivedStarlight.isEmpty(); }
+    public boolean hasStarlight() {
+        return focalConstellation != null || !receivedStarlight.isEmpty() || !receivedFocalStarlight.isEmpty();
+    }
     @Nullable public BaseConstellation getDisplayConstellation() { return displayConstellation; }
 
     private Stream<BaseConstellation> availableConstellations() {
-        return Stream.concat(receivedStarlight.keySet().stream(), Stream.ofNullable(focalConstellation));
+        return Stream.concat(Stream.concat(receivedStarlight.keySet().stream(), receivedFocalStarlight.keySet().stream()),
+                Stream.ofNullable(focalConstellation));
     }
 
     @Nullable private BaseConstellation receivedConstellation(@Nullable FocalCombineRecipe recipe) {
@@ -182,6 +186,12 @@ public final class StarlightTransmutationBlockEntity
             receivedStarlight.put(packet.constellation(), server.getGameTime());
     }
 
+    /** P2P carries unfocused focal light without granting the faster focused-beam processing time. */
+    public void receiveFocalStarlight(ServerLevel server, StarlightTransmissionPacket packet) {
+        if (Float.isFinite(packet.amount()) && packet.amount() > 0)
+            receivedFocalStarlight.put(packet.constellation(), server.getGameTime());
+    }
+
     @Override public void serverTick(ServerLevel server) {
         var previousConstellation = displayConstellation;
         super.serverTick(server);
@@ -201,6 +211,7 @@ public final class StarlightTransmutationBlockEntity
             mainNode.create(server, worldPosition);
         }
         receivedStarlight.values().removeIf(tick -> server.getGameTime() - tick > STARLIGHT_TIMEOUT);
+        receivedFocalStarlight.values().removeIf(tick -> server.getGameTime() - tick > STARLIGHT_TIMEOUT);
         displayConstellation = receivedConstellation(null);
         if (mainNode.isOnline()) {
             exportOutputs();
@@ -253,7 +264,7 @@ public final class StarlightTransmutationBlockEntity
         int[] consumed = null;
         for (int slot = 0; slot < INPUT_SLOTS; slot++) anyInput |= !inventory.getStackInSlot(slot).isEmpty();
         for (var holder : recipes) {
-            var match = TransmutationPlan.match(holder.value().getInputs(), inventory, INPUT_SLOTS);
+            var match = TransmutationPlan.match(holder.value().getInputs(), inventory);
             if (match == null) continue;
             matchingInputs = true;
             if (availableConstellations().anyMatch(holder.value()::isRequiredConstellation)) {
@@ -268,7 +279,6 @@ public final class StarlightTransmutationBlockEntity
             return;
         }
         if (selected == null) {
-            // Pause an existing job while the light source is interrupted.
             status = hasStarlight() ? Status.WRONG_CONSTELLATION : Status.NO_STARLIGHT;
             return;
         }
@@ -279,7 +289,7 @@ public final class StarlightTransmutationBlockEntity
         displayConstellation = receivedConstellation(selected.value());
         duration = processingDuration(selected.value());
         if (!mainNode.isOnline()) { status = Status.OFFLINE; return; }
-        var output = TransmutationPlan.output(selected.value().getOutputs(), inventory, INPUT_SLOTS, OUTPUT_SLOTS);
+        var output = TransmutationPlan.output(selected.value().getOutputs(), inventory);
         if (output == null) { status = Status.OUTPUT_BLOCKED; return; }
         // Decide once at the start. Insufficient lumen uses the current starlight source's duration.
         if (progress == 0) {
@@ -309,7 +319,6 @@ public final class StarlightTransmutationBlockEntity
 
     private int processingDuration(FocalCombineRecipe recipe) {
         if (jobOverclocked) return ModConfig.TRANSMUTATION_OVERCLOCK_TICKS.get();
-        // Only beams that satisfy this recipe can replace direct focal-point starlight.
         return receivedStarlight.keySet().stream().anyMatch(recipe::isRequiredConstellation)
                 ? ModConfig.TRANSMUTATION_STARLIGHT_TICKS.get() : ModConfig.TRANSMUTATION_FOCAL_TICKS.get();
     }
@@ -363,7 +372,6 @@ public final class StarlightTransmutationBlockEntity
             var current = inventory.getStackInSlot(slot);
             int target = marker.isEmpty() ? 0 : Math.min(marker.getCount(), marker.getMaxStackSize());
             boolean matches = !marker.isEmpty() && ItemStack.isSameItemSameComponents(current, marker);
-            // Like an ME interface, return unwanted stock before trying to restock.
             // Only remove what ME accepted; a full network keeps the remainder here.
             int excess = current.isEmpty() ? 0 : matches ? Math.max(0, current.getCount() - target) : current.getCount();
             if (excess > 0) {
@@ -423,6 +431,7 @@ public final class StarlightTransmutationBlockEntity
         overclockCharge = Math.clamp(tag.getInt("overclockCharge"), 0, OVERCLOCK_LUMEN_COST);
         duration = 0;
         receivedStarlight.clear();
+        receivedFocalStarlight.clear();
         focalConstellation = null;
         displayConstellation = null;
     }

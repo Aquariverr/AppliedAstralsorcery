@@ -20,7 +20,6 @@ import hellfirepvp.astralsorcery.common.util.data.Vector3.RotAxis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.RandomSource;
 
-/** Native item-attunement FX, fitted to the relay's local star-map area. */
 public final class ConstellationRelayEffects implements ConstellationRelayBlockEntity.ClientEffects {
     private final ConstellationRelayBlockEntity relay;
     private FXOrbitalSource orbital;

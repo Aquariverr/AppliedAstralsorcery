@@ -45,7 +45,6 @@ public final class MELumenAlchemyArrayBlockEntity extends MELumenArrayBlockEntit
         super.returnPreviousContents();
     }
 
-    /** Called only for this subclass by the native crafting-cycle hook. All other native ticks still run. */
     public void craftFromNetwork(ServerLevel server, java.util.function.ToIntFunction<LumenGenerationRecipe> generationAttempts) {
         var data = (MELumenAlchemyArrayData) getTileData();
         var catalyst = data.getInventory().getStackInSlot(0);

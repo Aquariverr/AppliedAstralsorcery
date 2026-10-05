@@ -60,7 +60,6 @@ public final class AttunementLayout {
     }
 
     public static boolean isLoaded(Level level, BlockPos center) {
-        // Never load chunks on behalf of a machine or treat unloaded blocks as a valid structure.
         for (var offset : structure().getContents().keySet()) {
             var pos = center.offset(offset);
             if (!level.hasChunk(pos.getX() >> 4, pos.getZ() >> 4)) return false;

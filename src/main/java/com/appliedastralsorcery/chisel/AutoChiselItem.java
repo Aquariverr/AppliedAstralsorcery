@@ -8,7 +8,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
-/** The native chisel's enchantment choices, without adding tool wear to the machine. */
 public final class AutoChiselItem extends BlockItem {
     public AutoChiselItem(AutoChiselBlock block) {
         super(block, new Properties());

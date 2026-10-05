@@ -15,7 +15,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 
-/** Enables container transfers in terminals and selecting lumen in ghost filter slots. */
+// AE2 exposes custom container support through its experimental strategy API.
+@SuppressWarnings("UnstableApiUsage")
 public final class LumenContainerStrategy implements ContainerItemStrategy<LumenKey, LumenContainerStrategy.Context> {
     @Override
     public GenericStack getContainedStack(ItemStack stack) {
@@ -101,11 +102,13 @@ public final class LumenContainerStrategy implements ContainerItemStrategy<Lumen
     }
 
     @Override
+    @SuppressWarnings("resource") // The player's level is owned by Minecraft.
     public void playFillSound(Player player, LumenKey what) {
         player.level().playSound(null, player.blockPosition(), SoundEvents.BOTTLE_FILL, SoundSource.PLAYERS, 0.5F, 1);
     }
 
     @Override
+    @SuppressWarnings("resource") // The player's level is owned by Minecraft.
     public void playEmptySound(Player player, LumenKey what) {
         player.level().playSound(null, player.blockPosition(), SoundEvents.BOTTLE_EMPTY, SoundSource.PLAYERS, 0.5F, 1);
     }

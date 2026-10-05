@@ -47,7 +47,6 @@ public final class MECelestialGatewayBlock extends CelestialGatewayBlock {
     }
     @Override protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level,
             BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        // Let native wands, aquamarine locking and other item interactions run normally.
         if (!stack.isEmpty() && !(stack.getItem() instanceof appeng.items.storage.SpatialStorageCellItem))
             return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

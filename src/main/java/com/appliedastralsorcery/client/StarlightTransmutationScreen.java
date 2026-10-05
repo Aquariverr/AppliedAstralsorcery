@@ -35,10 +35,6 @@ import org.lwjgl.glfw.GLFW;
 
 import static com.appliedastralsorcery.client.AstralGuiArt.*;
 
-/**
- * The chamber's console in the Auto Chisel's marble and gilt: a night-sky header, the incoming constellation in an
- * observatory between the trays, and the chamber's starlit pillars flanking the stock and inventory.
- */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public final class StarlightTransmutationScreen extends AbstractContainerScreen<StarlightTransmutationMenu> {
@@ -46,7 +42,6 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
     // JEI's recipe hint stays above the pointer; place the constellation name below it.
     private static final ClientTooltipPositioner CONSTELLATION_TOOLTIP = (width, height, mouseX, mouseY, tipWidth, tipHeight) ->
             DefaultTooltipPositioner.INSTANCE.positionTooltip(width, height, mouseX, mouseY + 28, tipWidth, tipHeight);
-    // The chamber's inlays: navy channels, dormant blue, and the ramp starlight runs through while it works.
     private static final int NAVY = 0xFF161D48, DUSK = 0xFF202B66, DORMANT = 0xFF3F6FB8;
     private static final int[] GLOW = {0xFF2D3D88, 0xFF3F6FB8, 0xFF6FA3E0, 0xFFA9D4FA, 0xFFFFFFFF};
     private static final int HEADER_X = 12, HEADER_Y = 10, HEADER_WIDTH = 240, HEADER_HEIGHT = 22;
@@ -54,7 +49,6 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
     private static final int PROGRESS_X = 20, PROGRESS_Y = 114, PROGRESS_WIDTH = 224, PROGRESS_HEIGHT = 10;
     private static final int PILLAR_TOP = 141, PILLAR_BOTTOM = 270;
     private static final int EDITOR_WIDTH = 208, EDITOR_HEIGHT = 136;
-    // A small chain of stars in the header, lit while the chamber holds starlight.
     private static final int[][] STARS = {{0, 9}, {8, 4}, {17, 8}, {26, 2}, {33, 11}, {41, 6}};
     private static final int[][] LINKS = {{0, 1}, {1, 2}, {2, 3}, {2, 4}, {4, 5}};
     private static final Component ME = Component.literal("ME");
@@ -189,7 +183,6 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
             slot(g, x + position.x, y + position.y, slot >= 9);
         }
         renderObservatory(g, x + RECIPE_X, y + RECIPE_Y, running);
-        // Starlight carries the inputs through the observatory and out to ME.
         arrowhead(g, x + 82, y + 73, running ? AQUA : GOLD_SHADE);
         arrowhead(g, x + 178, y + 73, running ? AQUA : GOLD_SHADE);
 
@@ -250,11 +243,9 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
         }
     }
 
-    /** The incoming constellation over a gilt star chart, like the floor of the chamber beneath it. */
     private void renderObservatory(GuiGraphics g, int x, int y, boolean running) {
         skyBand(g, x, y, RECIPE_WIDTH, RECIPE_HEIGHT, 181, 113);
         int cx = x + RECIPE_WIDTH / 2, cy = y + RECIPE_HEIGHT / 2;
-        // A sparkle runs around the ring while the chamber works, as on the pedestal's ring.
         float sweep = Util.getMillis() / 1000F * 120F;
         for (int i = 0; i < 48; i++) {
             double angle = i * Math.PI / 24;
@@ -280,7 +271,6 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
         }
     }
 
-    /** A groove ending in an arrowhead that starlight fills as the work advances, with a spark at its head. */
     private static void channel(GuiGraphics g, int x1, int x2, int y, float fill) {
         int end = x2 - 4, length = Math.round((end - x1 - 2) * fill), head = x1 + 1 + length;
         g.fill(x1, y, end, y + 5, 0xFF777568);
@@ -295,7 +285,6 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
         if (length > 0 && fill < 1F) star(g, head, y + 2, 2, STARLIGHT, 0xFFFFFFFF);
     }
 
-    /** The status between gilt rules, with a lamp: starlight while working, amber when something is in the way. */
     private void renderStatus(GuiGraphics g, int x, int y) {
         var status = menu.getStatus();
         boolean running = status == Status.RUNNING, idle = status == Status.IDLE;
@@ -318,7 +307,6 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
         }
     }
 
-    /** One of the chamber's marble pillars, its navy channel carrying starlight down while the chamber works. */
     private static void pillar(GuiGraphics g, int cx, int top, int bottom, boolean running, boolean charged) {
         int shaftTop = top + 4, shaftBottom = bottom - 4;
         g.fill(cx - 4, shaftTop, cx + 5, shaftBottom, 0xFF817C72);
@@ -391,7 +379,6 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
             g.drawString(font, text, x, y, color, false);
             return;
         }
-        // Keep translated labels and toggle states complete within the existing layout.
         float scale = width / (float) textWidth;
         g.pose().pushPose();
         try {
@@ -403,7 +390,6 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
         }
     }
 
-    /** A stock marker, inlaid with starlight blue while auto pull keeps it, and sealed under a dim star otherwise. */
     private static void marker(GuiGraphics g, int x, int y, boolean enabled) {
         g.fill(x - 1, y - 1, x + 17, y + 17, enabled ? 0xFFB5E4EA : 0xFFE9E4D8);
         g.fill(x - 1, y - 1, x + 17, y, enabled ? 0xFF2F6F86 : 0xFFA49E91);
@@ -412,7 +398,6 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
         if (!enabled) star(g, x + 7, y + 7, 2, 0xFFB2AB9C, 0xFFEDE8DC);
     }
 
-    /** A wood-framed marble plaque like the Auto Chisel's buttons; toggles carry a lamp beside their label. */
     private final class Plaque extends Button {
         private final BooleanSupplier lamp;
 
@@ -444,7 +429,6 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
         }
     }
 
-    /** A modal child, without changing Minecraft's screen or closing the live container/cursor. */
     private final class AmountEditor extends Screen {
         private final int slot;
         private final ItemStack item;
@@ -462,7 +446,6 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
         }
         @Override protected void init() {
             int x = (width - EDITOR_WIDTH) / 2, y = (height - EDITOR_HEIGHT) / 2;
-            // Drawn into a starlit field of our own rather than the vanilla black box.
             input = addRenderableWidget(new EditBox(font, x + 22, y + 52, 164, 10, tr("amount_title")));
             input.setBordered(false);
             input.setTextColor(CREAM);
@@ -517,7 +500,6 @@ public final class StarlightTransmutationScreen extends AbstractContainerScreen<
             graphics.renderItem(item, x + 16, y + 17);
             fitted(graphics, title, x + 39, y + 15, EDITOR_WIDTH - 59, CREAM);
             fitted(graphics, tr("amount_range", maximum), x + 39, y + 27, EDITOR_WIDTH - 59, PARCHMENT);
-            // The field's gilt turns amber while the amount is out of range.
             int fieldX = x + 16, fieldY = y + 46, fieldWidth = EDITOR_WIDTH - 32;
             boolean valid = validAmount();
             graphics.fill(fieldX, fieldY, fieldX + fieldWidth, fieldY + 20, valid ? GOLD : WARNING);

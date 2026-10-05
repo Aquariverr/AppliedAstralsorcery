@@ -39,7 +39,6 @@ import net.neoforged.fml.LogicalSide;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-/** Inherits the native crystal detection and structure preview behavior. */
 public final class MEResonatingWandItem extends WandItem {
     public static final int USE_ME_ITEMS = 1, BUILD_FLUIDS = 2, REPLACE_BLOCKS = 4;
     public static final int DEFAULT_OPTIONS = USE_ME_ITEMS | BUILD_FLUIDS;
@@ -93,7 +92,7 @@ public final class MEResonatingWandItem extends WandItem {
     }
 
     @Override
-    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    @SuppressWarnings("resource")
     public boolean doBlockInteract(LogicalSide side, Player player, InteractionHand hand, BlockPos pos,
             BlockHitResult hitResult, Direction blockFace) {
         var level = player.level();

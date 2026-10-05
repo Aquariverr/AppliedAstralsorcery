@@ -31,7 +31,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/** Supplies cached resources through the native recipe's tracking and validation. */
 @Mixin(value = ActiveAltarRecipe.class, remap = false)
 public abstract class ActiveAltarRecipeResourceMixin {
     @Shadow @Final private UUID playerUUID;
@@ -108,7 +107,6 @@ public abstract class ActiveAltarRecipeResourceMixin {
         if (bufferedAmount <= 0) return original.call(drawing, level, altarPos, request, simulate);
         var worldRequired = request.copyWithAmount(request.getAmount() - bufferedAmount);
         if (!worldRequired.isEmpty()) {
-            // Re-search for the remainder: chalices need only cover what the cache cannot supply.
             drawing.update(level, altarPos, worldRequired);
             if (!original.call(drawing, level, altarPos, worldRequired, simulate)) return false;
         }

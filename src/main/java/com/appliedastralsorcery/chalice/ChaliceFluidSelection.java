@@ -14,7 +14,6 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import appeng.api.stacks.AEFluidKey;
 import net.minecraft.world.entity.player.Player;
 
-/** Carries a configuration key, including its components; never transfers actual fluid. */
 public record ChaliceFluidSelection(int containerId, FluidStack fluid) implements CustomPacketPayload {
     public static final Type<ChaliceFluidSelection> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(
             AppliedAstralsorcery.MOD_ID, "chalice_fluid_selection"));
@@ -33,7 +32,7 @@ public record ChaliceFluidSelection(int containerId, FluidStack fluid) implement
         packet.apply(context.player());
     }
 
-    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    @SuppressWarnings("resource")
     public boolean apply(Player player) {
         if (player.containerMenu instanceof MEChaliceMenu menu && menu.containerId == containerId) {
             var key = AEFluidKey.of(fluid);

@@ -31,7 +31,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-/** Encodes all altar resources without requiring the optional AE2 JEI Integration mod. */
 public final class AltarPatternTransferHandler
         implements IRecipeTransferHandler<PatternEncodingTermMenu, AltarRecipe> {
     // Match AE2's preference for craftable resources, undamaged items, and larger stored amounts.

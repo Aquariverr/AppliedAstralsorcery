@@ -20,7 +20,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-/** A resource identity, independent of its stored amount. */
 public final class LumenKey extends AEKey {
     public static final MapCodec<LumenKey> MAP_CODEC = Codec.lazyInitialized(
             () -> RegistriesAS.REGISTRY_LUMEN.byNameCodec().validate(lumen -> lumen == LumenAS.NONE.get()

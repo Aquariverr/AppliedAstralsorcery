@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ItemPickupStrategy.class, remap = false)
 public abstract class NonEmptyItemPickupMixin {
-    @SuppressWarnings("UnstableApiUsage") // AE2's pickup hook exposes experimental API types.
+    @SuppressWarnings("UnstableApiUsage")
     @Inject(method = "tryPickup", at = @At(value = "INVOKE", target =
             "Lappeng/parts/automation/ItemPickupStrategy;calculateEnergyUsage(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Ljava/util/List;)F"),
             cancellable = true)

@@ -23,7 +23,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class CelestialGatewayStructureMixin {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void appliedas$acceptMEGateway(CallbackInfo ci) {
-        // Keep the native pattern/observer (and wand previews); only extend its center matcher.
         ((StructureBlockArray) (Object) this).addBlock(new SimpleMatchableBlock(BlocksAS.CELESTIAL_GATEWAY.get()) {
             @Override public boolean matches(@Nullable BlockGetter reader, BlockPos pos, BlockState state) {
                 return state.getBlock() instanceof MECelestialGatewayBlock || super.matches(reader, pos, state);

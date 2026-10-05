@@ -9,15 +9,13 @@ item_ids:
 ---
 # Artifacts
 
-Read an artifact's item tooltip for its conditions. Glow colors do not correspond to fixed materials.
+## Stabilizing an artifact
 
-## How to stabilize an artifact
+1. Drop it to wake it, then pick it up and read its tooltip. Prepare the blocks, creatures or location described by the clue.
+2. Drop it again. When it glows and rings, satisfy **all completed conditions in order, then one new condition**.
+3. Pick it up after each round to read the next clue. Repeat until it shows **Stable**.
 
-1. Drop the artifact to wake it, then pick it up and read its tooltip. Completed conditions are stated directly; the new condition gives a clue.
-2. Prepare the required blocks, creatures or location, then drop it again. When it glows and rings, meet each condition before its light fades. **Each round checks all completed conditions in order, followed by one new condition.**
-3. After passing the whole round, wait briefly before picking it up to read the next clue, replenish materials and continue. Once its status reads **Stable**, you can store it or use it in crafting.
-
-You cannot pick it up while it glows. Wait until the round ends before collecting it to move elsewhere. Repeated failures may make it less stable or even destroy it. It may also summon mobs, move or teleport; meeting conditions can improve its stability.
+It cannot be picked up while glowing. Failures can reduce stability or destroy it. Follow the tooltip; glow colors alone do not identify the required materials.
 
 ## Condition reference
 
@@ -69,6 +67,4 @@ Flowers, leaves and logs may be consumed. Replace them before the next round.
 
 ## Uses
 
-Stable artifacts are used for crafting an [Altar Automation Interface](altar.md). An [Automatic Starmetal Chisel](chisel.md) produces shards from artifacts, but may consume the artifact. Artifact shards of any type can be used for [capacity enhancement](enhancement.md).
-
-[Back to Applied Astralsorcery](index.md)
+Stable artifacts craft the [Altar Automation Interface](altar.md). An [Automatic Starmetal Chisel](chisel.md) can produce shards for [capacity enhancement](enhancement.md), but may consume the artifact.

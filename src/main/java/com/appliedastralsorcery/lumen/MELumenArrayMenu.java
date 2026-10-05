@@ -76,7 +76,6 @@ public final class MELumenArrayMenu extends AbstractContainerMenu {
         int index = value(8) - 1;
         return index >= 0 && index < types.size() ? types.get(index) : null;
     }
-    // The player owns its Level; menu interactions only borrow it.
     @SuppressWarnings("resource")
     @Override public boolean clickMenuButton(Player player, int button) {
         if (array == null || player.level().isClientSide() || !stillValid(player)) return false;
@@ -90,7 +89,6 @@ public final class MELumenArrayMenu extends AbstractContainerMenu {
         broadcastChanges();
         return true;
     }
-    // World lifetime belongs to Minecraft, not this menu.
     @SuppressWarnings("resource")
     @Override public boolean stillValid(Player player) {
         if (player != owner || player.isSpectator()) return false;

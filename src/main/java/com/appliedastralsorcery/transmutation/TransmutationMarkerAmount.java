@@ -12,7 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
-/** Changes only the quantity of an existing configuration, never the carried or stored items. */
 public record TransmutationMarkerAmount(int containerId, int slot, ItemStack expectedItem, int amount,
         boolean relative) implements CustomPacketPayload {
     public static final Type<TransmutationMarkerAmount> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(

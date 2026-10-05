@@ -7,7 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
-/** Fluid-only equivalent of AE2's configuration slots; containers are inspected only on right-click. */
 public final class ChaliceFluidMarker {
     private ChaliceFluidMarker() {}
 
@@ -20,6 +19,7 @@ public final class ChaliceFluidMarker {
     }
 
     @Nullable
+    @SuppressWarnings("UnstableApiUsage") // AE2 exposes container contents through its experimental strategy API.
     public static AEFluidKey carried(ItemStack stack, int button) {
         if (button == 1 && !stack.isEmpty()) {
             var action = ContainerItemStrategies.getEmptyingAction(stack.copyWithCount(1));

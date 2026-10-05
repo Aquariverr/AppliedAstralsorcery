@@ -15,13 +15,11 @@ import hellfirepvp.astralsorcery.common.util.inventory.FilteredInventoryViewFact
 import hellfirepvp.astralsorcery.common.util.tank.FluidContainerList;
 import net.minecraft.core.BlockPos;
 
-/** Same save format and capacities as AS, with ME-specific binding and extraction rules. */
 public class MELumenArrayData extends TileLumenArray.Data {
     public static final Codec<TileLumenArray.Data> CODEC = RecordCodecBuilder.<MELumenArrayData>create(
             instance -> lumenArrayFields(instance).apply(instance, MELumenArrayData::new))
             .xmap(data -> data, data -> (MELumenArrayData) data);
 
-    // The native RecordCodecBuilder and superclass represent an absent owner with Optional.
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     protected MELumenArrayData(long ticks, boolean structure, Map<BlockPos, Boolean> sky, Optional<UUID> owner,
             LumenStackList lumen, FluidContainerList fluid, InventoryStackList inventory, boolean extended, Lumen assigned) {

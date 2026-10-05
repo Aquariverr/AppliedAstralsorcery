@@ -12,7 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
-/** A JEI configuration request. The stack is a marker, never an inventory insertion. */
 public record TransmutationFilterSelection(int containerId, int slot, ItemStack stack) implements CustomPacketPayload {
     public static final Type<TransmutationFilterSelection> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(
             AppliedAstralsorcery.MOD_ID, "transmutation_filter"));

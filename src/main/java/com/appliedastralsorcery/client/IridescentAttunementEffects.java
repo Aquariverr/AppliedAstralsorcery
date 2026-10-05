@@ -16,10 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 
-/** The crystal channels starlight to each working station: its star trails light round the ring, arcs to the
- *  crystal with every breath of its gem, and a stream of its colour flows from the crystal to the relay. */
 public final class IridescentAttunementEffects implements IridescentAttunementBlockEntity.ClientEffects {
-    /** Relay FX centre on its floating item, as {@link ConstellationRelayRenderer} draws it. */
     private static final double RELAY_FOCUS_Y = 0.85;
     private static final double STREAM_SPEED = 0.22;
     private final IridescentAttunementBlockEntity altar;
@@ -50,7 +47,6 @@ public final class IridescentAttunementEffects implements IridescentAttunementBl
             return;
         }
         var crystal = IridescentAttunementRenderer.crystalCentre(altar, 0);
-        // The gem's breath peaks at half a cycle; the arc lands with its white flash.
         boolean peak = level.getGameTime() % IridescentAttunementRenderer.BREATH_CYCLE
                 == IridescentAttunementRenderer.BREATH_CYCLE / 2 - 1;
         var random = level.random;
@@ -86,7 +82,6 @@ public final class IridescentAttunementEffects implements IridescentAttunementBl
         if (altar.isLumenFed()) lumenMotes(random, level.getGameTime(), crystal);
     }
 
-    /** Light shed behind a working star as it sweeps round the ring. */
     private void trail(RandomSource random, int station, Vector3 from, Vector3 to) {
         for (int step = 1; step <= 3; step++) {
             var pos = from.copyInterpolateWith(to, step / 3F);
@@ -99,7 +94,6 @@ public final class IridescentAttunementEffects implements IridescentAttunementBl
         }
     }
 
-    /** Starlight flowing out of the crystal to the station's relay. */
     private void stream(RandomSource random, int station, Vector3 crystal) {
         var relay = new Vector3(altar.getBlockPos().offset(AttunementLayout.STATIONS.get(station).offset()))
                 .add(0.5, RELAY_FOCUS_Y, 0.5);
@@ -114,7 +108,6 @@ public final class IridescentAttunementEffects implements IridescentAttunementBl
                 .setMotion(path.divide(age)).setMaxAge(age);
     }
 
-    /** A crackling arc, built from short bolts so it kinks along its whole length. */
     private void arc(RandomSource random, Vector3 from, Vector3 to, ColorWrapper color, float jitter) {
         var path = to.copy().subtract(from);
         int pieces = Math.max(3, Mth.ceil(path.length() / 0.25));
@@ -140,7 +133,6 @@ public final class IridescentAttunementEffects implements IridescentAttunementBl
         }
     }
 
-    /** Iridescent glints playing over the crystal while it channels. */
     private void shimmer(RandomSource random, Vector3 crystal) {
         for (int i = 0; i < 2; i++) {
             var pos = crystal.copy().add((random.nextFloat() - 0.5) * 0.35, (random.nextFloat() - 0.5) * 0.6,
@@ -153,7 +145,6 @@ public final class IridescentAttunementEffects implements IridescentAttunementBl
         }
     }
 
-    /** Prismatic lumen drawn up from the slab into the crystal while it stands in for the sky. */
     private void lumenMotes(RandomSource random, long gameTime, Vector3 crystal) {
         double angle = random.nextFloat() * Mth.TWO_PI;
         double radius = 0.75 + random.nextFloat() * 0.35;
@@ -180,7 +171,6 @@ public final class IridescentAttunementEffects implements IridescentAttunementBl
         EffectHelper.of(EffectTemplatesAS.LIGHT_BEAM).spawn(crystal.copy())
                 .setup(crystal.copy().addY(3.5), 0.9, 0.5)
                 .color(FXColorFunction.constant(color)).setAlpha(0.9F).setMaxAge(30);
-        // A ring of light washes out across the slab.
         for (int i = 0; i < 32; i++) {
             double angle = i * Mth.TWO_PI / 32;
             EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE).spawn(crystal.copy())

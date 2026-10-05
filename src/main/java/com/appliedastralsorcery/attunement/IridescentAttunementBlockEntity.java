@@ -38,7 +38,6 @@ public final class IridescentAttunementBlockEntity extends TileEntityTick<TileEn
     public interface ClientEffects {
         ClientEffects NONE = new ClientEffects() {};
         default void tick() {}
-        /** The relay at {@code station} has just finished attuning an item. */
         default void finish(int station) {}
         default void stop() {}
     }
@@ -52,9 +51,7 @@ public final class IridescentAttunementBlockEntity extends TileEntityTick<TileEn
     private long structureTick = Long.MIN_VALUE;
     private boolean formed;
 
-    // Client-only state of the floating star ring, one star per station.
     private static final float RING_IDLE_SPEED = 0.15F, RING_FORMED_SPEED = 0.6F, RING_WORKING_SPEED = 3;
-    /** How much faster the ring's clock runs while a relay works: its tumble, nod and bobbing quicken with its orbit. */
     private static final float WORKING_TEMPO = 2;
     /** Every motion driven by the ring clock completes whole cycles within this many ticks, so it wraps seamlessly. */
     public static final float RING_CLOCK_PERIOD = 3600;
@@ -77,7 +74,6 @@ public final class IridescentAttunementBlockEntity extends TileEntityTick<TileEn
     }
 
     @Override public Optional<StoredLumenDisplayTooltip> getDisplayTooltip() {
-        // Keep the assigned type and empty bar visible even before the first fill.
         var stored = new StoredLumen(LumenAS.PRISMATIC.get(), getLumenAmount(), LUMEN_CAPACITY);
         var display = new StoredLumenComponent(List.of(stored))
                 .updateLumenAlwaysShow(LumenAS.PRISMATIC.get().getRegistryKey().orElseThrow(), true);
@@ -134,7 +130,6 @@ public final class IridescentAttunementBlockEntity extends TileEntityTick<TileEn
         return clientEffects;
     }
 
-    /** Called on the client when the relay bound to {@code station} completes an attunement. */
     public void onStationFinished(int station) {
         if (level != null && level.isClientSide && station >= 0 && station < AttunementLayout.STATIONS.size())
             clientEffects().finish(station);
@@ -156,11 +151,8 @@ public final class IridescentAttunementBlockEntity extends TileEntityTick<TileEn
     public float getRingClock(float partialTick) { return prevRingClock + (ringClock - prevRingClock) * partialTick; }
     /** 0 without a relay, 0.6 with one, 1 while its star map is displayed. */
     public float getStationGlow(int station) { return stationGlow[station]; }
-    /** Fades to 1 while the station's relay is attuning. */
     public float getStationWork(int station) { return stationWork[station]; }
-    /** Whether the station's relay is attuning right now. */
     public boolean isStationAttuning(int station) { return stationAttuning[station]; }
-    /** Whether a relay is attuning on this altar's prismatic lumen, its constellation being out of the sky. */
     public boolean isLumenFed() { return lumenFed; }
 
     public boolean consumeLumen(int amount, boolean simulate) {

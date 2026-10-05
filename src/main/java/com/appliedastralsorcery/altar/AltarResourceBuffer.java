@@ -15,7 +15,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.ListTag;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
-/** Separate resource storage: accepting a batch must not mutate a provider's inputs on rejection. */
 final class AltarResourceBuffer {
     static final int FLUID_TANKS = 16;
 

@@ -40,7 +40,6 @@ public final class MECelestialGatewayMenu extends AbstractContainerMenu {
     }
     public boolean active() { return data.get(0) != 0; }
     public int progress() { return data.get(1); }
-    // Both levels are borrowed from game objects; the menu must never close them.
     @SuppressWarnings("resource")
     @Override public boolean stillValid(Player player) {
         return gate == null || !gate.isRemoved() && player.level() == gate.getLevel() && gate.canUse(player)

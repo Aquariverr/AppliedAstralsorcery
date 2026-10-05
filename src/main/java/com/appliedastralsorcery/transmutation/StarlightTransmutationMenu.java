@@ -101,7 +101,7 @@ public final class StarlightTransmutationMenu extends AbstractContainerMenu {
         int count = (int) Math.clamp(requested, 0L, Math.min(64, marker.getMaxStackSize()));
         return setPullMarker(player, slot, count == 0 ? ItemStack.EMPTY : marker.copyWithCount(count));
     }
-    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    @SuppressWarnings("resource")
     public boolean setPullMarker(Player player, int slot, ItemStack stack) {
         if (machine == null || player.level().isClientSide || !stillValid(player) || !isAutoPull()) return false;
         if (!machine.setPullMarker(slot, stack)) return false;
@@ -109,7 +109,7 @@ public final class StarlightTransmutationMenu extends AbstractContainerMenu {
         return true;
     }
     @ParametersAreNonnullByDefault
-    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    @SuppressWarnings("resource")
     @Override public boolean clickMenuButton(Player player, int button) {
         if (machine == null || player.level().isClientSide || !stillValid(player)) return false;
         if (button == AUTO_PULL_BUTTON) machine.toggleAutoPull();
@@ -127,8 +127,6 @@ public final class StarlightTransmutationMenu extends AbstractContainerMenu {
                 var held = getCarried();
                 var marker = getPullMarker(markerSlot);
                 if (button == 0) {
-                    // ME interface configuration: add a held stack to the same target,
-                    // replace a different target, or clear with an empty hand.
                     var next = held.copy();
                     if (!held.isEmpty() && ItemStack.isSameItemSameComponents(held, marker))
                         next.setCount(Math.min(64, marker.getCount() + held.getCount()));
@@ -153,7 +151,7 @@ public final class StarlightTransmutationMenu extends AbstractContainerMenu {
         return id == 0 ? null : RegistriesAS.REGISTRY_CONSTELLATIONS.byId(id - 1);
     }
     @ParametersAreNonnullByDefault
-    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    @SuppressWarnings("resource")
     @Override public boolean stillValid(Player player) {
         if (player != owner || player.isSpectator()) return false;
         if (machine == null) return player.level().isClientSide;

@@ -18,7 +18,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
-/** A marble altar page: the wand beneath the Astral Tome's night sky, and three aquamarine-lit settings. */
 public final class MEResonatingWandScreen extends AbstractContainerScreen<MEResonatingWandMenu> {
     private static final int INK = 0xFF3B3933, MUTED = 0xFF696356, GOLD = 0xFFD4BE76, GOLD_SHADE = 0xFF806630,
             AQUA = 0xFF228CC1, AQUA_LIGHT = 0xFF7AD6E8, EDGE = 0xFF9D9073, STARLIGHT = 0xFF9FE9F2;
@@ -26,7 +25,6 @@ public final class MEResonatingWandScreen extends AbstractContainerScreen<MEReso
     private static final int ROW_Y = 69, ROW_HEIGHT = 40, ROW_GAP = 4;
     private static final ResourceLocation MARBLE = texture("block/marble_raw"), WOOD = texture("block/infused_wood"),
             SKY = texture("screen/tome/background_constellation");
-    // A staff of stars rising to a gilt focus near the header's right end; the last three lines branch from the focus.
     private static final int[][] STARS = {{0, 38}, {20, 31}, {40, 25}, {61, 18}, {52, 8}, {79, 12}, {75, 32}};
     private static final int[][] LINKS = {{0, 1}, {1, 2}, {2, 3}, {3, 4}, {3, 5}, {3, 6}};
     private static final int FOCUS = 3;
@@ -60,7 +58,6 @@ public final class MEResonatingWandScreen extends AbstractContainerScreen<MEReso
     @ParametersAreNonnullByDefault
     @Override public void render(GuiGraphics g, int mx, int my, float partial) {
         super.render(g, mx, my, partial);
-        // An unlinked wand explains how to bind it when its status line is hovered.
         if (!menu.isLinked() && isHovering(HEADER_X + 35, HEADER_Y + 27, font.width(tr("unlinked")) + 13, 11, mx, my))
             g.renderTooltip(font, font.split(Component.translatable("tooltip.appliedas.wand.bind"), 200), mx, my);
     }
@@ -77,7 +74,6 @@ public final class MEResonatingWandScreen extends AbstractContainerScreen<MEReso
         for (int dx : new int[]{7, w - 8}) for (int dy : new int[]{7, h - 8})
             star(g, x + dx, y + dy, 3, GOLD);
         renderHeader(g, x + HEADER_X, y + HEADER_Y);
-        // Gilt rules ending in small stars frame the footer, like the Astral Tome's underline.
         Component saved = tr("saved");
         int textWidth = font.width(saved), textX = x + (w - textWidth) / 2, textY = y + 207;
         g.drawString(font, saved, textX, textY, MUTED, false);
@@ -89,14 +85,12 @@ public final class MEResonatingWandScreen extends AbstractContainerScreen<MEReso
 
     private void renderHeader(GuiGraphics g, int x, int y) {
         boolean linked = menu.isLinked();
-        // A window onto the Astral Tome's night sky, set in a gilt bezel.
         g.fill(x, y, x + CONTENT_WIDTH, y + HEADER_HEIGHT, 0xFF2B2418);
         g.renderOutline(x + 1, y + 1, CONTENT_WIDTH - 2, HEADER_HEIGHT - 2, GOLD);
         g.blit(SKY, x + 2, y + 2, 113, 35, CONTENT_WIDTH - 4, HEADER_HEIGHT - 4, 450, 300);
         for (int dx : new int[]{1, CONTENT_WIDTH - 2}) for (int dy : new int[]{1, HEADER_HEIGHT - 2})
             star(g, x + dx, y + dy, 2, GOLD);
         constellation(g, x + CONTENT_WIDTH - 94, y, linked);
-        // The wand rests in a gilt socket that glows while it resonates with a network.
         socket(g, x + 12, y + 17, true, linked ? 0xFF2C5866 : 0xFF33363D);
         g.renderItem(MEResonatingWandClient.icon(linked), x + 12, y + 17);
         g.drawString(font, title, x + 36, y + 13, 0xFFF0E5C6, false);
@@ -113,7 +107,6 @@ public final class MEResonatingWandScreen extends AbstractContainerScreen<MEReso
         for (int i = 0; i < STARS.length; i++) {
             int sx = x + STARS[i][0], sy = y + STARS[i][1], radius = i == FOCUS ? 3 : i % 2 == 0 ? 2 : 1;
             int color = linked ? i == FOCUS ? GOLD : STARLIGHT : i == FOCUS ? 0xFF8F846C : 0xFF647088;
-            // Linked stars twinkle faintly; an unlinked chart stays dim.
             if (linked && radius > 1) {
                 int halo = (int) (0x30 + 0x20 * Mth.sin(time + i * 1.7F));
                 g.fill(sx - 1, sy - 1, sx + 2, sy + 2, halo << 24 | color & 0xFFFFFF);
@@ -144,7 +137,6 @@ public final class MEResonatingWandScreen extends AbstractContainerScreen<MEReso
         g.fill(x + 2, y + height - 2, x + width - 1, y + height - 1, 0xFF999589);
     }
 
-    /** A recessed 18x18 socket around a 16x16 icon at (x, y); gilt when lit, plain stone otherwise. */
     private static void socket(GuiGraphics g, int x, int y, boolean gilt, int fill) {
         g.fill(x - 1, y - 1, x + 17, y + 17, gilt ? GOLD : 0xFFF6F1E4);
         g.fill(x - 1, y - 1, x + 17, y, gilt ? GOLD_SHADE : 0xFF625F54);
@@ -153,7 +145,6 @@ public final class MEResonatingWandScreen extends AbstractContainerScreen<MEReso
     }
 
     private static void lamp(GuiGraphics g, int x, int y, int color) {
-        // A small faceted aquamarine set in gold, dimmed when the feature is off.
         g.fill(x + 1, y - 1, x + 3, y + 5, GOLD_SHADE);
         g.fill(x - 1, y + 1, x + 5, y + 3, GOLD_SHADE);
         g.fill(x, y, x + 4, y + 4, color);
@@ -199,7 +190,6 @@ public final class MEResonatingWandScreen extends AbstractContainerScreen<MEReso
             boolean on = menu.enabled(option), hover = isHoveredOrFocused();
             setMessage(tr("toggle", tr(key), tr(on ? "on" : "off")));
             int x = getX(), y = getY(), w = width, h = height;
-            // Match the Lumen Array's layered wood/marble button frame.
             int border = hover ? AQUA : GOLD_SHADE;
             g.fill(x + 1, y + 1, x + w - 1, y + h, 0xFF98907C);
             g.fill(x, y + 1, x + w, y + h - 2, border);
@@ -209,7 +199,6 @@ public final class MEResonatingWandScreen extends AbstractContainerScreen<MEReso
             g.fill(x + 3, y + 2, x + w - 3, y + h - 3, hover ? 0x445FCBDC : 0x58FFF9E8);
             g.fill(x + 2, y + 1, x + w - 2, y + 2, 0xFFFFF2BF);
             g.fill(x + 2, y + h - 3, x + w - 2, y + h - 2, GOLD);
-            // Enabled settings sit in a gilt aquamarine socket; disabled ones fade into the stone.
             socket(g, x + 10, y + 11, on, on ? 0xFF628A88 : 0xFF97978F);
             g.renderItem(icon, x + 10, y + 11);
             if (!on) g.fill(x + 10, y + 11, x + 26, y + 27, 200, 0x7097978F);

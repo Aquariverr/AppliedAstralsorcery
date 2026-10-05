@@ -74,7 +74,6 @@ public final class ConstellationRelayRenderer implements BlockEntityRenderer<Con
             minZ = Math.min(minZ, rotatedZ);
             maxZ = Math.max(maxZ, rotatedZ);
         }
-        // Center the actual rotated pattern, including the equally sized star sprites.
         // Fit diagonal patterns inside the same 3x3 floor area without overlapping neighbors.
         double spriteWidth = 2 * unit * (Math.abs(cos) + Math.abs(sin));
         float fit = (float) Math.min(1, 2.9 / (Math.max(maxX - minX, maxZ - minZ) + spriteWidth));

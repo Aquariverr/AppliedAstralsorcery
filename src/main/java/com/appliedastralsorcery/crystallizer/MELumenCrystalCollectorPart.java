@@ -42,7 +42,6 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
 
-/** Harvests one native lumen-crystal growth stage at a time, always preserving stage zero. */
 public final class MELumenCrystalCollectorPart extends AEBasePart implements IGridTickable {
     private static final IPartModel MODEL = new PartModel(ResourceLocation.fromNamespaceAndPath(
             AppliedAstralsorcery.MOD_ID, "part/me_lumen_crystal_collector"));
@@ -65,7 +64,7 @@ public final class MELumenCrystalCollectorPart extends AEBasePart implements IGr
 
     @Override public void getBoxes(IPartCollisionHelper helper) {
         helper.addBox(1, 1, 14, 15, 15, 16);
-        helper.addBox(4, 4, 13, 12, 12, 14); // cable nub on the back, like AE2 monitors
+        helper.addBox(4, 4, 13, 12, 12, 14);
     }
 
     public BlockPos getCollectionTarget() {

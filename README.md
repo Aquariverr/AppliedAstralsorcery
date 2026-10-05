@@ -28,6 +28,7 @@ An addon for **Astral Sorcery** and **Applied Energistics 2 (AE2)** that lets ME
 - **Altar Automation Interface**: Automate altar crafting through an ME Pattern Provider, supplying items, fluids and lumen and returning products to the provider.
 - **Automatic Starmetal Chisel**: Automatically process crystals, Starmetal Ingots and artifacts using Evorsio lumen.
 - **Starlight Transmutation Chamber**: Automate starlight item transmutation using a linked Collector Crystal or Lens, and send products to ME.
+- **Starlight P2P Tunnel**: Transfer starlight from focal points, focus crystals and lenses through ME.
 - **Non-Empty Annihilation Plane**: Collect blocks only if they drop items, while retaining AE2's fluid and dropped-item collection.
 
 ## Requirements

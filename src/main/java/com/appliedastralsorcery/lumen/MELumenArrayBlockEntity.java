@@ -26,7 +26,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
-/** Native AS array with an independent, bottom-only ME node. */
 public class MELumenArrayBlockEntity extends TileLumenArray implements IGridConnectedBlockEntity {
     private final IManagedGridNode mainNode = GridHelper.createManagedNode(this,
             (owner, node) -> owner.setChanged())
@@ -198,7 +197,6 @@ public class MELumenArrayBlockEntity extends TileLumenArray implements IGridConn
             if (extracted > 0) handler.fill(selected.stack((int) extracted), ILumenHandler.Action.EXECUTE);
         }
         if (!supplyItems) return;
-        // Refill the original 2000 mB tank; native generation still consumes starlight normally.
         var fluid = FluidsAS.LIQUID_STARLIGHT.getSource().get();
         var tank = getTileData().getFluidTank();
         int wantedFluid = tank.fill(new FluidStack(fluid, Data.TANK_CAPACITY), IFluidHandler.FluidAction.SIMULATE);

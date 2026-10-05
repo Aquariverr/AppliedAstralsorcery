@@ -14,9 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.crafting.ICustomIngredient;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 
-/** Disjoint size buckets let the inscriber use its normal recipes and output-capacity checks. */
 public record CrystalSizeIngredient(int size) implements ICustomIngredient {
-    // Size 63 is the final bucket: it and all larger sizes produce a full stack.
     public static final int MAX_SIZE = 63;
     public static final MapCodec<CrystalSizeIngredient> CODEC = Codec.intRange(0, MAX_SIZE)
             .fieldOf("size").xmap(CrystalSizeIngredient::new, CrystalSizeIngredient::size);

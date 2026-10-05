@@ -10,21 +10,17 @@ item_ids:
 ---
 # Iridescent Attunement Altar
 
-Craft the altar on an **Iridescent Crafting Altar** and each relay on a **Resonating Crafting Table**, both at night.
-
 <Recipe id="appliedas:iridescent_attunement_altar" />
 
-The altar also requires **2 B Liquid Starlight**, **600 Lm of Akasha lumen**, and **2 additional Stardust dropped near the crafting altar**.
+Crafting also requires **2,000 mB Liquid Starlight, 600 Lm of Akasha**, and **2 additional Stardust dropped nearby**.
 
 <Recipe id="appliedas:constellation_relay" />
 
 ## Structure
 
-Use the **Attunement Altar** platform, with an Iridescent Attunement Altar in the center and **12 Constellation Relays** on the surrounding **Sooty Marble**. Use a **Resonating Wand** on the center and follow its projection. The structure must be complete to work.
+Use an Attunement Altar platform, with the **Iridescent Attunement Altar** in the center and **12 Constellation Relays** on the surrounding Sooty Marble. View the projection with a Resonating Wand or build with an [ME Resonating Wand](wand.md).
 
-Sneak-use an **ME Resonating Wand** to build from stored materials, or a **Resonating Wand** to build directly in creative mode.
-
-Each relay's position determines its constellation. Coordinates are relative to the central altar: **+X east, +Z south**.
+Relay positions determine their constellations. Coordinates are relative to the center: **+X east, +Z south**.
 
 | X | Z | Constellation |
 | --- | --- | --- |
@@ -43,16 +39,8 @@ Each relay's position determines its constellation. Coordinates are relative to 
 
 ## Attunement
 
-A relay shows its star map when its constellation is active at night and the central altar has open sky. Right-click the corresponding relay with an unattuned item, such as a **Rock Crystal** or **Celestial Crystal**. Attunement takes **25 seconds** by default.
+At night, while the constellation is visible and the central altar has open sky, **right-click its relay** with an unattuned item such as a Rock Crystal. Attunement takes **25 seconds** by default.
 
-Hoppers and pipes can also supply items. **Sneak-right-click with an empty hand** to retrieve inputs. Products launch upward and can be collected with an **ME Annihilation Plane**; keep the space above the relay clear.
+Hoppers and pipes can supply items. **Sneak-right-click with an empty hand** to retrieve inputs. Products launch upward; keep that space clear and use an ME Annihilation Plane to collect them.
 
-## Prismatic lumen
-
-Supply Prismatic lumen to the center with an **ME Export Bus** or nearby **Lumen Filament**. While lumen remains, all star maps are displayed and attunement can bypass constellation and sky requirements. Each attunement that uses lumen costs **50 Lm** by default, deducted on completion; processing pauses if the full amount is unavailable. No lumen is consumed if constellation and sky requirements are met throughout.
-
-The altar holds **16,000 Lm**. Aim at it to see the stored amount.
-
-Adjust the cost per attunement under **Server Settings → Lumen Consumption** in the mod configuration.
-
-[Back to Applied Astralsorcery](index.md)
+**Prismatic lumen** in the central altar bypasses constellation and sky requirements for **50 Lm per operation** by default. The cost is paid on completion; insufficient lumen pauses progress. Meeting the normal requirements throughout costs no lumen. Supply it with an ME Export Bus or Lumen Filament. Capacity is **16,000 Lm**.

@@ -12,36 +12,25 @@ item_ids:
 ---
 # Lumen Processor
 
-Every type of Lumen Crystal can be inscribed into the same Lumen Circuit Board, then assembled into a Lumen Processor.
+See [Aberrant Processor](processor.md) for how to obtain the Lumen Inscriber Press.
 
-## Obtain the press
+## Crafting
 
-Direct starlight at a **Mysterious Cube** or **Not So Mysterious Cube**. Starlight transmutation turns either into a **Starlight Mysterious Cube**.
-
-Mine it with a pickaxe to obtain one **Lumen Inscriber Press** and one [Aberrant Inscriber Press](processor.md). Silk Touch and Fortune do not change these drops.
-
-## Print circuit boards
-
-Place the Lumen Inscriber Press in either outer slot of an AE2 Inscriber and any type of Lumen Crystal in the middle slot.
-
-Each operation consumes one crystal, produces one Lumen Circuit Board and retains the press. All lumen types, including Prismatic, give the same yield.
+Place the **Lumen Inscriber Press** in either outer slot of an AE2 Inscriber and any Lumen Crystal in the middle. Each crystal yields **1 Lumen Circuit Board**; the press is retained.
 
 <Recipe id="appliedas:inscriber/lumen_processor_print" />
 
-## Assemble the processor
-
-Place a Lumen Circuit Board and Printed Silicon in the outer slots, with Redstone Dust in the middle. This consumes one of each material and produces one Lumen Processor.
+Place the board and Printed Silicon in the outer slots, with Redstone Dust in the middle, to assemble a processor.
 
 <Recipe id="appliedas:inscriber/lumen_processor" />
 
 ## Crystal blocks and Extended AE
 
-Combine any 9 Lumen Crystals in a crafting table to make a Lumen Crystal Block. Different lumen types, including Prismatic, can be mixed; the block does not retain their lumen types.
+Combine **9 Lumen Crystals** into a Lumen Crystal Block. Different types can be mixed.
 
 <Recipe id="appliedas:lumen_crystal_block" />
 
-With Extended AE installed, the Circuit Slicer turns 1 Lumen Crystal Block into 9 Lumen Circuit Boards without a press.
+With Extended AE installed:
 
-The Crystal Assembler consumes 4 Lumen Circuit Boards, 4 Printed Silicon and 4 Redstone Dust to produce 4 Lumen Processors. No fluid is required.
-
-[Back to Applied Astralsorcery](index.md)
+- **Circuit Slicer:** 1 Lumen Crystal Block → 9 Lumen Circuit Boards. No press required.
+- **Crystal Assembler:** 4 each of Lumen Circuit Boards, Printed Silicon and Redstone Dust → 4 Lumen Processors. No fluid required.

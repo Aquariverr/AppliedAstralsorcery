@@ -62,7 +62,6 @@ public final class AttunementWandGameTests {
     private static void useWand(ServerPlayer player, BlockPos center, boolean sneaking) {
         player.setShiftKeyDown(sneaking);
         var hit = new BlockHitResult(center.getCenter(), Direction.UP, center, false);
-        // Exercise Astral Sorcery's registered interaction handler with the real wand item.
         NeoForge.EVENT_BUS.post(new PlayerInteractEvent.RightClickBlock(player, InteractionHand.MAIN_HAND, center, hit));
     }
 

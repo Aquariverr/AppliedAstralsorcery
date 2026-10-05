@@ -23,7 +23,6 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.lwjgl.glfw.GLFW;
 
-/** A marble chalice with a suspended fluid cube and two ME fittings. */
 public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu> {
     private static final int CAPACITY = 64000;
     private static final int SIDE_MARGIN = 12;
@@ -389,7 +388,6 @@ public final class MEChaliceScreen extends AbstractContainerScreen<MEChaliceMenu
             int textY = y + (h - font.lineHeight) / 2;
             boolean hover = active && isHoveredOrFocused();
             int border = hover ? AQUA : GOLD_SHADE;
-            // Keep the frame, shadow and hit box within the same bounds.
             g.fill(x + 1, y + 1, x + w - 1, y + h, 0xFF98907C);
             g.fill(x, y + 1, x + w, y + h - 2, border);
             g.fill(x + 1, y, x + w - 1, y + h - 1, border);

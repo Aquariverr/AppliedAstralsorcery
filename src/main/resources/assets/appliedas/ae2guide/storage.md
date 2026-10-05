@@ -11,38 +11,26 @@ item_ids:
 ---
 # Crafting Storage Cells
 
-A Lumen Storage Cell is crafted from a **Lumen Storage Component** and a **Lumen Cell Housing**. Place it in an ME Drive or ME Chest to use it. Cells store lumen itself; lumen crystals are items and cannot be converted directly into stored lumen.
+Place Lumen Storage Cells in an **ME Drive** or **ME Chest**. They store lumen, not Lumen Crystal items.
 
-## 1. Craft a Lumen Cell Housing
+## Crafting
+
+Craft a housing and component, then combine them into a cell.
 
 <Recipe id="appliedas:lumen_cell_housing" />
 
-## 2. Craft a 1k Lumen Storage Component
-
-Use a **Resonating Crafting Table** and build the altar structure described in the Tome, including the outer ring of Focus Relays. Place a **Lumen Processor** in the center.
-
-The diagram below follows the Tome's recipe layout: the output is at the top, the central nine slots are the table's crafting grid, and the outer ingredients go on **Focus Relays** in the corresponding positions. Hover over ingredients to see their names.
+The 1k component has two recipes. For the Resonating Crafting Table recipe, arrange the Focus Relay ingredients, start at night with a Resonating Wand and drop **2 Aquamarines** nearby.
 
 <Recipe id="appliedas:lumen_storage_component_1k" />
 
-Once the ingredients are in place, right-click the table with a **Resonating Wand** at **night** to begin crafting. Drop **2 Aquamarines** near the table for the recipe to consume. Crafting takes **5 seconds** once all conditions are met.
-
-Alternatively, use a **regular crafting table** with AE2's 1k ME Storage Component layout: Redstone in the corners, Certus Quartz at the cardinal positions, and an **Aberrant Processor** in the center. This produces the same 1k Lumen Storage Component.
+Alternatively, craft it on a regular crafting table using an Aberrant Processor:
 
 <Recipe id="appliedas:lumen_storage_component_1k_from_astral_processor" />
 
-## 3. Craft a 1k ME Lumen Storage Cell
-
-Combine the component and housing in a crafting grid in any arrangement.
-
 <Recipe id="appliedas:lumen_storage_cell_1k" />
 
-## Capacity and types
+## Capacity
 
-An unenhanced Lumen Storage Cell holds up to **5 lumen types**. Once it contains five types, it cannot accept a sixth even if it has free capacity. Completely removing one stored type frees a slot for another.
+An unenhanced cell holds up to **5 lumen types**. A 1k cell stores **5,080 Lm** of a single type; mixing types uses more capacity.
 
-A 1k cell can hold up to **5,080 Lm** when storing a single type. Each additional type uses some of the cell's bytes, reducing the capacity available for lumen.
-
-Hold an empty cell and **Shift + right-click** to disassemble it into its component and Lumen Cell Housing.
-
-See [Capacity Enhancement](enhancement.md) for instructions and the recipe for enhancing a 256k cell.
+**Sneak-right-click** while holding an empty cell to recover its component and housing. A 256k cell supports [capacity enhancement](enhancement.md).

@@ -61,7 +61,6 @@ public final class AttunementGameTests {
         var registries = helper.getLevel().registryAccess();
         altar.hasStructure();
         altar.getLumenHandler().fill(LumenAS.PRISMATIC.stack(1000), ILumenHandler.Action.EXECUTE);
-        // Use a separate receiver to exercise the native initial-chunk and live-packet decode paths.
         var receiver = new IridescentAttunementBlockEntity(altar.getBlockPos(), altar.getBlockState());
         receiver.handleUpdateTag(altar.getUpdateTag(registries), registries);
         helper.assertTrue(receiver.getLumenAmount() == 1000, "Joining a loaded chunk must show its stored lumen");

@@ -167,7 +167,6 @@ public final class AltarAutomationBlockEntity extends BlockEntity implements ICr
         for (int i = 0; i < 25; i++) {
             var stack = plan.relays().get(i);
             if (!stack.isEmpty()) {
-                // canPlace checked every required relay before accepting any inputs.
                 var target = Objects.requireNonNull(relay(server, altar, i), "Validated altar relay");
                 target.getTileData().getInventory().setStackInSlot(0, stack.copy());
                 relayMask |= 1 << i;
@@ -228,7 +227,6 @@ public final class AltarAutomationBlockEntity extends BlockEntity implements ICr
         return false;
     }
 
-    /** Preserve reserved jobs and their drawn resources while the interface or altar conditions are unavailable. */
     public static boolean shouldPause(TileAltar altar) {
         var data = altar.getPersistentData().getCompound(LINK_TAG);
         var active = altar.getTileData().getActiveRecipe().orElse(null);
@@ -258,7 +256,6 @@ public final class AltarAutomationBlockEntity extends BlockEntity implements ICr
         return entity;
     }
 
-    /** Called only at the native recipe completion point, after all resource checks succeeded. */
     public static boolean collectCraftedOutput(AltarRecipe recipe, AltarCraftingInput input, HolderLookup.Provider registries) {
         var altar = input.getAltar();
         if (altar == null) return false;
@@ -315,7 +312,6 @@ public final class AltarAutomationBlockEntity extends BlockEntity implements ICr
                 altar.setChanged();
                 clearJob();
             } else if (altar.getTileData().getActiveRecipe().isEmpty() && altar.hasStructure()) {
-                // Resume the same batch if native crafting was interrupted externally.
                 var holder = server.getRecipeManager().byKey(recipeId).orElse(null);
                 if (holder != null && holder.value() instanceof AltarRecipe recipe
                         && recipe.matches(altar.createInput(server, jobId), server)) {

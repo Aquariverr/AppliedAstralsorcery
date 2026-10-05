@@ -3,7 +3,6 @@ package com.appliedastralsorcery.client;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 
-/** The marble, gilt and night-sky pieces the mod's consoles are drawn from, after the Auto Chisel's screen. */
 final class AstralGuiArt {
     static final ResourceLocation MARBLE = texture("block/marble_raw"), WOOD = texture("block/infused_wood"),
             SKY = texture("screen/tome/background_constellation");
@@ -17,7 +16,6 @@ final class AstralGuiArt {
         return ResourceLocation.fromNamespaceAndPath("astralsorcery", "textures/" + path + ".png");
     }
 
-    /** Infused wood around a marble plate, gilt along the inside with stars at its corners. */
     static void frame(GuiGraphics g, int x, int y, int width, int height) {
         g.fill(x + 3, y + 4, x + width + 3, y + height + 4, 0x66000000);
         g.fill(x, y, x + width, y + height, 0xFF3C3020);
@@ -30,7 +28,6 @@ final class AstralGuiArt {
             star(g, x + dx, y + dy, 3, GOLD);
     }
 
-    /** A window onto the Astral Tome's night sky, in a gilt bezel with stars at its corners. */
     static void skyBand(GuiGraphics g, int x, int y, int width, int height, int u, int v) {
         g.fill(x, y, x + width, y + height, 0xFF2B2418);
         g.renderOutline(x + 1, y + 1, width - 2, height - 2, GOLD);
@@ -74,7 +71,6 @@ final class AstralGuiArt {
         g.fill(x + 2, y + height - 2, x + width - 2, y + height - 1, GOLD_SHADE);
     }
 
-    /** A recessed stone slot; gilt ones hold what a machine gives back. */
     static void slot(GuiGraphics g, int x, int y, boolean gilt) {
         g.fill(x - 1, y - 1, x + 17, y + 17, gilt ? GOLD : 0xFFF6F1E4);
         g.fill(x - 1, y - 1, x + 17, y, gilt ? GOLD_SHADE : 0xFF625F54);
@@ -82,7 +78,6 @@ final class AstralGuiArt {
         g.fill(x, y, x + 16, y + 16, 0xFF97978F);
     }
 
-    /** A recessed gilt 18x18 socket around a 16x16 icon at (x, y). */
     static void socket(GuiGraphics g, int x, int y, int fill) {
         g.fill(x - 1, y - 1, x + 17, y + 17, GOLD);
         g.fill(x - 1, y - 1, x + 17, y, GOLD_SHADE);
@@ -91,7 +86,6 @@ final class AstralGuiArt {
     }
 
     static void lamp(GuiGraphics g, int x, int y, int color) {
-        // A small faceted aquamarine set in gold, dimmed when the feature is off.
         g.fill(x + 1, y - 1, x + 3, y + 5, GOLD_SHADE);
         g.fill(x - 1, y + 1, x + 5, y + 3, GOLD_SHADE);
         g.fill(x, y, x + 4, y + 4, color);
@@ -99,7 +93,6 @@ final class AstralGuiArt {
         g.fill(x + 3, y + 1, x + 4, y + 4, 0x550D3844);
     }
 
-    /** A right-pointing arrowhead, four pixels long and seven tall, centred on row y. */
     static void arrowhead(GuiGraphics g, int x, int y, int color) {
         for (int i = 0; i < 4; i++) g.fill(x + i, y - 3 + i, x + i + 1, y + 4 - i, color);
     }

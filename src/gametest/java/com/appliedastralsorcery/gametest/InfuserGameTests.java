@@ -141,7 +141,6 @@ public final class InfuserGameTests {
             active.matches(helper.getLevel(), infuser);
             helper.assertTrue(active.consumeInputs(infuser, helper.getLevel()), "ME-backed payment must succeed");
             helper.assertTrue(storage.count(fluidKey) == 0 && fullPools(infuser), "ME payment must preserve every pool");
-            // A deterministic world-fluid recipe exercises the unchanged native final fallback.
             var worldRecipe = new InfusionRecipe(recipe.getItemInput(), recipe.getFluidInput(), recipe.getDuration(),
                     recipe.getOutput(), 1.0F, false, true);
             helper.assertTrue(infuser.consumeInfusionInputs(active, worldRecipe, helper.getLevel()) && !fullPools(infuser),

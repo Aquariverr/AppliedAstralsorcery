@@ -15,7 +15,6 @@ import appeng.me.helpers.PlayerSource;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 
-/** Escrow only: resources cannot be used until the complete build has been reserved. */
 final class WandMaterialBuffer {
     private final ItemStack wand;
     private final IGrid grid;

@@ -14,7 +14,6 @@ import hellfirepvp.astralsorcery.common.lumen.ILumenHandler;
 import hellfirepvp.astralsorcery.common.lumen.Lumen;
 import net.minecraft.network.chat.Component;
 
-/** Bridges the sided Astral Sorcery capability without bypassing its access filters. */
 public final class LumenStorage extends ExternalStorageFacade {
     private final ILumenHandler handler;
     private final List<Lumen> types;

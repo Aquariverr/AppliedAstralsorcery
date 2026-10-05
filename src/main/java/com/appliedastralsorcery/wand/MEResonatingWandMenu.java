@@ -41,7 +41,7 @@ public final class MEResonatingWandMenu extends AbstractContainerMenu {
     public boolean isLinked() { return data.get(1) == 1; }
 
     @ParametersAreNonnullByDefault
-    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    @SuppressWarnings("resource")
     @Override public boolean clickMenuButton(Player player, int button) {
         if (hand == null || player.level().isClientSide() || !stillValid(player)
                 || button != MEResonatingWandItem.USE_ME_ITEMS && button != MEResonatingWandItem.BUILD_FLUIDS
@@ -53,7 +53,7 @@ public final class MEResonatingWandMenu extends AbstractContainerMenu {
     }
 
     @ParametersAreNonnullByDefault
-    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    @SuppressWarnings("resource")
     @Override public boolean stillValid(Player player) {
         if (player != owner || player.isSpectator()) return false;
         return hand == null ? player.level().isClientSide()

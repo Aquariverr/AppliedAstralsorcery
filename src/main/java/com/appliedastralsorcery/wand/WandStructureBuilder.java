@@ -163,7 +163,7 @@ final class WandStructureBuilder {
         return null;
     }
 
-    @SuppressWarnings("resource") // Minecraft manages the player's world lifetime.
+    @SuppressWarnings("resource")
     private static boolean failedToAddPlacement(List<Placement> plan, ServerPlayer player, ItemStack wand, Direction face,
             BlockPos pos, BlockState target) {
         if (target.isAir() || isPlacementBlocked(player, wand, face, pos, target)) {

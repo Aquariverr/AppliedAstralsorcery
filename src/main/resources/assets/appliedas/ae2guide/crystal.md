@@ -11,19 +11,15 @@ item_ids:
 ---
 # Aberrant Crystal
 
-Grow an Aberrant Crystal by combining a Fluix Crystal with other ingredients in Liquid Starlight.
+## Obtaining crystals
 
-## Obtaining a crystal
-
-Prepare a pool of Liquid Starlight over solid ground. Drop the recipe ingredients into it together:
+Prepare Liquid Starlight over solid ground and drop the recipe ingredients into it together. They consume one fluid block to form a cluster.
 
 <Recipe id="appliedas:liquid_starlight/form_astral_fluix_cluster" />
 
-The ingredients consume their source block of Liquid Starlight to form an Aberrant Crystal Cluster.
+Keep the sky clear above it. Growth is faster at night. Starmetal Ore below speeds growth but may revert to Iron Ore.
 
-## Growing the cluster
-
-The cluster has five growth stages. **Only stage 5 is ready to harvest.**
+Harvest with a pickaxe at **stage 5** for one Aberrant Crystal. Breaking it earlier yields nothing.
 
 <Row gap="0">
   <Column alignItems="center">
@@ -53,42 +49,20 @@ The cluster has five growth stages. **Only stage 5 is ready to harvest.**
   </Column>
 </Row>
 
-The cluster needs open sky and grows faster at night.
+## Growing and splitting
 
-Starmetal Ore beneath it speeds up growth, but may turn back into Iron Ore.
-
-Once the cluster is fully grown, break it with a pickaxe to obtain 1 Aberrant Crystal.
-
-Harvesting it early yields no crystal.
-
-## Cultivating crystals
-
-Aberrant Crystals carry qualities such as Size, Purity and Cut.
-
-A single crystal left in Liquid Starlight consumes the liquid for a chance to increase its Size.
+A single crystal in Liquid Starlight has a chance to consume the fluid and increase its Size.
 
 <Recipe id="appliedas:liquid_starlight/grow_astral_fluix_crystal" />
 
-Two Aberrant Crystals in the same pool merge, losing some qualities in the joining.
+Two crystals in the same pool merge, losing some attributes.
 
 <Recipe id="appliedas:liquid_starlight/merge_astral_fluix_crystals" />
 
-## Splitting
-
-Let a crystal grow, drop it on the ground and strike it with a Starmetal Chisel.
-
-The split crystal remains an Aberrant Crystal. Its qualities are divided, with some lost.
-
-A crystal too fragile to split will resist the chisel. Fortune reduces these losses.
-
-Place the resulting crystals in separate pools of Liquid Starlight to keep growing them.
+Drop a crystal and use a **Starmetal Chisel** to split it, then grow the pieces separately. Splitting requires at least 2 total attribute tiers; Fortune reduces losses. An [Automatic Starmetal Chisel](chisel.md) can do this for you.
 
 ## Crystal blocks
 
-Combine any 9 Aberrant Crystals in a crafting table to make an Aberrant Crystal Block. Crystals with different Size, Purity and Cut attributes can be mixed; the block does not retain those attributes.
+Combine any **9 Aberrant Crystals** into a block. It does not retain crystal attributes. With Extended AE installed, it can be [sliced into circuit boards](processor.md).
 
 <Recipe id="appliedas:astral_fluix_block" />
-
-With Extended AE installed, its Circuit Slicer cuts one block into 9 [Aberrant Circuit Boards](processor.md) without a press. This fixed yield does not receive the Inscriber's Size bonus.
-
-[Back to Applied Astralsorcery](index.md)

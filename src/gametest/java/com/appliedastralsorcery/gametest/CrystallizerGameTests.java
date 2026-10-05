@@ -39,7 +39,6 @@ import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
-/** Covers existing block instances and raw saves from the former inventory-only crystallizer. */
 @GameTestHolder("appliedas")
 @PrefixGameTestTemplate(false)
 public final class CrystallizerGameTests {
@@ -77,7 +76,6 @@ public final class CrystallizerGameTests {
         helper.assertTrue(level.getBlockEntity(panel.getBlockPos()) == panel,
                 "Migrating the real crystal must retain the existing legacy panel block");
 
-        // Save after conversion and reload: stage three must continue once, not be seeded a second time.
         panel.loadWithComponents(panel.saveWithoutMetadata(registries), registries);
         panel.getWorldCrystallization().tick(level, target, inventory, SOURCE, bound -> {
             helper.assertTrue(bound == WorldCrystallization.GROWTH_CHANCE,

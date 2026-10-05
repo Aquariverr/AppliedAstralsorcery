@@ -11,7 +11,6 @@ import hellfirepvp.astralsorcery.common.lumen.LumenStack;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-/** Reads resource identities without transferring or consuming the dragged ingredient. */
 public final class GhostIngredientResolver {
     private static final LumenContainerStrategy LUMEN_CONTAINERS = new LumenContainerStrategy();
 

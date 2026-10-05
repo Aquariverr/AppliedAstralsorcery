@@ -160,7 +160,6 @@ public final class AutoChiselBlockEntity extends BlockEntity {
 
     public void cycleSide(Direction side, boolean reverse) {
         sideModes[side.ordinal()] = getSideMode(side).cycle(reverse);
-        // Cached views also check the current mode on every call.
         invalidateCapabilities();
         if (droppedItemMode) resetDropJob();
         setChanged();
@@ -222,7 +221,6 @@ public final class AutoChiselBlockEntity extends BlockEntity {
         if (progress < getDuration()) return;
         List<ItemStack> results = ChiselProcessing.process(input, server.random, getFortuneLevel());
         if (results.isEmpty()) { progress = 0; return; }
-        // All products fit in the slots reserved above; mutation stays within this server tick.
         lumen.drain(LumenAS.EVORSIO.get(), lumenCost, ILumenHandler.Action.EXECUTE);
         inventory.extractItem(0, 1, false);
         for (var result : results) {
@@ -239,7 +237,6 @@ public final class AutoChiselBlockEntity extends BlockEntity {
     private void requestLumen(ServerLevel server) {
         if (server.getGameTime() % 20 == 0 && getLumenAmount() < LUMEN_CAPACITY) {
             var request = LumenAS.EVORSIO.stack(Math.min(200, LUMEN_CAPACITY - getLumenAmount()));
-            // Same nearby relay graph and line-of-sight checks used by native AS processing machines.
             LumenRequestHelper.requestRelayed(server, worldPosition, request).ifPresent(chain -> {
                 var received = LumenUtil.tryChainTransfer(lumen, server, chain, request, ILumenHandler.Action.EXECUTE);
                 if (!received.isEmpty()) chain.playTransferEffect(server, received.getLumen());
@@ -393,7 +390,6 @@ public final class AutoChiselBlockEntity extends BlockEntity {
                             SectionPos.blockToSectionCoord(neighborPos.getZ()))) continue;
             var neighbor = server.getCapability(Capabilities.ItemHandler.BLOCK, neighborPos, side.getOpposite());
             if (neighbor == null) continue;
-            // Evaluate both directions independently for a shared input/output face.
             if (autoOutput && mode.allowsOutput()) {
                 for (int slot = 1; slot <= OUTPUT_SLOTS; slot++) {
                     var stored = inventory.getStackInSlot(slot);

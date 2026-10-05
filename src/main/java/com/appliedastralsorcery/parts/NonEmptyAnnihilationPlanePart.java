@@ -15,7 +15,6 @@ import com.appliedastralsorcery.AppliedAstralsorcery;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 
-/** An AE2 annihilation plane that leaves blocks with empty loot in place. */
 public class NonEmptyAnnihilationPlanePart extends AnnihilationPlanePart {
     private static final ResourceLocation ACCENTS = ResourceLocation.fromNamespaceAndPath(
             AppliedAstralsorcery.MOD_ID, "part/non_empty_annihilation_plane_accents");
@@ -37,7 +36,6 @@ public class NonEmptyAnnihilationPlanePart extends AnnihilationPlanePart {
 
     @Override
     public IPartModel getStaticModels() {
-        // Inlays face the back; AE2's black front, animation and chassis status indicators stay intact.
         return isPowered() ? (isActive() ? MODEL_ACTIVE : MODEL_ON) : MODEL_OFF;
     }
 
@@ -46,7 +44,7 @@ public class NonEmptyAnnihilationPlanePart extends AnnihilationPlanePart {
     }
 
     @Override
-    @SuppressWarnings("UnstableApiUsage") // Extending AE2's pickup strategies requires its experimental API.
+    @SuppressWarnings("UnstableApiUsage")
     protected List<PickupStrategy> getPickupStrategies() {
         boolean initialize = pickupStrategies == null;
         var strategies = super.getPickupStrategies();
@@ -55,7 +53,6 @@ public class NonEmptyAnnihilationPlanePart extends AnnihilationPlanePart {
             // AE2 only initializes strategies after the part is attached and its node exists.
             var node = Objects.requireNonNull(getMainNode().getNode(), "Initialized pickup strategies need a grid node");
             var side = Objects.requireNonNull(getSide(), "Initialized pickup strategies need an attached side");
-            // Keep fluid and addon strategies, and all of AE2's normal item pickup behavior.
             pickupStrategies = strategies.stream().map(strategy ->
                     strategy.getClass() == ItemPickupStrategy.class
                             ? new NonEmptyItemPickupStrategy((ServerLevel) host.getLevel(),

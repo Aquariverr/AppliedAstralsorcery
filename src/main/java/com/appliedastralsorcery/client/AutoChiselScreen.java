@@ -28,13 +28,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
-/**
- * A marble workbench with a single processing arrow and a separate page for mode and face settings.
- */
 public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMenu> {
     private static final int INK = 0xFF3B3933, MUTED = 0xFF696356, GOLD = 0xFFD4BE76, GOLD_SHADE = 0xFF806630,
             AQUA = 0xFF228CC1, AQUA_LIGHT = 0xFF7AD6E8, STARLIGHT = 0xFF9FE9F2, FADED = 0xFFB9B3A5;
-    // Evorsio, dark to light, as painted on the machine.
     private static final int EVORSIO = 0xFF9A0E12, EVORSIO_BRIGHT = 0xFFD8302C, EVORSIO_LIGHT = 0xFFFF7A5C,
             EVORSIO_PALE = 0xFFFFD0B8;
     private static final int MARGIN = 12, CONTENT_WIDTH = 232, HEADER_Y = 12, HEADER_HEIGHT = 36;
@@ -43,7 +39,6 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
     private static final int TAB_Y = 12, TAB_WIDTH = 24, TAB_HEIGHT = 26;
     private static final ResourceLocation MARBLE = texture("block/marble_raw"), WOOD = texture("block/infused_wood"),
             SKY = texture("screen/tome/background_constellation");
-    // Evorsio as charted in the Astral Tome; lit while the machine holds lumen for another operation.
     private static final int[][] STARS = {{23, 15}, {14, 22}, {21, 26}, {18, 10}, {8, 0}, {11, 9}, {0, 2}};
     private static final int[][] LINKS = {{0, 1}, {0, 2}, {0, 3}, {3, 4}, {3, 5}, {5, 6}};
     private static final int FOCUS = 0;
@@ -177,7 +172,6 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
     private void renderHeader(GuiGraphics g, int x, int y, boolean open) {
         var status = menu.getStatus();
         boolean working = status == AutoChiselBlockEntity.Status.WORKING, idle = status == AutoChiselBlockEntity.Status.IDLE;
-        // A window onto the Astral Tome's night sky, set in a gilt bezel.
         g.fill(x, y, x + CONTENT_WIDTH, y + HEADER_HEIGHT, 0xFF2B2418);
         g.renderOutline(x + 1, y + 1, CONTENT_WIDTH - 2, HEADER_HEIGHT - 2, GOLD);
         g.blit(SKY, x + 2, y + 2, 113, 35, CONTENT_WIDTH - 4, HEADER_HEIGHT - 4, 450, 300);
@@ -185,7 +179,6 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
             star(g, x + dx, y + dy, 2, GOLD);
         constellation(g, x + CONTENT_WIDTH - 34, y + 4,
                 working || menu.getLumenAmount() >= AutoChiselBlockEntity.getLumenCost());
-        // The chisel rests in a gilt socket that glows with Evorsio while it works.
         socket(g, x + 10, y + 10, working ? 0xFF5A1E1C : 0xFF33363D);
         g.renderItem(chisel, x + 10, y + 10);
         fitted(g, open ? tr("configuration") : title, x + 34, y + 7, 158, 0xFFF0E5C6);
@@ -222,7 +215,6 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
         channel(g, x + 52, x + 168, y + 84, progress);
     }
 
-    /** A groove ending in an arrowhead that Evorsio fills as the work advances, with a spark at the head of the flow. */
     private static void channel(GuiGraphics g, int x1, int x2, int y, float fill) {
         int end = x2 - 4, length = Math.round((end - x1 - 2) * fill), head = x1 + 1 + length;
         g.fill(x1, y, end, y + 5, 0xFF777568);
@@ -239,7 +231,6 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
 
     private void renderLumen(GuiGraphics g, int x, int y) {
         inset(g, x, y, LUMEN_WIDTH, LOWER_HEIGHT);
-        // The rune of Evorsio on parchment, where its dark red reads clearly.
         var evorsio = LumenAS.EVORSIO.get();
         int color = 0xFF000000 | evorsio.getColor(ClientProxy.getClientTick()).getColor();
         g.fill(x + 19, y + 5, x + 37, y + 23, 0xFFEDE3CF);
@@ -248,7 +239,6 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
                 .getSprite(evorsio.getRegistryKey().orElseThrow().location());
         g.blit(x + 20, y + 6, 0, 16, 16, sprite, ((color >> 16) & 255) / 255F, ((color >> 8) & 255) / 255F,
                 (color & 255) / 255F, 1F);
-        // A vial in gilt caps, filling from the bottom.
         int left = x + 23, right = left + 10, top = y + 28, bottom = y + 66, height = bottom - top;
         g.fill(left, top, right, bottom, 0xFF777568);
         g.fill(left + 1, top, right - 1, bottom, 0xFFACA99A);
@@ -279,7 +269,6 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
     private void renderNet(GuiGraphics g, int x, int y) {
         inset(g, x + MARGIN, y + NET_Y, CONTENT_WIDTH, NET_HEIGHT);
         fitted(g, tr("faces"), x + 24, y + NET_Y + 9, CONTENT_WIDTH - 24, INK);
-        // A legend of the face colours beside the net.
         int legendY = y + 140;
         for (var mode : AutoChiselBlockEntity.SideMode.values()) {
             faceTile(g, x + 124, legendY, 10, faceColor(mode), 0xFF4A4034);
@@ -288,7 +277,6 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
         }
     }
 
-    /** Gilt rules ending in small stars frame the footer, like the Astral Tome's underline. */
     private void footer(GuiGraphics g, Component text) {
         int x = leftPos, w = imageWidth, textWidth = Math.min(font.width(text), w - 80);
         int textX = x + (w - textWidth) / 2, textY = topPos + FOOTER_Y;
@@ -311,7 +299,6 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
         };
     }
 
-    /** A bevelled tile in the colour of a face mode, lit from the top left. */
     private static void faceTile(GuiGraphics g, int x, int y, int size, int color, int frame) {
         g.fill(x, y, x + size, y + size, frame);
         g.fill(x + 1, y + 1, x + size - 1, y + size - 1, FastColor.ARGB32.lerp(0.4F, color, 0xFFFFFFFF));
@@ -364,7 +351,6 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
         g.fill(x + 2, y + height - 2, x + width - 2, y + height - 1, GOLD_SHADE);
     }
 
-    /** A recessed stone slot; the input's is gilt. */
     private static void slot(GuiGraphics g, int x, int y, boolean gilt) {
         g.fill(x - 1, y - 1, x + 17, y + 17, gilt ? GOLD : 0xFFF6F1E4);
         g.fill(x - 1, y - 1, x + 17, y, gilt ? GOLD_SHADE : 0xFF625F54);
@@ -372,7 +358,6 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
         g.fill(x, y, x + 16, y + 16, 0xFF97978F);
     }
 
-    /** A recessed gilt 18x18 socket around a 16x16 icon at (x, y). */
     private static void socket(GuiGraphics g, int x, int y, int fill) {
         g.fill(x - 1, y - 1, x + 17, y + 17, GOLD);
         g.fill(x - 1, y - 1, x + 17, y, GOLD_SHADE);
@@ -381,7 +366,6 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
     }
 
     private static void lamp(GuiGraphics g, int x, int y, int color) {
-        // A small faceted aquamarine set in gold, dimmed when the feature is off.
         g.fill(x + 1, y - 1, x + 3, y + 5, GOLD_SHADE);
         g.fill(x - 1, y + 1, x + 5, y + 3, GOLD_SHADE);
         g.fill(x, y, x + 4, y + 4, color);
@@ -389,7 +373,6 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
         g.fill(x + 3, y + 1, x + 4, y + 4, 0x550D3844);
     }
 
-    /** A right-pointing arrowhead, four pixels long and seven tall, centred on row y. */
     private static void arrowhead(GuiGraphics g, int x, int y, int color) {
         for (int i = 0; i < 4; i++) g.fill(x + i, y - 3 + i, x + i + 1, y + 4 - i, color);
     }
@@ -412,7 +395,6 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
         }
     }
 
-    /** A wooden tab grown out of the frame's edge, turning between the workbench and its configuration. */
     private final class TabButton extends Button {
         private TabButton(int x, int y) {
             super(x, y, TAB_WIDTH, TAB_HEIGHT, Component.empty(), ignored -> toggleConfiguration(),
@@ -423,7 +405,6 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
             boolean open = menu.isConfigurationOpen(), hover = isHoveredOrFocused();
             int x = getX(), y = getY(), right = x + width, bottom = y + height;
             g.fill(x + 3, y + 4, right + 3, bottom + 4, 0x66000000);
-            // The frame's wood runs on across its outer border into the tab.
             g.fill(x - 1, y, right, bottom, 0xFF3C3020);
             tile(g, WOOD, x - 4, y + 1, width + 3, height - 2, leftPos + 1, topPos + 1);
             g.fill(x - 1, y + 1, right - 1, y + 2, 0xFFAA884A);
@@ -436,7 +417,6 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
         }
     }
 
-    /** A wood-framed marble plaque like the Lumen Array's buttons: toggles carry a lamp, cycling settings an arrow. */
     private final class SettingButton extends Button {
         private final BooleanSupplier lamp;
 
@@ -454,7 +434,6 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
             g.fill(x + 1, y, x + w - 1, y + h - 1, border);
             tile(g, WOOD, x + 1, y + 1, w - 2, h - 3);
             tile(g, MARBLE, x + 3, y + 2, w - 6, h - 5);
-            // Settings the current mode ignores fade into the stone.
             g.fill(x + 3, y + 2, x + w - 3, y + h - 3, hover ? 0x605FCBDC : active ? 0x58FFF9E8 : 0xA0D8D3C5);
             g.fill(x + 2, y + 1, x + w - 2, y + 2, 0xFFFFF2BF);
             g.fill(x + 2, y + h - 3, x + w - 2, y + h - 2, GOLD);

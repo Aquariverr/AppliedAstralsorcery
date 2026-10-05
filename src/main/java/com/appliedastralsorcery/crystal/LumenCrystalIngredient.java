@@ -15,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.crafting.ICustomIngredient;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 
-/** Accepts every registered lumen and exposes the actual colored crystals to recipe viewers. */
 public final class LumenCrystalIngredient implements ICustomIngredient {
     public static final LumenCrystalIngredient INSTANCE = new LumenCrystalIngredient();
     public static final MapCodec<LumenCrystalIngredient> CODEC = MapCodec.unit(INSTANCE);

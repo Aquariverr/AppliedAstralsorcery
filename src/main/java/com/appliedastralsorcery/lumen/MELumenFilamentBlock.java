@@ -32,7 +32,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public final class MELumenFilamentBlock extends AEBaseEntityBlock<MELumenFilamentBlockEntity> {
     public static final DirectionProperty BASE_FACE = DirectionProperty.create("base_face");
 
-    // Native AS filament silhouette, raised two pixels above a compact ME interface base.
     private static final VoxelShape SHAPE = Shapes.or(
             box(3, 0, 3, 13, 2, 13),
             box(4, 2, 4, 12, 4, 12),

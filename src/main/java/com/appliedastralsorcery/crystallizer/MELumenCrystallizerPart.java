@@ -40,7 +40,6 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-/** A native ME cable part with a catalyst marker and a real crystal in the adjacent world block. */
 public final class MELumenCrystallizerPart extends AEBasePart implements IGridTickable, WorldCrystallizerHost {
     private static final IPartModel MODEL = new PartModel(ResourceLocation.fromNamespaceAndPath(
             AppliedAstralsorcery.MOD_ID, "part/me_lumen_crystallizer"));
@@ -64,9 +63,8 @@ public final class MELumenCrystallizerPart extends AEBasePart implements IGridTi
 
     @Override public void getBoxes(IPartCollisionHelper helper) {
         // AE2 collision coordinates face south; static model coordinates face north.
-        // This also supplies AE2's own six-direction placement-preview outline.
         helper.addBox(1, 1, 14, 15, 15, 16);
-        helper.addBox(4, 4, 13, 12, 12, 14); // cable nub on the back, like AE2 monitors
+        helper.addBox(4, 4, 13, 12, 12, 14);
     }
 
     @Override public int getLightLevel() { return 4; }
@@ -168,7 +166,6 @@ public final class MELumenCrystallizerPart extends AEBasePart implements IGridTi
         if (getBlockEntity() != null && getLevel() != null) {
             var data = new CompoundTag();
             data.put("crystallizer", crystallization.save(getLevel().registryAccess(), mode == SettingsFrom.DISMANTLE_ITEM));
-            // The normal AE2 part drop retains reserved materials as well as the marker.
             output.set(DataComponents.CUSTOM_DATA, CustomData.of(data));
         }
     }
@@ -196,7 +193,6 @@ public final class MELumenCrystallizerPart extends AEBasePart implements IGridTi
         pose.translate(0.5, 0.5, 0.5);
         BlockEntityRenderHelper.rotateToFace(pose, BlockOrientation.get(side, 0));
         pose.translate(0, 0, 0.501);
-        // The marker is a flat icon on the panel. Crystal growth is rendered by the actual world block.
         BlockEntityRenderHelper.renderItem2d(pose, buffers, marker, 0.4F, light, getLevel());
         pose.popPose();
     }

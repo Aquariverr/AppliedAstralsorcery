@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.AABB;
 
-/** Legacy standalone panels show their catalyst; the crystal is now a real world block. */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public final class MELumenCrystallizerRenderer implements BlockEntityRenderer<MELumenCrystallizerBlockEntity> {

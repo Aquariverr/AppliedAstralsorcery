@@ -20,7 +20,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-/** Slot-free configuration screen. All changes are validated by the server menu. */
 public final class MELumenFilamentScreen extends AbstractContainerScreen<MELumenFilamentMenu> {
     private static final int LIST_TOP = 94;
     private static final int ROW_HEIGHT = 24;
@@ -151,7 +150,6 @@ public final class MELumenFilamentScreen extends AbstractContainerScreen<MELumen
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        // The same native marble and infused wood as AS's crafting altars, kept at one GUI pixel per texel.
         graphics.fill(leftPos + 2, topPos + 3, leftPos + imageWidth + 2, topPos + imageHeight + 3, 0x80000000);
         marblePlate(graphics, leftPos, topPos, imageWidth, imageHeight);
         woodFrame(graphics, leftPos + 7, topPos + 6, imageWidth - 14, 22);
@@ -159,7 +157,6 @@ public final class MELumenFilamentScreen extends AbstractContainerScreen<MELumen
         graphics.renderItem(ModContent.ME_LUMEN_FILAMENT_ITEM.toStack(), leftPos + 13, topPos + 9);
         tile(graphics, CARVED_WOOD, leftPos + imageWidth - 29, topPos + 9, 16, 16);
 
-        // Four arms and a raised, gilt central socket echo the actual filament seen from above.
         drawFilament(graphics, leftPos + imageWidth - 56, topPos + 35);
         graphics.fill(leftPos + 13, topPos + 77, leftPos + imageWidth - 13, topPos + 78, 0xFF9B9790);
         graphics.fill(leftPos + 13, topPos + 78, leftPos + imageWidth - 13, topPos + 79, 0xFFF8F6EF);
@@ -167,7 +164,6 @@ public final class MELumenFilamentScreen extends AbstractContainerScreen<MELumen
         woodFrame(graphics, leftPos + 9, topPos + LIST_TOP - 4, imageWidth - 18, rows * ROW_HEIGHT + 6);
         tile(graphics, SOOTY_MARBLE, leftPos + 12, topPos + LIST_TOP - 1,
                 imageWidth - 24, rows * ROW_HEIGHT);
-        // Small silver clasps connect the inset to the marble slab, as on the filament's arms.
         for (int side : new int[] { leftPos + 7, leftPos + imageWidth - 12 }) {
             marblePlate(graphics, side, topPos + LIST_TOP + 5, 5, 10);
             marblePlate(graphics, side, topPos + LIST_TOP + rows * ROW_HEIGHT - 17, 5, 10);

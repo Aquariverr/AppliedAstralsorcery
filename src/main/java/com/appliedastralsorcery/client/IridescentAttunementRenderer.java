@@ -28,7 +28,6 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import org.joml.Vector3f;
 
-/** Twelve hovering gold cubes, one per station, orbiting the altar like the AS attunement altar's. */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public final class IridescentAttunementRenderer implements BlockEntityRenderer<IridescentAttunementBlockEntity> {
@@ -36,25 +35,16 @@ public final class IridescentAttunementRenderer implements BlockEntityRenderer<I
             .fromNamespaceAndPath(AppliedAstralsorcery.MOD_ID, "block/iridescent_attunement_altar_star"));
     public static final ModelResourceLocation CRYSTAL = ModelResourceLocation.standalone(ResourceLocation
             .fromNamespaceAndPath(AppliedAstralsorcery.MOD_ID, "block/iridescent_attunement_altar_crystal"));
-    /** At rest the stars hover level with the slab, clear of its corners; once lifted they ring the whole altar. */
     private static final float REST_RADIUS = 16.5F / 16, RISEN_RADIUS = 17.5F / 16, SCALE = 0.75F;
     private static final float REST_Y = 4.5F / 16, RISE_Y = 6.5F / 16, CORNER_TIP = 35.264F;
-    /** Once lifted the ring leans this far, nodding by up to {@code TILT_NOD} either way as it precesses. */
     private static final float TILT = 9, TILT_NOD = 5;
-    /** A formed altar lifts its crystal clear of the slab, where it bobs gently. */
     private static final float CRYSTAL_LIFT = 3F / 16, CRYSTAL_BOB = 0.75F / 16;
-    /** Middle of the crystal at rest, which effects aim at. */
     private static final float CRYSTAL_HEART = 11F / 16;
     /** Cycle lengths in ring-clock ticks; each divides {@link IridescentAttunementBlockEntity#RING_CLOCK_PERIOD}. */
     private static final float NOD_CYCLE = 360, STAR_BOB_CYCLE = 120, CRYSTAL_BOB_CYCLE = 100;
-    /** A working station's gem breathes on this many game ticks, flashing white at each peak (at half a cycle). */
     static final int BREATH_CYCLE = 40;
-    /** The gem is drawn in a separate batch from the gold it is inlaid in, so it sits just proud of the face;
-     *  a working gem swells further out of its socket with each breath. */
     private static final float GEM_INFLATE = 1.04F, GEM_SWELL = 0.1F;
-    /** A working station's cube grows by this much and its gold catches the light of its gem. */
     private static final float WORK_GROWTH = 0.2F;
-    /** Gem colour of a station without a bound relay. */
     private static final float STAR_R = 0.85F, STAR_G = 0.9F, STAR_B = 1;
     private static final Direction[] FACES = {Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH,
             Direction.WEST, Direction.EAST, null};
@@ -104,14 +94,12 @@ public final class IridescentAttunementRenderer implements BlockEntityRenderer<I
 
         pose.pushPose();
         ringTransform(pose, clock, rise);
-        // 0 at the trough of each breath, 1 at its peak.
         float breath = 0.5F - 0.5F * Mth.cos(time * Mth.TWO_PI / BREATH_CYCLE);
         float flash = Mth.square(Math.max(0, breath - 0.7F) / 0.3F);
         for (int i = 0; i < count; i++) {
             pose.pushPose();
             orbitTransform(pose, clock, rise, phase, i);
             float glow = altar.getStationGlow(i), work = altar.getStationWork(i);
-            // Lifted cubes tip onto a corner and spin about it, as the AS altar's tilt when it activates.
             pose.mulPose(Axis.YP.rotationDegrees(clock * 2 + i * 37));
             pose.mulPose(Axis.XP.rotationDegrees(-CORNER_TIP * rise));
             pose.mulPose(Axis.ZP.rotationDegrees(45 * rise));
@@ -121,7 +109,6 @@ public final class IridescentAttunementRenderer implements BlockEntityRenderer<I
             int goldLight = LightTexture.pack(Math.max(LightTexture.block(light), Math.round(15 * work)), LightTexture.sky(light));
             for (var quad : gold) goldBuffer.putBulkData(pose.last(), quad, 1, 1, 1, 1, goldLight, overlay);
 
-            // Idle gems keep a dim hint of their constellation; a working station's burns in full colour.
             int color = AttunementLayout.STATIONS.get(i).constellation().get().getConstellationColor().getColor();
             float tint = Mth.lerp(work, 0.15F + 0.35F * glow, 1);
             float bright = Mth.lerp(work, 0.3F + 0.2F * glow, 0.75F + 0.25F * breath);
@@ -148,8 +135,6 @@ public final class IridescentAttunementRenderer implements BlockEntityRenderer<I
         return rise * (CRYSTAL_LIFT + CRYSTAL_BOB * Mth.sin(clock * Mth.TWO_PI / CRYSTAL_BOB_CYCLE));
     }
 
-    /** From the block's corner to the centre of the ring, which once lifted leans like a planetary ring,
-     *  nodding as its tilt precesses. */
     private static void ringTransform(PoseStack pose, float clock, float rise) {
         pose.translate(0.5, REST_Y + RISE_Y * rise, 0.5);
         float precession = clock * 0.2F;
@@ -159,7 +144,6 @@ public final class IridescentAttunementRenderer implements BlockEntityRenderer<I
         pose.mulPose(Axis.YP.rotationDegrees(-precession));
     }
 
-    /** From the centre of the ring out to the centre of star {@code i}. */
     private static void orbitTransform(PoseStack pose, float clock, float rise, float phase, int i) {
         // Clockwise from north seen from above, like the stations.
         pose.mulPose(Axis.YP.rotationDegrees(-(phase + i * 360F / AttunementLayout.STATIONS.size())));
@@ -167,7 +151,6 @@ public final class IridescentAttunementRenderer implements BlockEntityRenderer<I
                 -Mth.lerp(rise, REST_RADIUS, RISEN_RADIUS));
     }
 
-    /** World position of the centre of star {@code i}, for effects that follow it round the ring. */
     public static Vector3 starCentre(IridescentAttunementBlockEntity altar, int i, float partialTick) {
         float clock = altar.getRingClock(partialTick), rise = rise(altar, partialTick);
         var pose = new PoseStack();
@@ -177,7 +160,6 @@ public final class IridescentAttunementRenderer implements BlockEntityRenderer<I
         return new Vector3(altar.getBlockPos()).add(centre.x, centre.y, centre.z);
     }
 
-    /** World position of the middle of the floating crystal. */
     public static Vector3 crystalCentre(IridescentAttunementBlockEntity altar, float partialTick) {
         float lift = crystalLift(altar.getRingClock(partialTick), rise(altar, partialTick));
         return new Vector3(altar.getBlockPos()).add(0.5, CRYSTAL_HEART + lift, 0.5);

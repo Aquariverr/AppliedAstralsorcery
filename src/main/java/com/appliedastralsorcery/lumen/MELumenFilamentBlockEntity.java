@@ -35,7 +35,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-/** A native lumen transmission node that requests one selected type into its ME grid. */
 public final class MELumenFilamentBlockEntity extends AENetworkedBlockEntity implements LumenTransferNotifiable {
     public static final int TRANSFER_AMOUNT = 500;
     public static final int TRANSFER_INTERVAL = 20;
@@ -120,7 +119,6 @@ public final class MELumenFilamentBlockEntity extends AENetworkedBlockEntity imp
         }
         if (node == null) return;
         var requested = selected.stack(accepted);
-        // Use AS's relay graph, visibility checks and source extraction rules, not a radius tank scan.
         var chain = LumenRequestHelper.requestRelayed(server, node, requested,
                 sourceNode -> !(server.getBlockEntity(sourceNode.getPos()) instanceof MELumenArrayBlockEntity array)
                         || array.canInteractWithFilaments()).orElse(null);

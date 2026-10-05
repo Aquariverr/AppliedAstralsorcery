@@ -6,43 +6,50 @@ navigation:
 ---
 # 应用星辉
 
-应用星辉是 AE2 与星辉魔法的附属模组，让 ME 网络能够存储和传输流明。流明以 **Lm** 为单位，在 ME 终端中使用与星芒宝典相同的图标。
+为 AE2 添加星辉魔法自动化和流明存储。流明以 **Lm** 为单位。
 
-## 第一次使用
+## 入门
 
-1. 制作 [1k ME 流明存储元件](storage.md)，放入 ME 驱动器或 ME 箱子。每个元件最多存储 **5 种流明**。
-2. 用 ME 线缆连接设备并为网络供电，确认设备有可用的 ME 通道。
-3. 用 [ME 输入总线](buses.md) 从流明阵列取出流明，或用 [ME 流明丝结](filament.md) 从附近阵列收集。
-4. 在 ME 终端查看储量；需要向阵列供给流明时，使用 ME 输出总线。
+1. 将流明存储元件放入 ME 驱动器或 ME 箱子。
+2. 用线缆连接设备，供电并提供所需频道。
+3. 用 ME 输入总线或 ME 流明丝结收集流明，在 ME 终端查看和使用。
 
-## 使用说明
+## 存储与传输
 
-- [使用 ME 天辉星门进入空间元件](gateway.md)
+- [流明存储元件](storage.md)
+- [容量强化](enhancement.md)
+- [用总线传输流明](buses.md)
+- [ME 流明丝结](filament.md)
+- [星能 P2P 通道](starlight_p2p.md)
 
-- [自动化星能物品嬗变](transmutation.md)
-- [自动分割水晶与材料](chisel.md)
+## 设备
 
-- [自动化祭坛合成](altar.md)
-- [制作星座核心](constellation_core.md)
-- [虹彩共鸣祭坛与星座转继器](attunement.md)
 - [ME 流明阵列](lumen_array.md)
+- [ME 流明炼金阵列](alchemy_array.md)
 - [ME 纳星圣杯](chalice.md)
-- [ME 树木信标](tree_beacon.md)
-- [ME 星能注入器](starlight_infuser.md)
 - [ME 流明结晶面板](lumen_crystallizer.md)
 - [ME 流明水晶收集面板](lumen_crystal_collector.md)
-- [使用 ME 流明炼金阵列自动生产](alchemy_array.md)
+- [星能嬗变室](transmutation.md)
+- [自动星辉金属凿子](chisel.md)
+- [祭坛自动化接口](altar.md)
+- [虹彩共鸣祭坛](attunement.md)
+- [ME 星能注入器](starlight_infuser.md)
+- [ME 树木信标](tree_beacon.md)
+- [ME 天辉星门](gateway.md)
+- [ME 共振星杖](wand.md)
 
-- [培育异辉水晶石](crystal.md)
-- [制作异辉处理器](processor.md)
-- [制作流明处理器](lumen_processor.md)
-- [制作存储元件](storage.md)
-- [稳定遗物](artifact.md)
-- [容量强化](enhancement.md)
-- [用总线搬运流明](buses.md)
-- [使用 ME 流明丝结](filament.md)
-- [使用 ME 共振星杖建造结构](wand.md)
+## 材料
 
-配方图中的物品可悬停查看名称。
+- [异辉水晶石](crystal.md)
+- [异辉处理器](processor.md)
+- [流明处理器](lumen_processor.md)
+- [星座核心](constellation_core.md)
+- [遗物](artifact.md)
 
-[返回 AE2 指南首页](ae2:index.md)
+## 配方与设置
+
+悬停配方图中的物品可查看名称。祭坛配方外围的材料放在聚星转继台上，夜间用共振星杖启动；需要额外投掷的材料见各页说明。
+
+加工时间和流明消耗可在**模组 → Applied Astralsorcery → 配置 → 服务端设置**中调整。
+
+[返回 AE2 指南](ae2:index.md)

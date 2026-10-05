@@ -15,7 +15,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-/** A native liquid-starlight recipe output, so timing and ingredient handling stay shared. */
 public final class FormAstralFluixCluster extends LiquidStarlightRecipeOutputModifier {
     private static final FormAstralFluixCluster INSTANCE = new FormAstralFluixCluster();
     public static final Type<FormAstralFluixCluster> TYPE = new Type<>(MapCodec.unit(INSTANCE), StreamCodec.unit(INSTANCE));
@@ -42,7 +41,7 @@ public final class FormAstralFluixCluster extends LiquidStarlightRecipeOutputMod
     }
 
     @Override
-    @SuppressWarnings("resource") // Minecraft manages the trigger entity's world lifetime.
+    @SuppressWarnings("resource")
     public void createOutput(LiquidStarlightRecipe recipe, LiquidStarlightRecipeInput input) {
         var trigger = input.getTriggerEntity();
         var level = trigger.level();

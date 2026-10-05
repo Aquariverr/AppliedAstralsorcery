@@ -31,7 +31,6 @@ public final class AutoChiselBlock extends BaseEntityBlock {
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     public static final BooleanProperty LIT = BooleanProperty.create("lit");
     public static final MapCodec<AutoChiselBlock> CODEC = simpleCodec(AutoChiselBlock::new);
-    // Plinth, feet and work plate; pillars and capitals; lintel; the chisel hanging from it.
     private static final net.minecraft.world.phys.shapes.VoxelShape SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
             box(0, 0, 0, 16, 2, 16), box(1, 2, 1, 15, 3, 15),
             box(1, 3, 5, 6, 4, 11), box(10, 3, 5, 15, 4, 11), box(6, 3, 6, 10, 4, 10),

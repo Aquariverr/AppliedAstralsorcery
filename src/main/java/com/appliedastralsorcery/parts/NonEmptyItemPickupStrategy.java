@@ -10,7 +10,6 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 
-/** Opts into the empty-loot guard without changing the original AE2 plane. */
 public class NonEmptyItemPickupStrategy extends ItemPickupStrategy {
     public NonEmptyItemPickupStrategy(ServerLevel level, BlockPos pos, Direction side, BlockEntity host,
             ItemEnchantments enchantments, @Nullable UUID owner) {

@@ -54,7 +54,6 @@ public final class MEStarlightInfuserBlock extends InfuserBlock {
         if (player.isSpectator()) return InteractionResult.PASS;
         if (level.getBlockEntity(pos) instanceof MEStarlightInfuserBlockEntity infuser) {
             if (!level.isClientSide()) {
-                // Empty-hand access lets players recover a blocked result or an idle input without a GUI.
                 var inventory = infuser.getInventory();
                 int slot = inventory.getStackInSlot(1).isEmpty() ? 0 : 1;
                 var extracted = inventory.extractItem(slot, 64, false);

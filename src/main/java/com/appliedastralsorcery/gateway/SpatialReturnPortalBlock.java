@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.*;
 
-/** A small native gateway destination whose only outbound interaction returns to its ME gateway. */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public final class SpatialReturnPortalBlock extends BaseEntityBlock {

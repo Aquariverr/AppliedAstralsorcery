@@ -15,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
-/** Bus filters also work with JEI alone, without the optional AE2 JEI Integration mod. */
 public final class BusGhostIngredientHandler<T extends AEBaseScreen<?>> implements IGhostIngredientHandler<T> {
     @Override
     public <I> List<Target<I>> getTargetsTyped(T gui, ITypedIngredient<I> ingredient, boolean doStart) {
@@ -43,14 +42,15 @@ public final class BusGhostIngredientHandler<T extends AEBaseScreen<?>> implemen
 
     @Nullable
     private static GenericStack toStack(Object ingredient) {
-        if (ingredient instanceof LumenStack lumenStack) {
-            var lumen = GhostIngredientResolver.resolveLumen(lumenStack);
-            return lumen == null ? null : new GenericStack(LumenKey.of(lumen), lumenStack.getAmount());
-        }
-        // Preserve item identity (including filled containers) just like AE2's own JEI handler.
-        if (ingredient instanceof ItemStack itemStack) return GenericStack.fromItemStack(itemStack);
-        if (ingredient instanceof FluidStack fluidStack) return GenericStack.fromFluidStack(fluidStack);
-        return null;
+        return switch (ingredient) {
+            case LumenStack lumenStack -> {
+                var lumen = GhostIngredientResolver.resolveLumen(lumenStack);
+                yield lumen == null ? null : new GenericStack(LumenKey.of(lumen), lumenStack.getAmount());
+            }
+            case ItemStack itemStack -> GenericStack.fromItemStack(itemStack);
+            case FluidStack fluidStack -> GenericStack.fromFluidStack(fluidStack);
+            default -> null;
+        };
     }
 
     @Override public void onComplete() {}

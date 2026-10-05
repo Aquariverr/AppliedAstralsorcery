@@ -30,7 +30,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.IItemHandler;
 
-/** Native infusion, with an automated input and a persistent ME output buffer. */
 public final class MEStarlightInfuserBlockEntity extends TileInfuser implements IGridConnectedBlockEntity {
     private final IManagedGridNode mainNode = GridHelper.createManagedNode(this,
             (owner, node) -> owner.setChanged())
@@ -82,7 +81,6 @@ public final class MEStarlightInfuserBlockEntity extends TileInfuser implements 
             exportOutput();
             if (getTileData().getActiveRecipe().isEmpty()) returnReservedFluid();
         }
-        // Native ticking retains recipe duration, liquid ring validation, effects and cancellation.
         super.serverTick(server);
         if (output.isEmpty() && getTileData().getActiveRecipe().isEmpty()
                 && !getTileData().getInventory().getStackInSlot(0).isEmpty() && hasStructure()) {
