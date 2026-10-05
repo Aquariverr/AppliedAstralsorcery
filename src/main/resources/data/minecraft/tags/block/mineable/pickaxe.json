@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
+    "appliedas:iridescent_attunement_altar",
+    "appliedas:constellation_relay",
     "appliedas:me_celestial_gateway",
     "appliedas:auto_starmetal_chisel",
     "appliedas:altar_automation_interface",
@@ -8,6 +10,9 @@
     "appliedas:me_lumen_array",
     "appliedas:me_lumen_alchemy_array",
     "appliedas:me_chalice",
+    "appliedas:me_tree_beacon",
+    "appliedas:me_starlight_infuser",
+    "appliedas:me_lumen_crystallizer",
     "appliedas:astral_fluix_cluster",
     "appliedas:astral_fluix_block",
     "appliedas:lumen_crystal_block",

@@ -24,7 +24,9 @@ navigation:
 
 - [自动化祭坛合成](altar.md)
 - [制作星座核心](constellation_core.md)
+- [虹彩共鸣祭坛与星座转继器](attunement.md)
 - [制作 ME 流明阵列与 ME 纳星圣杯](machines.md)
+- [使用 ME 树木信标、星能注入器与流明结晶面板](me_automation.md)
 - [使用 ME 流明炼金阵列自动生产](alchemy_array.md)
 
 - [培育异辉水晶石](crystal.md)

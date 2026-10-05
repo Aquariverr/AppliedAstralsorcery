@@ -24,7 +24,9 @@ Applied Astralsorcery connects AE2 with Astral Sorcery, allowing ME networks to 
 
 - [Automating altar crafting](altar.md)
 - [Crafting a Constellation Core](constellation_core.md)
+- [Iridescent Attunement Altar and Constellation Relays](attunement.md)
 - [Crafting ME Lumen Arrays and ME Chalices](machines.md)
+- [Using ME Tree Beacons, Starlight Infusers and Lumen Crystallizers](me_automation.md)
 - [Automating lumen combination with ME Lumen Alchemy Arrays](alchemy_array.md)
 
 - [Growing Aberrant Crystals](crystal.md)

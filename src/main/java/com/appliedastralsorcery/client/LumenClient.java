@@ -31,6 +31,8 @@ public final class LumenClient {
 
     @SubscribeEvent
     public static void setup(FMLClientSetupEvent event) {
+        event.enqueueWork(() -> ModContent.CONSTELLATION_RELAY.get().setClientEffectsFactory(ConstellationRelayEffects::new));
+        event.enqueueWork(() -> ModContent.IRIDESCENT_ATTUNEMENT_ALTAR.get().setClientEffectsFactory(IridescentAttunementEffects::new));
         event.enqueueWork(() -> AEKeyRendering.register(LumenKeyType.INSTANCE, LumenKey.class, new Renderer()));
         event.enqueueWork(() -> net.minecraft.client.renderer.item.ItemProperties.register(
                 ModContent.ASTRAL_FLUIX_CLUSTER_ITEM.get(),
@@ -53,6 +55,12 @@ public final class LumenClient {
 
     @SubscribeEvent
     public static void renderers(net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(ModContent.CRYSTALLIZER_ENTITY.get(),
+                com.appliedastralsorcery.crystallizer.MELumenCrystallizerRenderer::new);
+        event.registerBlockEntityRenderer(ModContent.STARLIGHT_INFUSER_ENTITY.get(), context ->
+                new hellfirepvp.astralsorcery.client.tile.TileInfuserRenderer(context.getItemRenderer()));
+        event.registerBlockEntityRenderer(ModContent.CONSTELLATION_RELAY_ENTITY.get(), ConstellationRelayRenderer::new);
+        event.registerBlockEntityRenderer(ModContent.IRIDESCENT_ATTUNEMENT_ENTITY.get(), context -> new IridescentAttunementRenderer());
         event.registerBlockEntityRenderer(ModContent.TRANSMUTATION_ENTITY.get(), StarlightTransmutationRenderer::new);
         event.registerBlockEntityRenderer(ModContent.ARRAY_ENTITY.get(), context ->
                 new hellfirepvp.astralsorcery.client.tile.TileLumenArrayRenderer(context.getItemRenderer()));
@@ -63,7 +71,20 @@ public final class LumenClient {
     }
 
     @SubscribeEvent
+    public static void models(net.neoforged.neoforge.client.event.ModelEvent.RegisterAdditional event) {
+        event.register(IridescentAttunementRenderer.STAR);
+        event.register(IridescentAttunementRenderer.CRYSTAL);
+    }
+
+    @SubscribeEvent
     public static void blockColors(RegisterColorHandlersEvent.Block event) {
+        event.register((state, level, pos, tintIndex) -> {
+            if (level != null && pos != null && level.getBlockEntity(pos)
+                    instanceof com.appliedastralsorcery.attunement.ConstellationRelayBlockEntity relay
+                    && relay.getConstellation() != null)
+                return relay.getConstellation().getConstellationColor().getColor();
+            return 0xFFB6EFFF;
+        }, ModContent.CONSTELLATION_RELAY.get());
         event.register((state, level, pos, tintIndex) -> {
             if (tintIndex == 1) return 0xFF303030;
             if (tintIndex == 0 && level != null && pos != null
@@ -77,6 +98,7 @@ public final class LumenClient {
 
     @SubscribeEvent
     public static void colors(RegisterColorHandlersEvent.Item event) {
+        event.register((stack, index) -> 0xFFB6EFFF, ModContent.CONSTELLATION_RELAY_ITEM);
         for (var cell : ModContent.LUMEN_CELLS) {
             event.register((stack, index) -> index == 0 ? 0xFFFFFFFF : 0xFF000000 | BasicStorageCell.getColor(stack, index), cell);
         }

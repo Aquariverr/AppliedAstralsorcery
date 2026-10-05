@@ -140,7 +140,7 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
                 g.renderTooltip(font, tr("lumen", menu.getLumenAmount(), AutoChiselBlockEntity.LUMEN_CAPACITY), mx, my);
             } else if (isHovering(52, 64, 114, 36, mx, my)) {
                 g.renderTooltip(font, tr("processing_cost", menu.getDuration() / 20.0,
-                        AutoChiselBlockEntity.LUMEN_COST), mx, my);
+                        AutoChiselBlockEntity.getLumenCost()), mx, my);
             }
         }
     }
@@ -184,7 +184,7 @@ public final class AutoChiselScreen extends AbstractContainerScreen<AutoChiselMe
         for (int dx : new int[]{1, CONTENT_WIDTH - 2}) for (int dy : new int[]{1, HEADER_HEIGHT - 2})
             star(g, x + dx, y + dy, 2, GOLD);
         constellation(g, x + CONTENT_WIDTH - 34, y + 4,
-                working || menu.getLumenAmount() >= AutoChiselBlockEntity.LUMEN_COST);
+                working || menu.getLumenAmount() >= AutoChiselBlockEntity.getLumenCost());
         // The chisel rests in a gilt socket that glows with Evorsio while it works.
         socket(g, x + 10, y + 10, working ? 0xFF5A1E1C : 0xFF33363D);
         g.renderItem(chisel, x + 10, y + 10);

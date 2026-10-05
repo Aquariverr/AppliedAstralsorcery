@@ -1,0 +1,247 @@
+{
+  "credit": "Original Astral Sorcery attunement altar designed by Wiiv; Applied Astral Sorcery iridescent fittings",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "appliedas:block/iridescent_attunement_altar",
+    "body": "appliedas:block/iridescent_attunement_altar",
+    "glow": "appliedas:block/iridescent_attunement_altar_glow"
+  },
+  "elements": [
+    {
+      "__comment": "runed marble slab",
+      "from": [-2,0,-2],
+      "to": [18,4,18],
+      "faces": {
+        "down": {
+          "uv": [0,0,5,5],
+          "texture": "#body",
+          "cullface": "down"
+        },
+        "north": {
+          "uv": [5,0,10,1],
+          "texture": "#body"
+        },
+        "south": {
+          "uv": [5,0,10,1],
+          "texture": "#body"
+        },
+        "west": {
+          "uv": [5,0,10,1],
+          "texture": "#body"
+        },
+        "east": {
+          "uv": [5,0,10,1],
+          "texture": "#body"
+        }
+      }
+    },
+    {
+      "__comment": "lumen gem sockets",
+      "from": [-2,0,-2],
+      "to": [18,4,18],
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [0,0,5,1],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [0,0,5,1],
+          "texture": "#glow"
+        },
+        "west": {
+          "uv": [0,0,5,1],
+          "texture": "#glow"
+        },
+        "east": {
+          "uv": [0,0,5,1],
+          "texture": "#glow"
+        }
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      }
+    },
+    {
+      "__comment": "north rim",
+      "from": [-2,4,-2],
+      "to": [18,6,4],
+      "faces": {
+        "up": {
+          "uv": [10,0,15,1.5],
+          "texture": "#body"
+        },
+        "north": {
+          "uv": [0,5,5,5.5],
+          "texture": "#body"
+        },
+        "west": {
+          "uv": [5,5,6.5,5.5],
+          "texture": "#body"
+        },
+        "east": {
+          "uv": [6.5,5,8,5.5],
+          "texture": "#body"
+        }
+      }
+    },
+    {
+      "__comment": "north rim runes",
+      "from": [-2,4,-2],
+      "to": [18,6,4],
+      "shade": false,
+      "faces": {
+        "up": {
+          "uv": [5,0,10,1.5],
+          "texture": "#glow"
+        },
+        "south": {
+          "uv": [10,0,15,0.5],
+          "texture": "#glow"
+        }
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      }
+    },
+    {
+      "__comment": "south rim",
+      "from": [-2,4,12],
+      "to": [18,6,18],
+      "faces": {
+        "up": {
+          "uv": [8,5,13,6.5],
+          "texture": "#body"
+        },
+        "south": {
+          "uv": [0,5,5,5.5],
+          "texture": "#body"
+        },
+        "west": {
+          "uv": [6.5,5,8,5.5],
+          "texture": "#body"
+        },
+        "east": {
+          "uv": [5,5,6.5,5.5],
+          "texture": "#body"
+        }
+      }
+    },
+    {
+      "__comment": "south rim runes",
+      "from": [-2,4,12],
+      "to": [18,6,18],
+      "shade": false,
+      "faces": {
+        "up": {
+          "uv": [0,1.5,5,3],
+          "texture": "#glow"
+        },
+        "north": {
+          "uv": [10,0,15,0.5],
+          "texture": "#glow"
+        }
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      }
+    },
+    {
+      "__comment": "west rim",
+      "from": [-2,4,4],
+      "to": [4,6,12],
+      "faces": {
+        "up": {
+          "uv": [13,5,14.5,7],
+          "texture": "#body"
+        },
+        "west": {
+          "uv": [0,7,2,7.5],
+          "texture": "#body"
+        }
+      }
+    },
+    {
+      "__comment": "west rim runes",
+      "from": [-2,4,4],
+      "to": [4,6,12],
+      "shade": false,
+      "faces": {
+        "up": {
+          "uv": [5,1.5,6.5,3.5],
+          "texture": "#glow"
+        },
+        "east": {
+          "uv": [6.5,1.5,8.5,2],
+          "texture": "#glow"
+        }
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      }
+    },
+    {
+      "__comment": "east rim",
+      "from": [12,4,4],
+      "to": [18,6,12],
+      "faces": {
+        "up": {
+          "uv": [2,7,3.5,9],
+          "texture": "#body"
+        },
+        "east": {
+          "uv": [0,7,2,7.5],
+          "texture": "#body"
+        }
+      }
+    },
+    {
+      "__comment": "east rim runes",
+      "from": [12,4,4],
+      "to": [18,6,12],
+      "shade": false,
+      "faces": {
+        "up": {
+          "uv": [8.5,1.5,10,3.5],
+          "texture": "#glow"
+        },
+        "west": {
+          "uv": [6.5,1.5,8.5,2],
+          "texture": "#glow"
+        }
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      }
+    },
+    {
+      "__comment": "constellation core well",
+      "from": [4,3,4],
+      "to": [12,4,12],
+      "shade": false,
+      "faces": {
+        "up": {
+          "uv": [10,1.5,12,3.5],
+          "texture": "#glow"
+        }
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      }
+    }
+  ]
+}

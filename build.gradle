@@ -162,6 +162,40 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
+// Opt-in integration tests run in a disposable world and never enter the release jar.
+if (providers.gradleProperty('attunementGameTests').isPresent()) {
+    sourceSets.main.java.srcDir 'src/gametest/java'
+    def generateTestStructure = tasks.register('generateAttunementTestStructure') {
+        def output = layout.buildDirectory.dir('generated/attunementTestResources')
+        outputs.dir(output)
+        doLast {
+            def file = output.get().file('data/appliedas/structure/attunement_test.nbt').asFile
+            file.parentFile.mkdirs()
+            new DataOutputStream(new java.util.zip.GZIPOutputStream(new FileOutputStream(file))).withCloseable { data ->
+                data.writeByte(10); data.writeUTF('')
+                data.writeByte(3); data.writeUTF('DataVersion'); data.writeInt(3955)
+                data.writeByte(9); data.writeUTF('size'); data.writeByte(3); data.writeInt(3)
+                data.writeInt(21); data.writeInt(8); data.writeInt(21)
+                ['palette', 'blocks', 'entities'].each { name ->
+                    data.writeByte(9); data.writeUTF(name); data.writeByte(10); data.writeInt(0)
+                }
+                data.writeByte(0)
+            }
+        }
+    }
+    sourceSets.main.resources.srcDir generateTestStructure
+    neoForge.runs {
+        attunementGameTest {
+            type = 'gameTestServer'
+            gameDirectory = layout.buildDirectory.dir('attunement-gametest')
+            systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
+        }
+    }
+}
+tasks.named('jar', Jar) {
+    exclude 'com/appliedastralsorcery/gametest/**', 'data/appliedas/structure/attunement_test.nbt'
+}
+
 idea {
     module {
         downloadSources = true

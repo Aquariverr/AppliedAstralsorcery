@@ -19,7 +19,9 @@ item_ids:
 
 ## 使用
 
-将水晶石、天体水晶石、异辉水晶石、星辉金属锭或遗物放入左侧输入槽。每次加工默认耗时 **40 tick（2 秒）**，消耗 **25 Lm 摧灭流明**，无需安装或维修凿子。在本地单人世界中，可通过 **模组 → Applied Astralsorcery → 配置 → 服务端设置 → 机器加工时间** 调整，同时适用于内部物品槽和掉落物模式。也可编辑 `config/appliedas-server.toml` 中的 `processing.autoChiselTicks`；存档中已有的 `serverconfig/appliedas-server.toml` 会优先使用。
+将水晶石、天体水晶石、异辉水晶石、星辉金属锭或遗物放入左侧输入槽。每次加工默认耗时 **40 tick（2 秒）**，消耗 **25 Lm 摧灭流明**，无需安装或维修凿子。
+
+在本地单人世界中，打开 **模组 → Applied Astralsorcery → 配置 → 服务端设置**，在**机器加工时间**和**流明消耗**中分别调整时间与消耗，两种加工模式均生效。配置文件 `config/appliedas-server.toml` 中对应 `processing.autoChiselTicks` 和 `lumenConsumption.autoChiselLumenPerCraft`；存档中已有的 `serverconfig/appliedas-server.toml` 会优先使用。
 
 机器可储存 **2,000 Lm**。用 ME 输出总线从任意面输入摧灭流明，或连接附近的流明传输网络。流明传输仍需满足距离和视线要求。
 

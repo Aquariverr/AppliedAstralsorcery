@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "appliedas:block/constellation_relay"
+    }
+  }
+}

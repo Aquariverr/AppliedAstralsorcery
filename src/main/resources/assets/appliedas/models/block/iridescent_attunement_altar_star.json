@@ -1,0 +1,87 @@
+{
+  "credit": "Hovering cube after the Astral Sorcery attunement altar by Wiiv",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "appliedas:block/iridescent_attunement_altar",
+    "body": "appliedas:block/iridescent_attunement_altar",
+    "glow": "appliedas:block/iridescent_attunement_altar_glow"
+  },
+  "elements": [
+    {
+      "__comment": "gold cube",
+      "from": [6,6,6],
+      "to": [10,10,10],
+      "faces": {
+        "down": {
+          "uv": [3.5,7,4.5,8],
+          "texture": "#body"
+        },
+        "up": {
+          "uv": [3.5,7,4.5,8],
+          "texture": "#body"
+        },
+        "north": {
+          "uv": [3.5,7,4.5,8],
+          "texture": "#body"
+        },
+        "south": {
+          "uv": [3.5,7,4.5,8],
+          "texture": "#body"
+        },
+        "west": {
+          "uv": [3.5,7,4.5,8],
+          "texture": "#body"
+        },
+        "east": {
+          "uv": [3.5,7,4.5,8],
+          "texture": "#body"
+        }
+      }
+    },
+    {
+      "__comment": "starlight gem",
+      "from": [6,6,6],
+      "to": [10,10,10],
+      "shade": false,
+      "faces": {
+        "down": {
+          "uv": [9.75,3.5,10.75,4.5],
+          "texture": "#glow",
+          "tintindex": 0
+        },
+        "up": {
+          "uv": [9.75,3.5,10.75,4.5],
+          "texture": "#glow",
+          "tintindex": 0
+        },
+        "north": {
+          "uv": [9.75,3.5,10.75,4.5],
+          "texture": "#glow",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [9.75,3.5,10.75,4.5],
+          "texture": "#glow",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [9.75,3.5,10.75,4.5],
+          "texture": "#glow",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [9.75,3.5,10.75,4.5],
+          "texture": "#glow",
+          "tintindex": 0
+        }
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15,
+        "ambient_occlusion": false
+      }
+    }
+  ]
+}
