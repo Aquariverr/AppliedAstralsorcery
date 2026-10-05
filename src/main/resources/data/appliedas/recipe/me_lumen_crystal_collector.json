@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "ae2:annihilation_plane" },
+    { "item": "appliedas:lumen_processor" },
+    { "type": "appliedas:lumen_crystal" }
+  ],
+  "result": { "id": "appliedas:me_lumen_crystal_collector", "count": 1 }
+}

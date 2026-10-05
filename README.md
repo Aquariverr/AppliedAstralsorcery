@@ -17,7 +17,8 @@ An addon for **Astral Sorcery** and **Applied Energistics 2 (AE2)** that lets ME
 - **ME Chalice**: Store up to 64,000 mB of fluid, restock from ME and optionally export surplus fluid.
 - **ME Tree Beacon**: Keep the native tree-growth and harvesting behavior while returning harvested products to ME.
 - **ME Starlight Infuser**: Automatically start valid infusion recipes and return products to ME, consuming Liquid Starlight from nearby Chalices, then ME, then world pools.
-- **ME Lumen Crystallizer**: Mark a catalyst by right-clicking to automatically grow crystals using matching lumen and catalysts from ME. Sneak-right-click empty-handed to clear the mark; no GUI is needed.
+- **ME Lumen Crystallizer**: An ME cable panel with native placement previews. Mark a catalyst by right-clicking to form and grow real Lumen Crystal Clusters in front using matching lumen and catalysts from ME. Harvest mature clusters to make space for the next one. Sneak-right-click empty-handed to clear the mark; no GUI is needed.
+- **ME Lumen Crystal Collection Plane**: Harvest only the Lumen Crystal Cluster directly in front, one growth stage at a time, and send its native drops to ME. Leave the smallest stage intact for continued growth from a Crystallizer. Requires power, a channel and available item storage; no GUI is needed.
 - **ME Resonating Wand**: Build Astral Sorcery multiblocks using materials from ME and your inventory, and return replaced blocks to ME.
 - **Aberrant Crystal**: Grow crystals in Liquid Starlight that can be merged or split and have Size, Purity and Cut attributes.
 - **Aberrant Processor and Lumen Processor**: Craft processors from Aberrant Crystals and Lumen Crystals using the Inscriber.

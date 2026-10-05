@@ -25,6 +25,6 @@ Craft in an **Iridescent Crafting Altar** using a [Constellation Core](constella
 
 - The interface uses only the nearest loaded altar in range, even if it is busy or unsuitable. Right-click the interface with an empty hand to check its target and status.
 - The interface has **16 fluid tanks of 64,000 mB each** and stores **64,000 Lm per lumen type**. Processing patterns, fluid pipes and ME buses can fill its buffers. Buffered resources are saved with the interface and drawn by its active crafting job; remaining requirements can still come from nearby chalices and the lumen network. Existing item-only patterns can use separately supplied resources.
-- Altar tier, night, focus and starlight requirements still apply. [ME Chalices and ME Lumen Arrays](machines.md) can also supply fluids and lumen.
+- Altar tier, night, focus and starlight requirements still apply. [ME Chalices](chalice.md) and [ME Lumen Arrays](lumen_array.md) can also supply fluids and lumen.
 - Recipes that replace the altar itself are not supported.
 - Do not manually change ingredients in the altar or relays while crafting. Breaking the interface drops its stored items and discards buffered fluids and lumen; ingredients already placed remain where they are.

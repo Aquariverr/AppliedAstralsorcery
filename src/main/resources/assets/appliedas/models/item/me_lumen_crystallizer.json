@@ -1,0 +1,13 @@
+{
+  "parent": "ae2:item/part_base",
+  "loader": "neoforge:composite",
+  "transform": {
+    "translation": [0, 0, 0.4375]
+  },
+  "textures": {
+    "particle": "ae2:part/monitor_back_no_status"
+  },
+  "children": {
+    "panel": { "parent": "appliedas:part/me_lumen_crystallizer" }
+  }
+}

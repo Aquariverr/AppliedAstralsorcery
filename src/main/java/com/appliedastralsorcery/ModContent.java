@@ -7,6 +7,10 @@ import com.appliedastralsorcery.infuser.MEStarlightInfuserBlock;
 import com.appliedastralsorcery.infuser.MEStarlightInfuserBlockEntity;
 import com.appliedastralsorcery.crystallizer.MELumenCrystallizerBlock;
 import com.appliedastralsorcery.crystallizer.MELumenCrystallizerBlockEntity;
+import com.appliedastralsorcery.crystallizer.MELumenCrystallizerItem;
+import com.appliedastralsorcery.crystallizer.MELumenCrystallizerPart;
+import com.appliedastralsorcery.crystallizer.MELumenCrystalCollectorItem;
+import com.appliedastralsorcery.crystallizer.MELumenCrystalCollectorPart;
 import com.appliedastralsorcery.attunement.IridescentAttunementBlock;
 import com.appliedastralsorcery.attunement.IridescentAttunementBlockEntity;
 import com.appliedastralsorcery.attunement.ConstellationRelayBlock;
@@ -216,7 +220,10 @@ public final class ModContent {
                     MEStarlightInfuserBlockEntity::new, ME_STARLIGHT_INFUSER.get())));
     public static final DeferredBlock<MELumenCrystallizerBlock> ME_LUMEN_CRYSTALLIZER =
             BLOCKS.register("me_lumen_crystallizer", MELumenCrystallizerBlock::new);
-    public static final DeferredItem<BlockItem> ME_LUMEN_CRYSTALLIZER_ITEM = ITEMS.registerSimpleBlockItem(ME_LUMEN_CRYSTALLIZER);
+    public static final DeferredItem<MELumenCrystallizerItem> ME_LUMEN_CRYSTALLIZER_ITEM =
+            ITEMS.register("me_lumen_crystallizer", MELumenCrystallizerItem::new);
+    public static final DeferredItem<MELumenCrystalCollectorItem> ME_LUMEN_CRYSTAL_COLLECTOR_ITEM =
+            ITEMS.register("me_lumen_crystal_collector", MELumenCrystalCollectorItem::new);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MELumenCrystallizerBlockEntity>> CRYSTALLIZER_ENTITY =
             BLOCK_ENTITIES.register("me_lumen_crystallizer", ModContent::createCrystallizerType);
     public static final DeferredItem<BlockItem> ME_CHALICE_ITEM = ITEMS.registerSimpleBlockItem(ME_CHALICE);
@@ -281,6 +288,8 @@ public final class ModContent {
                 (pos, state) -> new MELumenCrystallizerBlockEntity(CRYSTALLIZER_ENTITY.get(), pos, state),
                 ME_LUMEN_CRYSTALLIZER.get()));
         AEBaseBlockEntity.registerBlockEntityItem(type, ME_LUMEN_CRYSTALLIZER_ITEM.get());
+        // Old worlds retain the standalone block; mining or picking it returns the native ME part.
+        Item.BY_BLOCK.put(ME_LUMEN_CRYSTALLIZER.get(), ME_LUMEN_CRYSTALLIZER_ITEM.get());
         ME_LUMEN_CRYSTALLIZER.get().setBlockEntity(MELumenCrystallizerBlockEntity.class, type, null,
                 (level, pos, state, entity) -> entity.serverTick());
         return type;
@@ -312,6 +321,7 @@ public final class ModContent {
                     output.accept(ME_TREE_BEACON_ITEM);
                     output.accept(ME_STARLIGHT_INFUSER_ITEM);
                     output.accept(ME_LUMEN_CRYSTALLIZER_ITEM);
+                    output.accept(ME_LUMEN_CRYSTAL_COLLECTOR_ITEM);
                     output.accept(ALTAR_AUTOMATION_ITEM);
                     output.accept(AUTO_CHISEL_ITEM);
                     output.accept(STARLIGHT_TRANSMUTATION_CHAMBER_ITEM);
@@ -347,6 +357,8 @@ public final class ModContent {
     public static void register(IEventBus bus) {
         com.appliedastralsorcery.attunement.AttunementLayout.register(bus);
         com.appliedastralsorcery.parts.NonEmptyAnnihilationPlanePart.registerModels();
+        MELumenCrystallizerPart.registerModels();
+        MELumenCrystalCollectorPart.registerModels();
         LumenCellEnhancement.register(bus);
         MEResonatingWandItem.registerComponents(bus);
         BLOCKS.register(bus);

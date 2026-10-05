@@ -1,0 +1,21 @@
+{
+  "parent": "minecraft:block/block",
+  "loader": "neoforge:composite",
+  "textures": {
+    "particle": "appliedas:block/me_starlight_infuser"
+  },
+  "children": {
+    "body": {
+      "parent": "appliedas:block/me_starlight_infuser_body",
+      "render_type": "minecraft:solid"
+    },
+    "glass": {
+      "parent": "astralsorcery:block/infuser/infuser_translucent",
+      "render_type": "minecraft:translucent"
+    }
+  },
+  "item_render_order": [
+    "body",
+    "glass"
+  ]
+}

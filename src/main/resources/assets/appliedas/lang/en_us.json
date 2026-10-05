@@ -2,6 +2,8 @@
   "block.appliedas.me_tree_beacon": "ME Tree Beacon",
   "block.appliedas.me_starlight_infuser": "ME Starlight Infuser",
   "block.appliedas.me_lumen_crystallizer": "ME Lumen Crystallizer",
+  "item.appliedas.me_lumen_crystallizer": "ME Lumen Crystallizer",
+  "item.appliedas.me_lumen_crystal_collector": "ME Lumen Crystal Collection Plane",
   "message.appliedas.crystallizer.marked": "Marked %s crystallization with catalyst: %s",
   "message.appliedas.crystallizer.cleared": "Crystallization mark cleared. An existing crystal will finish growing.",
   "message.appliedas.crystallizer.catalyst": "Marked catalyst: %s. Sneak-right-click empty-handed to clear.",

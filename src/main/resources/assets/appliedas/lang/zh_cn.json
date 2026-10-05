@@ -2,6 +2,8 @@
   "block.appliedas.me_tree_beacon": "ME 树木信标",
   "block.appliedas.me_starlight_infuser": "ME 星能注入器",
   "block.appliedas.me_lumen_crystallizer": "ME 流明结晶面板",
+  "item.appliedas.me_lumen_crystallizer": "ME 流明结晶面板",
+  "item.appliedas.me_lumen_crystal_collector": "ME 流明水晶收集面板",
   "message.appliedas.crystallizer.marked": "已标记 %s 结晶，催化剂：%s",
   "message.appliedas.crystallizer.cleared": "已清除结晶标记；已形成的结晶将继续生长至完成。",
   "message.appliedas.crystallizer.catalyst": "已标记催化剂：%s。空手潜行右键清除。",

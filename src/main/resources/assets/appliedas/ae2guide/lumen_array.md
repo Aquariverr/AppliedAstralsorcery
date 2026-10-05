@@ -1,18 +1,15 @@
 ---
 navigation:
-  title: ME Arrays and Chalices
+  title: ME Lumen Array
   parent: appliedas:index.md
-  position: 25
+  position: 24
   icon: appliedas:me_lumen_array
 item_ids:
   - appliedas:me_lumen_array
-  - appliedas:me_chalice
 ---
-# ME Lumen Arrays and ME Chalices
+# ME Lumen Array
 
-Both devices are crafted on a **Resonating Crafting Table**. Arrange the central grid and Focus Relay inputs as shown, then start at **night** with a Resonating Wand. Crafting takes **5 seconds** once all materials are available.
-
-## ME Lumen Array
+Arrange the central grid and Focus Relay inputs on a **Resonating Crafting Table** as shown. Start at **night** with a Resonating Wand; crafting takes **5 seconds** once all materials are available.
 
 Follow the native Lumen Array layout, putting **1 Lumen Array** in the center and **1 ME Interface** on the relay directly above the bottom Sooty Marble. Replace both Glass Lenses with **2 Lumen Processors**. Drop **2 Aquamarines** near the table as additional inputs.
 
@@ -20,8 +17,3 @@ Follow the native Lumen Array layout, putting **1 Lumen Array** in the center an
 
 **Redstone control** defaults to off, ignoring redstone signals. When enabled, only production requires a redstone signal. Without a signal, production's Liquid Starlight consumption and catalyst wear pause. Automatic ME lumen, Liquid Starlight and catalyst refills, surplus exports and lumen type changes remain available. Stored lumen remains available to external consumers.
 
-## ME Chalice
-
-Follow the native Chalice layout, putting **1 Chalice** in the center and **1 ME Interface** above it. Replace the lowest Sooty Marble with **1 Fluix Block**.
-
-<Recipe id="appliedas:me_chalice" />
