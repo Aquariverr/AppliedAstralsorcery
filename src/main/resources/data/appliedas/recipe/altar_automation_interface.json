@@ -1,6 +1,6 @@
 {
   "type": "astralsorcery:altar_crafting",
-  "baseFocusShatterChance": 0.0,
+  "base_focus_shatter_chance": 0.0,
   "duration": 100,
   "effects": [
     "astralsorcery:default_central_beam",
@@ -58,7 +58,7 @@
       "SXS",
       "FSF"
     ],
-    "relayPattern": [
+    "relay_pattern": [
       "GGPGG",
       "GRARG",
       "PA AP",
@@ -66,16 +66,16 @@
       "GGPGG"
     ]
   },
-  "mayChain": false,
-  "onlyNight": true,
-  "outputModifiers": [],
+  "may_chain": false,
+  "only_night": true,
+  "output_modifiers": [],
   "outputs": [
     {
       "id": "appliedas:altar_automation_interface",
       "count": 1
     }
   ],
-  "requiredAdditionalInputs": [
+  "required_additional_inputs": [
     {
       "ingredient": {
         "type": "astralsorcery:is_stable_artifact"
@@ -83,7 +83,7 @@
       "count": 1
     }
   ],
-  "requiredFluid": [
+  "required_fluid": [
     {
       "id": "astralsorcery:liquid_starlight",
       "amount": 1000
@@ -93,12 +93,12 @@
       "amount": 1000
     }
   ],
-  "requiredLumen": [
+  "required_lumen": [
     {
       "lumen": "astralsorcery:prismatic",
       "amount": 600
     }
   ],
-  "requiredStarlight": [],
-  "requiredType": "radiance"
+  "required_starlight": [],
+  "required_type": "radiance"
 }

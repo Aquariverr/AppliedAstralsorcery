@@ -1,6 +1,6 @@
 {
   "type": "astralsorcery:altar_crafting",
-  "baseFocusShatterChance": 0.0,
+  "base_focus_shatter_chance": 0.0,
   "duration": 100,
   "effects": [
     "astralsorcery:default_central_beam",
@@ -232,7 +232,7 @@
       "SXS",
       "FFF"
     ],
-    "relayPattern": [
+    "relay_pattern": [
       "abPcd",
       "eARAf",
       "PR RP",
@@ -240,16 +240,16 @@
       "ijPkl"
     ]
   },
-  "mayChain": false,
-  "onlyNight": true,
-  "outputModifiers": [],
+  "may_chain": false,
+  "only_night": true,
+  "output_modifiers": [],
   "outputs": [
     {
       "id": "appliedas:constellation_core",
       "count": 1
     }
   ],
-  "requiredAdditionalInputs": [
+  "required_additional_inputs": [
     {
       "ingredient": {
         "item": "astralsorcery:stardust"
@@ -263,7 +263,7 @@
       "count": 1
     }
   ],
-  "requiredFluid": [
+  "required_fluid": [
     {
       "id": "astralsorcery:liquid_starlight",
       "amount": 1000
@@ -273,12 +273,12 @@
       "amount": 1000
     }
   ],
-  "requiredLumen": [
+  "required_lumen": [
     {
       "lumen": "astralsorcery:aion",
       "amount": 600
     }
   ],
-  "requiredStarlight": [],
-  "requiredType": "radiance"
+  "required_starlight": [],
+  "required_type": "radiance"
 }

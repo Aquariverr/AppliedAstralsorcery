@@ -1,6 +1,6 @@
 {
   "type": "astralsorcery:altar_crafting",
-  "baseFocusShatterChance": 0.0,
+  "base_focus_shatter_chance": 0.0,
   "duration": 100,
   "effects": [
     "astralsorcery:default_central_beam",
@@ -46,7 +46,7 @@
       " L ",
       "GGG"
     ],
-    "relayPattern": [
+    "relay_pattern": [
       "     ",
       "     ",
       "     ",
@@ -54,18 +54,18 @@
       "GEIEG"
     ]
   },
-  "mayChain": false,
-  "onlyNight": true,
-  "outputModifiers": [],
+  "may_chain": false,
+  "only_night": true,
+  "output_modifiers": [],
   "outputs": [
     {
       "id": "appliedas:me_lumen_filament",
       "count": 1
     }
   ],
-  "requiredAdditionalInputs": [],
-  "requiredFluid": [],
-  "requiredLumen": [],
-  "requiredStarlight": [],
-  "requiredType": "resonance"
+  "required_additional_inputs": [],
+  "required_fluid": [],
+  "required_lumen": [],
+  "required_starlight": [],
+  "required_type": "resonance"
 }
