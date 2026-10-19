@@ -37,7 +37,7 @@ Minecraft **1.21.1**, NeoForge **21.1.238 or later**, and **Java 21**, with comp
 
 | Required mod | Version |
 | --- | --- |
-| [Astral Sorcery](https://www.curseforge.com/minecraft/mc-mods/astral-sorcery) | 2.0.0 or later |
+| [Astral Sorcery](https://www.curseforge.com/minecraft/mc-mods/astral-sorcery) | 2.0.1.22 or later |
 | [Applied Energistics 2](https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2) | 19.2.17 or later, below 20 |
 | [GuideME](https://www.curseforge.com/minecraft/mc-mods/guideme) | 21.1.1 or later |
 | [ObserverLib](https://www.curseforge.com/minecraft/mc-mods/observerlib) | 1.10.3 or later |
