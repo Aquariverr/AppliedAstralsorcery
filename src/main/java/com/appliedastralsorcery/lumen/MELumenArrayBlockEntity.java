@@ -207,8 +207,8 @@ public class MELumenArrayBlockEntity extends TileLumenArray implements IGridConn
         for (var entry : storage.getAvailableStacks()) {
             if (!(entry.getKey() instanceof AEItemKey key) || entry.getLongValue() <= 0) continue;
             var candidate = key.toStack(1);
-            if (hellfirepvp.astralsorcery.common.util.RecipeFinder.of()
-                    .flatMap(finder -> finder.findLumenGenerationRecipe(candidate, selected, isAlchemyArray())).isEmpty()) continue;
+            if (hellfirepvp.astralsorcery.common.util.RecipeFinder.of(level)
+                    .findLumenGenerationRecipe(candidate, selected, isAlchemyArray()).isEmpty()) continue;
             if (!inv.insertItem(0, candidate, true).isEmpty()) continue;
             if (storage.extract(key, 1, Actionable.MODULATE, source) == 1) {
                 inv.insertItem(0, candidate, false);

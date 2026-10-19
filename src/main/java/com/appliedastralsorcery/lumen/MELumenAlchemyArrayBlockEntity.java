@@ -53,7 +53,7 @@ public final class MELumenAlchemyArrayBlockEntity extends MELumenArrayBlockEntit
             return;
         }
         if (server.getGameTime() % 20 != 0) return;
-        var recipe = data.findMatchingRecipe(catalyst).map(RecipeHolder::value).orElse(null);
+        var recipe = data.findMatchingRecipe(server, catalyst).map(RecipeHolder::value).orElse(null);
         if (recipe == null) return;
 
         int attempts = generationAttempts.applyAsInt(recipe);

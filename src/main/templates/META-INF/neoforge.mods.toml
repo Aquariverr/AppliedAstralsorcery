@@ -30,7 +30,8 @@ side="BOTH"
 [[dependencies."${mod_id}"]]
 modId="astralsorcery"
 type="required"
-versionRange="[2.0.0,)"
+# Astral Sorcery omits its build number here; see README for the required Maven build.
+versionRange="[2.0.2,)"
 ordering="AFTER"
 side="BOTH"
 

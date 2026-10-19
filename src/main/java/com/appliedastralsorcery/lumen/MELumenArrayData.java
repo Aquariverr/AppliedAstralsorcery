@@ -49,6 +49,7 @@ public class MELumenArrayData extends TileLumenArray.Data {
 
     @Override protected FilteredInventoryViewFactory newInventoryHandler() {
         return super.newInventoryHandler().inputFilter((slot, incoming, existing) -> acceptsInputs()
-                && existing.isEmpty() && !getContainedFluid().isEmpty() && findMatchingRecipe(incoming).isPresent());
+                && existing.isEmpty() && !getContainedFluid().isEmpty()
+                && findMatchingRecipe(getLevel(), incoming).isPresent());
     }
 }

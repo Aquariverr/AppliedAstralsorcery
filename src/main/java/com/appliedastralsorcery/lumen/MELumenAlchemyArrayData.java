@@ -15,6 +15,7 @@ import hellfirepvp.astralsorcery.common.util.tank.FluidContainerList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.level.Level;
 
 public final class MELumenAlchemyArrayData extends MELumenArrayData {
     public static final Codec<TileLumenArray.Data> CODEC = RecordCodecBuilder.<MELumenAlchemyArrayData>create(
@@ -27,8 +28,8 @@ public final class MELumenAlchemyArrayData extends MELumenArrayData {
         super(ticks, structure, sky, owner, lumen, fluid, inventory, extended, assigned);
     }
 
-    @Override protected Optional<RecipeHolder<LumenGenerationRecipe>> findMatchingRecipe(ItemStack stack) {
-        return RecipeFinder.of().flatMap(finder -> finder.findLumenGenerationRecipe(stack, getAssignedLumen(), true));
+    @Override protected Optional<RecipeHolder<LumenGenerationRecipe>> findMatchingRecipe(Level level, ItemStack stack) {
+        return RecipeFinder.of(level).findLumenGenerationRecipe(stack, getAssignedLumen(), true);
     }
 
     void consumeStarlight(int amount) {
