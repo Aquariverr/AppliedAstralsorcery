@@ -1,6 +1,8 @@
 package com.appliedastralsorcery.gametest;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import appeng.api.stacks.AEItemKey;
@@ -14,7 +16,9 @@ import hellfirepvp.astralsorcery.common.lib.FluidsAS;
 import hellfirepvp.astralsorcery.common.lib.RecipeTypesAS;
 import hellfirepvp.astralsorcery.common.recipe.altar.AltarRecipe;
 import hellfirepvp.astralsorcery.common.recipe.liquid.LiquidStarlightRecipe;
+import hellfirepvp.astralsorcery.common.recipe.lumen.LumenGenerationRecipe;
 import hellfirepvp.astralsorcery.common.tile.TileAltar;
+import hellfirepvp.astralsorcery.common.tile.TileLumenArray;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -96,7 +100,12 @@ public final class AstralCompatibilityGameTests {
     }
 
     @GameTest(template = "attunement_test")
-    public static void arraysResolveCatalystsInTheirWorld(GameTestHelper helper) {
+    public static void arraysResolveCatalystsInTheirWorld(GameTestHelper helper) throws ReflectiveOperationException {
+        // Exercise the hook declared by the loaded AS version, including virtual dispatch on alchemy arrays.
+        var nativeLookup = Arrays.stream(TileLumenArray.Data.class.getDeclaredMethods())
+                .filter(method -> method.getName().equals("findMatchingRecipe"))
+                .findFirst().orElseThrow();
+        nativeLookup.setAccessible(true);
         for (boolean alchemy : new boolean[]{false, true}) {
             var pos = new BlockPos(alchemy ? 13 : 7, 2, 10);
             helper.setBlock(pos, alchemy ? ModContent.ME_LUMEN_ALCHEMY_ARRAY.get() : ModContent.ME_LUMEN_ARRAY.get());
@@ -109,10 +118,18 @@ public final class AstralCompatibilityGameTests {
             array.setSelectedLumen(recipe.getProducedLumen());
             array.getTileData().getFluidTank().fill(new FluidStack(FluidsAS.LIQUID_STARLIGHT.getSource().get(), 1000),
                     FluidAction.EXECUTE);
+            var catalyst = recipe.getInput().getItems()[0].copyWithCount(1);
+            var matched = (Optional<?>) (nativeLookup.getParameterCount() == 1
+                    ? nativeLookup.invoke(array.getTileData(), catalyst)
+                    : nativeLookup.invoke(array.getTileData(), helper.getLevel(), catalyst));
+            var nativeRecipe = (LumenGenerationRecipe) ((RecipeHolder<?>) matched.orElseThrow()).value();
+            helper.assertTrue(nativeRecipe.getProducedLumen().equals(recipe.getProducedLumen())
+                            && alchemy != nativeRecipe.getLumenCombinationInputs().isEmpty(),
+                    "Native AS lookup must dispatch to the correct array recipe type (alchemy=" + alchemy + ")");
             var inventory = array.getTileData().getInventory();
             helper.assertTrue(inventory.insertItem(0, new ItemStack(Items.BARRIER), true).getCount() == 1,
                     "Array must reject a non-catalyst");
-            helper.assertTrue(inventory.insertItem(0, recipe.getInput().getItems()[0].copyWithCount(1), false).isEmpty(),
+            helper.assertTrue(inventory.insertItem(0, catalyst, false).isEmpty(),
                     "Array must resolve and accept its catalyst using the current world's recipes (alchemy=" + alchemy + ")");
         }
         helper.succeed();
