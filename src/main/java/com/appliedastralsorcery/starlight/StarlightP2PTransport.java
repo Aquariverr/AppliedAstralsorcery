@@ -5,16 +5,15 @@ import java.util.List;
 
 import appeng.api.parts.PartHelper;
 import com.appliedastralsorcery.transmutation.StarlightTransmutationBlockEntity;
-import hellfirepvp.astralsorcery.common.linking.Linkable;
 import hellfirepvp.astralsorcery.common.recipe.focal.place.ActiveTransmutationHandler;
-import hellfirepvp.astralsorcery.common.starlight.transmission.StarlightTransmissionChain;
 import hellfirepvp.astralsorcery.common.starlight.transmission.StarlightTransmissionPacket;
-import hellfirepvp.astralsorcery.common.tile.network.FocusCrystalSourceNode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 
 public final class StarlightP2PTransport {
+    private static final Direction[] SIDES = Direction.values();
+
     // AS packets describe focused beams only; the origin must survive every P2P hop separately.
     enum Kind { FOCAL, FOCUSED }
 
@@ -25,16 +24,28 @@ public final class StarlightP2PTransport {
     }
 
     static List<StarlightP2PTunnelPart> inputsAt(ServerLevel level, BlockPos pos) {
-        List<StarlightP2PTunnelPart> inputs = new ArrayList<>();
-        if (isUnloaded(level, pos)) return inputs;
+        if (isUnloaded(level, pos)) return List.of();
         var host = PartHelper.getPartHost(level, pos);
-        if (host != null) {
-            for (var side : Direction.values()) {
-                if (host.getPart(side) instanceof StarlightP2PTunnelPart tunnel && tunnel.canReceiveStarlight())
-                    inputs.add(tunnel);
+        if (host == null) return List.of();
+        List<StarlightP2PTunnelPart> inputs = null;
+        for (var side : SIDES) {
+            if (host.getPart(side) instanceof StarlightP2PTunnelPart tunnel && tunnel.canReceiveStarlight()) {
+                if (inputs == null) inputs = new ArrayList<>();
+                inputs.add(tunnel);
             }
         }
-        return inputs;
+        return inputs == null ? List.of() : inputs;
+    }
+
+    static int countInputsAt(ServerLevel level, BlockPos pos) {
+        if (isUnloaded(level, pos)) return 0;
+        var host = PartHelper.getPartHost(level, pos);
+        if (host == null) return 0;
+        int count = 0;
+        for (var side : SIDES) {
+            if (host.getPart(side) instanceof StarlightP2PTunnelPart tunnel && tunnel.canReceiveStarlight()) count++;
+        }
+        return count;
     }
 
     public static boolean receiveAt(ServerLevel level, BlockPos pos, StarlightTransmissionPacket packet) {
@@ -51,31 +62,32 @@ public final class StarlightP2PTransport {
         return true;
     }
 
-    static void emit(ServerLevel level, BlockPos pos, Direction side, StarlightTransmissionPacket packet, Kind kind) {
+    static void emit(ServerLevel level, BlockPos pos, Direction side, StarlightTransmissionPacket packet, Kind kind,
+            StarlightRouteCache routes) {
         var target = pos.relative(side);
         if (!isValid(packet) || isUnloaded(level, pos) || isUnloaded(level, target)) return;
         if (kind == Kind.FOCAL) {
             // Transporting a focal point's light does not focus it. In particular, it must
             // neither enter a lens graph nor satisfy recipes that require a focused beam.
             if (receiveAt(level, target, packet, kind)) return;
-            if (level.getBlockEntity(target) instanceof FocalStarlightReceiver crystal) {
+            var receiver = level.getBlockEntity(target);
+            if (receiver instanceof FocalStarlightReceiver crystal) {
                 crystal.appliedas$receiveFocalStarlight(level, packet);
-            } else if (level.getBlockEntity(target) instanceof StarlightTransmutationBlockEntity chamber) {
+            } else if (receiver instanceof StarlightTransmutationBlockEntity chamber) {
                 chamber.receiveFocalStarlight(level, packet);
             } else {
                 ActiveTransmutationHandler.receiveStarlight(level, target, packet.constellation(), packet.amount(), false);
             }
             return;
         }
-        // A temporary one-edge source lets AS resolve receivers, lens loss/splitting and block
-        // transmutation using its own graph rules. Rebuild so link edits take effect immediately.
-        var source = new FocusCrystalSourceNode(pos);
-        source.getLinkDataContainer().orElseThrow().link(level, pos, target, Linkable.LinkAction.EXECUTE);
-        var chain = StarlightTransmissionChain.makeChain(level, source);
+        var chain = routes.get(level, pos, side);
         // Saved AS lens nodes can outlive their loaded chunks. Never send through an unloaded path.
-        if (chain.getInvolvedChunks().stream().anyMatch(chunk -> !level.getChunkSource().hasChunk(chunk.x, chunk.z))) return;
+        for (var chunk : chain.getInvolvedChunks()) {
+            if (!level.getChunkSource().hasChunk(chunk.x, chunk.z)) return;
+        }
+        var losses = chain.getInvolvedStepLossMap();
         for (var receiver : chain.getReceiverEndpoints()) {
-            var multiplier = chain.getInvolvedStepLossMap().get(receiver.getNodePos());
+            var multiplier = losses.get(receiver.getNodePos());
             if (multiplier != null && multiplier > 0)
                 receiver.receiveStarlight(level, packet.withMultiplier(multiplier));
         }

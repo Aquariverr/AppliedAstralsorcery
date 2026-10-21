@@ -6,7 +6,6 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 
 import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
@@ -52,6 +51,8 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 public final class AutoChiselBlockEntity extends BlockEntity {
     public static final int OUTPUT_SLOTS = 9;
     public static final int LUMEN_CAPACITY = 2000;
+    private static final int IDLE_DROP_SEARCH_INTERVAL = 5;
+    private static final Direction[] SIDES = Direction.values();
     private static final Direction[] OUTPUT_PRIORITY = {
             Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST
     };
@@ -87,6 +88,7 @@ public final class AutoChiselBlockEntity extends BlockEntity {
     private ItemStack activeInput = ItemStack.EMPTY;
     private UUID lastTarget;
     private Status dropStatus = Status.IDLE;
+    private long nextDropSearchTick = Long.MIN_VALUE;
     private final ItemStackHandler inventory = new ItemStackHandler(1 + OUTPUT_SLOTS) {
         @Override public boolean isItemValid(int slot, ItemStack stack) {
             return slot == 0 && ChiselProcessing.accepts(stack);
@@ -149,6 +151,7 @@ public final class AutoChiselBlockEntity extends BlockEntity {
         activeTarget = null;
         activeInput = ItemStack.EMPTY;
         dropStatus = Status.IDLE;
+        nextDropSearchTick = Long.MIN_VALUE;
         setChanged();
     }
 
@@ -247,7 +250,7 @@ public final class AutoChiselBlockEntity extends BlockEntity {
     /** Only item centers inside a loaded, adjacent input block qualify. */
     private boolean isInDropInput(Vec3 position) {
         if (!(level instanceof ServerLevel server)) return false;
-        for (var side : Direction.values()) {
+        for (var side : SIDES) {
             var pos = worldPosition.relative(side);
             if (getSideMode(side).allowsInput() && server.hasChunk(SectionPos.blockToSectionCoord(pos.getX()),
                     SectionPos.blockToSectionCoord(pos.getZ())) && new AABB(pos).contains(position)) return true;
@@ -264,24 +267,22 @@ public final class AutoChiselBlockEntity extends BlockEntity {
     }
 
     @Nullable private ItemEntity selectDrop(ServerLevel server) {
-        var candidates = new ArrayList<ItemEntity>();
-        for (var side : Direction.values()) {
+        ItemEntity first = null, next = null;
+        for (var side : SIDES) {
             var pos = worldPosition.relative(side);
             if (!getSideMode(side).allowsInput() || !server.hasChunk(SectionPos.blockToSectionCoord(pos.getX()),
                     SectionPos.blockToSectionCoord(pos.getZ()))) continue;
             var area = new AABB(pos);
-            candidates.addAll(server.getEntitiesOfClass(ItemEntity.class, area,
-                    entity -> area.contains(entity.position()) && isDropCandidate(entity)));
+            for (var candidate : server.getEntitiesOfClass(ItemEntity.class, area,
+                    entity -> area.contains(entity.position()) && isDropCandidate(entity))) {
+                var id = candidate.getUUID();
+                if (!roundRobin && id.equals(lastTarget)) return candidate;
+                if (first == null || id.compareTo(first.getUUID()) < 0) first = candidate;
+                if (roundRobin && lastTarget != null && id.compareTo(lastTarget) > 0
+                        && (next == null || id.compareTo(next.getUUID()) < 0)) next = candidate;
+            }
         }
-        candidates.sort(Comparator.comparing(ItemEntity::getUUID));
-        if (candidates.isEmpty()) return null;
-        if (!roundRobin && lastTarget != null) {
-            for (var candidate : candidates) if (candidate.getUUID().equals(lastTarget)) return candidate;
-        }
-        if (roundRobin && lastTarget != null) {
-            for (var candidate : candidates) if (candidate.getUUID().compareTo(lastTarget) > 0) return candidate;
-        }
-        return candidates.getFirst();
+        return next == null ? first : next;
     }
 
     @Nullable private ItemEntity currentDrop(ServerLevel server) {
@@ -310,8 +311,13 @@ public final class AutoChiselBlockEntity extends BlockEntity {
         if (target == null) {
             if (activeTarget != null || progress != 0) resetDropJob();
             else dropStatus = Status.IDLE;
+            if (server.getGameTime() < nextDropSearchTick) return;
             target = selectDrop(server);
-            if (target == null) return;
+            if (target == null) {
+                // Only empty searches back off. Existing/moved targets and setting changes are checked immediately.
+                nextDropSearchTick = server.getGameTime() + IDLE_DROP_SEARCH_INTERVAL;
+                return;
+            }
             var input = target.getItem().copy();
             var attributes = input.get(DataComponentsAS.CRYSTAL_ATTRIBUTES);
             if (input.getItem() instanceof RockCrystalItem && attributes != null && attributes.isEmpty()) {

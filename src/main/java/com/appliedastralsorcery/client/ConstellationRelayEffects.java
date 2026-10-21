@@ -34,11 +34,12 @@ public final class ConstellationRelayEffects implements ConstellationRelayBlockE
     private boolean isPresent() {
         var client = Minecraft.getInstance();
         var level = relay.getLevel();
-        return level != null && level == client.level && !relay.isRemoved()
+        var camera = client.getCameraEntity();
+        var pos = relay.getBlockPos();
+        return level != null && level == client.level && !relay.isRemoved() && camera != null
+                && camera.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64 * 64
                 && level.hasChunk(relay.getBlockPos().getX() >> 4, relay.getBlockPos().getZ() >> 4)
-                && level.getBlockEntity(relay.getBlockPos()) == relay
-                && client.getCameraEntity() != null
-                && client.getCameraEntity().distanceToSqr(relay.getBlockPos().getCenter()) <= 64 * 64;
+                && level.getBlockEntity(relay.getBlockPos()) == relay;
     }
 
     private boolean canRun() {
@@ -112,8 +113,9 @@ public final class ConstellationRelayEffects implements ConstellationRelayBlockE
     private void swirl(RandomSource random, int stage) {
         int count = crossedInterval(stage, 50) ? 48 : 2;
         double cycle = stage / 500.0 * Math.PI * 2;
+        double phase = Math.sin(cycle) * 120;
         for (int i = 0; i < count; i++) {
-            double angle = Math.toRadians(i * 360.0 / count + Math.sin(cycle) * 120);
+            double angle = Math.toRadians(i * 360.0 / count + phase);
             var motion = new Vector3(-Math.cos(angle), 0, -Math.sin(angle)).multiply(0.045);
             var particle = EffectHelper.of(EffectTemplatesAS.GENERIC_PARTICLE).spawn(base().addY(0.08));
             particle.color(FXColorFunction.WHITE).setScale(0.12F + random.nextFloat() * 0.15F)

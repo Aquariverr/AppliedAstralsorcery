@@ -10,6 +10,7 @@ import hellfirepvp.astralsorcery.common.tile.TileCelestialGateway;
 import hellfirepvp.astralsorcery.common.lib.DataAS;
 import hellfirepvp.astralsorcery.common.util.data.TileRegistryObject;
 import net.minecraft.core.*;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -60,8 +61,9 @@ public final class MECelestialGatewayBlockEntity extends TileCelestialGateway {
             setChanged();
         }
         if (SpatialCellAccess.isFormatting(cell)) {
+            var before = cell.get(DataComponents.CUSTOM_DATA);
             SpatialCellAccess.formatStep(cell);
-            setChanged();
+            if (!java.util.Objects.equals(before, cell.get(DataComponents.CUSTOM_DATA))) setChanged();
         }
         if (!active || SpatialCellAccess.isFormatting(cell)) { withdrawDestination(); return; }
         if (!destinationDirty && getTileData().getTicksExisted() < nextDestinationUpdate) return;
@@ -69,10 +71,12 @@ public final class MECelestialGatewayBlockEntity extends TileCelestialGateway {
         nextDestinationUpdate = getTileData().getTicksExisted() + 20;
         var plot = SpatialCellAccess.plot(cell);
         if (plot == null) { withdrawDestination(); return; }
+        var before = cell.get(DataComponents.CUSTOM_DATA);
         var portal = SpatialReturnPortalBlockEntity.prepare(cell, plot);
+        if (!java.util.Objects.equals(before, cell.get(DataComponents.CUSTOM_DATA))) setChanged();
         if (portal == null) {
-            // A full cell can require scanning the whole plot; do not repeat that work every second.
-            nextDestinationUpdate = getTileData().getTicksExisted() + 200;
+            // prepare applies its own bounded scan and full-pass retry delay.
+            nextDestinationUpdate = getTileData().getTicksExisted() + 1;
             withdrawDestination();
             return;
         }
@@ -94,6 +98,8 @@ public final class MECelestialGatewayBlockEntity extends TileCelestialGateway {
         setRenderActive(false);
         if (publishedPortal != null && level instanceof ServerLevel server) {
             var storage = server.getServer().getLevel(appeng.spatial.SpatialStorageDimensionIds.WORLD_ID);
+            // Unbinding is infrequent: resolve the saved portal so an unloaded destination is
+            // withdrawn immediately, while preserving a different gateway's newer binding.
             if (storage != null && storage.getBlockEntity(publishedPortal) instanceof SpatialReturnPortalBlockEntity portal
                     && portal.isBoundTo(GlobalPos.of(server.dimension(), worldPosition))) portal.withdrawDestination();
             publishedPortal = null;

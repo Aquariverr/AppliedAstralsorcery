@@ -4,9 +4,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import com.appliedastralsorcery.attunement.ConstellationRelayBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import hellfirepvp.astralsorcery.client.util.RenderConstellationUtil;
-import hellfirepvp.astralsorcery.common.constellation.BaseConstellation;
-import hellfirepvp.astralsorcery.common.util.data.Vector3;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import hellfirepvp.astralsorcery.client.lib.RenderTypesAS;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -15,12 +14,14 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.AABB;
+import org.joml.Matrix4f;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public final class ConstellationRelayRenderer implements BlockEntityRenderer<ConstellationRelayBlockEntity> {
-    private static final float STAR_MAP_SCALE = 2.7F;
     private final ItemRenderer items;
+    private final ConstellationRenderGeometry.Cache geometry = new ConstellationRenderGeometry.Cache();
+    private final SingleItemRenderCache renderItems = new SingleItemRenderCache();
     public ConstellationRelayRenderer(BlockEntityRendererProvider.Context context) { items = context.getItemRenderer(); }
 
     @Override public void render(ConstellationRelayBlockEntity relay, float partialTick, PoseStack pose,
@@ -31,15 +32,19 @@ public final class ConstellationRelayRenderer implements BlockEntityRenderer<Con
         var constellation = relay.getConstellation();
         if (constellation != null && relay.isVisible()) {
             float rotation = relay.getStarMapRotation();
-            var placement = starMapPlacement(constellation, rotation);
+            var placement = geometry.get(constellation, rotation);
             pose.pushPose();
             pose.translate(0.5, 0, 0.5);
             pose.scale(placement.scale(), 1, placement.scale());
             pose.translate(-placement.centerX(), 0, -placement.centerZ());
             pose.mulPose(Axis.YP.rotation(rotation));
-            RenderConstellationUtil.drawConstellationInWorld(constellation, pose, buffers,
-                    new Vector3(0, 0.012, 0), STAR_MAP_SCALE, 0.45F,
-                    0.8F + 0.15F * (float) Math.sin(time * 0.06));
+            var color = constellation.getConstellationColor();
+            float alpha = 0.8F + 0.15F * (float) Math.sin(time * 0.06);
+            int rgb = color.getColor() & 0xFFFFFF;
+            draw(placement, true, pose.last().pose(), buffers.getBuffer(RenderTypesAS.CONSTELLATION_WORLD_CONNECTION),
+                    Math.round(color.getAlpha() * alpha * 0.8F) << 24 | rgb);
+            draw(placement, false, pose.last().pose(), buffers.getBuffer(RenderTypesAS.CONSTELLATION_WORLD_STAR),
+                    Math.round(color.getAlpha() * alpha) << 24 | rgb);
             pose.popPose();
         }
         var stack = relay.getInventory().getStackInSlot(0);
@@ -48,36 +53,21 @@ public final class ConstellationRelayRenderer implements BlockEntityRenderer<Con
             pose.translate(0.5, 0.85 + Math.sin(time / 16.0) * 0.06, 0.5);
             pose.mulPose(Axis.YP.rotationDegrees(time * (relay.isWorking() ? 3 : 1) % 360));
             pose.scale(0.6F, 0.6F, 0.6F);
-            items.renderStatic(stack.copyWithCount(1), ItemDisplayContext.GROUND,
+            items.renderStatic(renderItems.get(stack), ItemDisplayContext.GROUND,
                     relay.isWorking() ? LightTexture.FULL_BRIGHT : light, overlay, pose, buffers, level, 0);
             pose.popPose();
         }
     }
 
-    private record StarMapPlacement(double centerX, double centerZ, float scale) {}
-
-    private static StarMapPlacement starMapPlacement(BaseConstellation constellation, float rotation) {
-        var stars = constellation.getStars();
-        if (stars.isEmpty()) return new StarMapPlacement(0, 0, 1);
-        double minX = Double.POSITIVE_INFINITY, minZ = Double.POSITIVE_INFINITY;
-        double maxX = Double.NEGATIVE_INFINITY, maxZ = Double.NEGATIVE_INFINITY;
-        double gridCenter = BaseConstellation.STAR_GRID_WIDTH_HEIGHT / 2.0;
-        double unit = STAR_MAP_SCALE / BaseConstellation.STAR_GRID_WIDTH_HEIGHT;
-        double cos = Math.cos(rotation), sin = Math.sin(rotation);
-        for (var star : stars) {
-            double x = (star.x() - gridCenter) * unit;
-            double z = (star.y() - gridCenter) * unit;
-            double rotatedX = cos * x + sin * z;
-            double rotatedZ = -sin * x + cos * z;
-            minX = Math.min(minX, rotatedX);
-            maxX = Math.max(maxX, rotatedX);
-            minZ = Math.min(minZ, rotatedZ);
-            maxZ = Math.max(maxZ, rotatedZ);
+    private static void draw(ConstellationRenderGeometry geometry, boolean connections, Matrix4f pose,
+            VertexConsumer buffer, int color) {
+        int count = connections ? geometry.connectionVertexCount() : geometry.starVertexCount();
+        for (int i = 0; i < count; i++) {
+            int corner = i & 3;
+            buffer.addVertex(pose, geometry.coordinate(connections, i, 0), geometry.coordinate(connections, i, 1),
+                            geometry.coordinate(connections, i, 2))
+                    .setUv(corner == 0 || corner == 3 ? 1 : 0, corner >= 2 ? 1 : 0).setColor(color);
         }
-        // Fit diagonal patterns inside the same 3x3 floor area without overlapping neighbors.
-        double spriteWidth = 2 * unit * (Math.abs(cos) + Math.abs(sin));
-        float fit = (float) Math.min(1, 2.9 / (Math.max(maxX - minX, maxZ - minZ) + spriteWidth));
-        return new StarMapPlacement((minX + maxX) / 2, (minZ + maxZ) / 2, fit);
     }
 
     @Override public AABB getRenderBoundingBox(ConstellationRelayBlockEntity relay) {

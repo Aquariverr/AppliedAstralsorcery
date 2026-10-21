@@ -1,5 +1,6 @@
 package com.appliedastralsorcery.client;
 
+import static com.appliedastralsorcery.client.AttunementRingGeometry.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -8,7 +9,6 @@ import com.appliedastralsorcery.AppliedAstralsorcery;
 import com.appliedastralsorcery.attunement.AttunementLayout;
 import com.appliedastralsorcery.attunement.IridescentAttunementBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
@@ -26,7 +26,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.client.model.data.ModelData;
-import org.joml.Vector3f;
+import org.joml.Quaternionf;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -35,13 +35,11 @@ public final class IridescentAttunementRenderer implements BlockEntityRenderer<I
             .fromNamespaceAndPath(AppliedAstralsorcery.MOD_ID, "block/iridescent_attunement_altar_star"));
     public static final ModelResourceLocation CRYSTAL = ModelResourceLocation.standalone(ResourceLocation
             .fromNamespaceAndPath(AppliedAstralsorcery.MOD_ID, "block/iridescent_attunement_altar_crystal"));
-    private static final float REST_RADIUS = 16.5F / 16, RISEN_RADIUS = 17.5F / 16, SCALE = 0.75F;
-    private static final float REST_Y = 4.5F / 16, RISE_Y = 6.5F / 16, CORNER_TIP = 35.264F;
-    private static final float TILT = 9, TILT_NOD = 5;
+    private static final float SCALE = 0.75F, CORNER_TIP = 35.264F;
     private static final float CRYSTAL_LIFT = 3F / 16, CRYSTAL_BOB = 0.75F / 16;
     private static final float CRYSTAL_HEART = 11F / 16;
     /** Cycle lengths in ring-clock ticks; each divides {@link IridescentAttunementBlockEntity#RING_CLOCK_PERIOD}. */
-    private static final float NOD_CYCLE = 360, STAR_BOB_CYCLE = 120, CRYSTAL_BOB_CYCLE = 100;
+    private static final float CRYSTAL_BOB_CYCLE = 100;
     static final int BREATH_CYCLE = 40;
     private static final float GEM_INFLATE = 1.04F, GEM_SWELL = 0.1F;
     private static final float WORK_GROWTH = 0.2F;
@@ -50,6 +48,7 @@ public final class IridescentAttunementRenderer implements BlockEntityRenderer<I
             Direction.WEST, Direction.EAST, null};
     @Nullable private BakedModel split, crystalModel;
     private final List<BakedQuad> gold = new ArrayList<>(), gems = new ArrayList<>(), crystal = new ArrayList<>();
+    private final Quaternionf rotation = new Quaternionf(), cornerTilt = new Quaternionf(), cornerRoll = new Quaternionf();
 
     /** Separates the tinted gem quads, which glow evenly, from the gold that takes entity shading. */
     private void split(BakedModel model) {
@@ -93,16 +92,18 @@ public final class IridescentAttunementRenderer implements BlockEntityRenderer<I
         pose.popPose();
 
         pose.pushPose();
-        ringTransform(pose, clock, rise);
+        ringTransform(pose, clock, rise, rotation);
         float breath = 0.5F - 0.5F * Mth.cos(time * Mth.TWO_PI / BREATH_CYCLE);
         float flash = Mth.square(Math.max(0, breath - 0.7F) / 0.3F);
+        cornerTilt.rotationX(-CORNER_TIP * rise * Mth.DEG_TO_RAD);
+        cornerRoll.rotationZ(45 * rise * Mth.DEG_TO_RAD);
         for (int i = 0; i < count; i++) {
             pose.pushPose();
-            orbitTransform(pose, clock, rise, phase, i);
+            orbitTransform(pose, clock, rise, phase, i, rotation);
             float glow = altar.getStationGlow(i), work = altar.getStationWork(i);
-            pose.mulPose(Axis.YP.rotationDegrees(clock * 2 + i * 37));
-            pose.mulPose(Axis.XP.rotationDegrees(-CORNER_TIP * rise));
-            pose.mulPose(Axis.ZP.rotationDegrees(45 * rise));
+            pose.mulPose(rotation.rotationY((clock * 2 + i * 37) * Mth.DEG_TO_RAD));
+            pose.mulPose(cornerTilt);
+            pose.mulPose(cornerRoll);
             float scale = SCALE * (1 + WORK_GROWTH * work);
             pose.scale(scale, scale, scale);
             pose.translate(-0.5, -0.5, -0.5);
@@ -135,29 +136,20 @@ public final class IridescentAttunementRenderer implements BlockEntityRenderer<I
         return rise * (CRYSTAL_LIFT + CRYSTAL_BOB * Mth.sin(clock * Mth.TWO_PI / CRYSTAL_BOB_CYCLE));
     }
 
-    private static void ringTransform(PoseStack pose, float clock, float rise) {
+    private static void ringTransform(PoseStack pose, float clock, float rise, Quaternionf rotation) {
         pose.translate(0.5, REST_Y + RISE_Y * rise, 0.5);
         float precession = clock * 0.2F;
         float tilt = TILT + TILT_NOD * Mth.sin(clock * Mth.TWO_PI / NOD_CYCLE);
-        pose.mulPose(Axis.YP.rotationDegrees(precession));
-        pose.mulPose(Axis.XP.rotationDegrees(tilt * rise));
-        pose.mulPose(Axis.YP.rotationDegrees(-precession));
+        pose.mulPose(rotation.rotationY(precession * Mth.DEG_TO_RAD));
+        pose.mulPose(rotation.rotationX(tilt * rise * Mth.DEG_TO_RAD));
+        pose.mulPose(rotation.rotationY(-precession * Mth.DEG_TO_RAD));
     }
 
-    private static void orbitTransform(PoseStack pose, float clock, float rise, float phase, int i) {
+    private static void orbitTransform(PoseStack pose, float clock, float rise, float phase, int i, Quaternionf rotation) {
         // Clockwise from north seen from above, like the stations.
-        pose.mulPose(Axis.YP.rotationDegrees(-(phase + i * 360F / AttunementLayout.STATIONS.size())));
+        pose.mulPose(rotation.rotationY(-(phase + i * 360F / AttunementLayout.STATIONS.size()) * Mth.DEG_TO_RAD));
         pose.translate(0, rise * 0.35F / 16 * Mth.sin(clock * Mth.TWO_PI / STAR_BOB_CYCLE + i * 0.52F),
                 -Mth.lerp(rise, REST_RADIUS, RISEN_RADIUS));
-    }
-
-    public static Vector3 starCentre(IridescentAttunementBlockEntity altar, int i, float partialTick) {
-        float clock = altar.getRingClock(partialTick), rise = rise(altar, partialTick);
-        var pose = new PoseStack();
-        ringTransform(pose, clock, rise);
-        orbitTransform(pose, clock, rise, altar.getRingPhase(partialTick), i);
-        var centre = pose.last().pose().transformPosition(new Vector3f());
-        return new Vector3(altar.getBlockPos()).add(centre.x, centre.y, centre.z);
     }
 
     public static Vector3 crystalCentre(IridescentAttunementBlockEntity altar, float partialTick) {

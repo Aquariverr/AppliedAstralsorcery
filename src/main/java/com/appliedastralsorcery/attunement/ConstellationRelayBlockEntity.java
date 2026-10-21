@@ -25,6 +25,8 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 @MethodsReturnNonnullByDefault
 public final class ConstellationRelayBlockEntity extends BlockEntity {
     private static final int EVENT_ATTUNEMENT_COMPLETE = 1;
+    private static final float[] STAR_MAP_ROTATIONS = starMapRotations();
+    private final BlockPos[] altarCandidates = new BlockPos[AttunementLayout.STATIONS.size()];
 
     /** Client implementation is installed at client setup; dedicated servers never load FX classes. */
     public interface ClientEffects {
@@ -58,6 +60,9 @@ public final class ConstellationRelayBlockEntity extends BlockEntity {
 
     public ConstellationRelayBlockEntity(BlockPos pos, BlockState state) {
         super(ModContent.CONSTELLATION_RELAY_ENTITY.get(), pos, state);
+        for (int i = 0; i < altarCandidates.length; i++) {
+            altarCandidates[i] = worldPosition.subtract(AttunementLayout.STATIONS.get(i).offset());
+        }
     }
 
     public ItemStackHandler getInventory() { return inventory; }
@@ -66,10 +71,17 @@ public final class ConstellationRelayBlockEntity extends BlockEntity {
     public boolean isWorking() { return working; }
     public boolean isUsingLumen() { return usingLumen; }
     public float getStarMapRotation() {
-        if (station < 0 || station >= AttunementLayout.STATIONS.size()) return 0;
-        var offset = AttunementLayout.STATIONS.get(station).offset();
-        // The top of the unrotated map points north; turn it away from the altar.
-        return (float) Math.atan2(-offset.getX(), -offset.getZ());
+        return station < 0 || station >= STAR_MAP_ROTATIONS.length ? 0 : STAR_MAP_ROTATIONS[station];
+    }
+
+    private static float[] starMapRotations() {
+        var rotations = new float[AttunementLayout.STATIONS.size()];
+        for (int i = 0; i < rotations.length; i++) {
+            var offset = AttunementLayout.STATIONS.get(i).offset();
+            // The top of the unrotated map points north; turn it away from the altar.
+            rotations[i] = (float) Math.atan2(-offset.getX(), -offset.getZ());
+        }
+        return rotations;
     }
 
     public float getVisualProgress(float partialTick) {
@@ -115,8 +127,8 @@ public final class ConstellationRelayBlockEntity extends BlockEntity {
         if (altarPos != null && !level.hasChunk(altarPos.getX() >> 4, altarPos.getZ() >> 4)) return null;
         IridescentAttunementBlockEntity found = null;
         int index = -1;
-        for (int i = 0; i < AttunementLayout.STATIONS.size(); i++) {
-            var center = worldPosition.subtract(AttunementLayout.STATIONS.get(i).offset());
+        for (int i = 0; i < altarCandidates.length; i++) {
+            var center = altarCandidates[i];
             if (level.hasChunk(center.getX() >> 4, center.getZ() >> 4)
                     && level.getBlockEntity(center) instanceof IridescentAttunementBlockEntity altar) {
                 if (found != null) {

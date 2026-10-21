@@ -1,5 +1,6 @@
 package com.appliedastralsorcery.attunement;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -13,6 +14,7 @@ import hellfirepvp.observerlib.api.ObserverProvider;
 import hellfirepvp.observerlib.common.change.ObserverProviderStructure;
 import hellfirepvp.observerlib.common.registry.RegistryProviders;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -30,6 +32,7 @@ public final class AttunementLayout {
             station(-6, -3, ConstellationsAS.FORNAX), station(-3, -6, ConstellationsAS.PELOTRIO));
 
     private static PatternAttunementAltar pattern;
+    private static final ChunkPos[][] REQUIRED_CHUNKS = new ChunkPos[16 * 16][];
     private static final DeferredRegister<ObserverProvider<?>> OBSERVERS =
             DeferredRegister.create(RegistryProviders.REGISTRY_KEY, AppliedAstralsorcery.MOD_ID);
     public static final ObserverRegistryObject OBSERVER = new ObserverRegistryObject(
@@ -60,9 +63,24 @@ public final class AttunementLayout {
     }
 
     public static boolean isLoaded(Level level, BlockPos center) {
-        for (var offset : structure().getContents().keySet()) {
-            var pos = center.offset(offset);
-            if (!level.hasChunk(pos.getX() >> 4, pos.getZ() >> 4)) return false;
+        int localX = center.getX() & 15;
+        int localZ = center.getZ() & 15;
+        int index = localX * 16 + localZ;
+        var chunks = REQUIRED_CHUNKS[index];
+        if (chunks == null) {
+            // The structure is fixed. Cache its exact chunk footprint for each alignment, not
+            // whether those chunks are loaded: unloads must still take effect immediately.
+            var required = new LinkedHashSet<ChunkPos>();
+            for (var offset : structure().getContents().keySet()) {
+                required.add(new ChunkPos((localX + offset.getX()) >> 4, (localZ + offset.getZ()) >> 4));
+            }
+            chunks = required.toArray(ChunkPos[]::new);
+            REQUIRED_CHUNKS[index] = chunks;
+        }
+        int chunkX = center.getX() >> 4;
+        int chunkZ = center.getZ() >> 4;
+        for (var offset : chunks) {
+            if (!level.hasChunk(chunkX + offset.x, chunkZ + offset.z)) return false;
         }
         return true;
     }

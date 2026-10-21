@@ -319,6 +319,8 @@ public final class AltarAutomationBlockEntity extends BlockEntity implements ICr
                 }
             }
         }
+        returns.removeIf(ItemStack::isEmpty);
+        if (returns.isEmpty()) return;
         var destination = worldPosition.relative(returnSide);
         if (!isChunkLoaded(server, destination)) return;
         var handler = server.getCapability(Capabilities.ItemHandler.BLOCK, destination, returnSide.getOpposite());

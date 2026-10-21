@@ -58,11 +58,15 @@ public final class IridescentAttunementBlockEntity extends TileEntityTick<TileEn
     private final float[] stationGlow = new float[AttunementLayout.STATIONS.size()];
     private final float[] stationWork = new float[AttunementLayout.STATIONS.size()];
     private final boolean[] stationAttuning = new boolean[AttunementLayout.STATIONS.size()];
+    private final BlockPos[] relayPositions = new BlockPos[AttunementLayout.STATIONS.size()];
     private boolean lumenFed;
     private float ringPhase, prevRingPhase, ringSpeed = RING_IDLE_SPEED, ringRise, prevRingRise, ringClock, prevRingClock;
 
     public IridescentAttunementBlockEntity(BlockPos pos, BlockState state) {
         super(new TileRegistryObject<>(ModContent.IRIDESCENT_ATTUNEMENT_ENTITY), pos, state);
+        for (int i = 0; i < relayPositions.length; i++) {
+            relayPositions[i] = worldPosition.offset(AttunementLayout.STATIONS.get(i).offset());
+        }
     }
 
     @Override public Codec<TileEntityTick.Data> dataCodec() { return TileEntityTick.Data.CODEC; }
@@ -98,7 +102,7 @@ public final class IridescentAttunementBlockEntity extends TileEntityTick<TileEn
             var station = AttunementLayout.STATIONS.get(i);
             float glow = 0;
             boolean attuning = false;
-            if (level.getBlockEntity(worldPosition.offset(station.offset())) instanceof ConstellationRelayBlockEntity relay
+            if (level.getBlockEntity(relayPositions[i]) instanceof ConstellationRelayBlockEntity relay
                     && relay.getConstellation() == station.constellation().get()) {
                 attuning = relay.isWorking();
                 glow = relay.isVisible() ? 1 : 0.6F;

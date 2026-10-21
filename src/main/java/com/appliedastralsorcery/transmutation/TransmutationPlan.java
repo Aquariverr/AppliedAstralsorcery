@@ -4,6 +4,7 @@ import static com.appliedastralsorcery.transmutation.StarlightTransmutationBlock
 import static com.appliedastralsorcery.transmutation.StarlightTransmutationBlockEntity.OUTPUT_SLOTS;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import net.minecraft.world.item.ItemStack;
@@ -15,15 +16,16 @@ final class TransmutationPlan {
 
     static int[] match(List<Ingredient> ingredients, ItemStackHandler inventory) {
         if (ingredients.isEmpty()) return null;
-        var candidates = new ArrayList<int[]>();
+        var candidates = new ArrayList<int[]>(ingredients.size());
         for (var ingredient : ingredients) {
-            var matches = new ArrayList<Integer>();
+            int[] matches = new int[INPUT_SLOTS];
+            int count = 0;
             for (int slot = 0; slot < INPUT_SLOTS; slot++) {
                 if (!inventory.getStackInSlot(slot).isEmpty() && ingredient.test(inventory.getStackInSlot(slot)))
-                    matches.add(slot);
+                    matches[count++] = slot;
             }
-            if (matches.isEmpty()) return null;
-            candidates.add(matches.stream().mapToInt(Integer::intValue).toArray());
+            if (count == 0) return null;
+            candidates.add(Arrays.copyOf(matches, count));
         }
         candidates.sort(Comparator.comparingInt(a -> a.length));
         int[] available = new int[INPUT_SLOTS], consumed = new int[INPUT_SLOTS];
@@ -60,7 +62,7 @@ final class TransmutationPlan {
             if (!remaining.isEmpty()) return null;
         }
         var result = new ItemStack[OUTPUT_SLOTS];
-        for (int slot = 0; slot < OUTPUT_SLOTS; slot++) result[slot] = buffer.getStackInSlot(slot).copy();
+        for (int slot = 0; slot < OUTPUT_SLOTS; slot++) result[slot] = buffer.getStackInSlot(slot);
         return result;
     }
 }

@@ -5,6 +5,8 @@ import javax.annotation.Nullable;
 import net.minecraft.MethodsReturnNonnullByDefault;
 
 import java.util.Comparator;
+import java.util.Collection;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -14,6 +16,7 @@ import appeng.api.config.Actionable;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.GridHelper;
 import appeng.api.networking.IGridNode;
+import appeng.api.networking.IGridNodeListener;
 import appeng.api.networking.IManagedGridNode;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.stacks.AEItemKey;
@@ -67,9 +70,20 @@ public final class StarlightTransmutationBlockEntity
     public static final int OVERCLOCK_LUMEN_COST = 5;
     // Transmission is live light, not a stored energy resource. Allow the network's tick ordering.
     private static final int STARLIGHT_TIMEOUT = 2;
+    private static final int NETWORK_RETRY_INTERVAL = 5;
     public enum Status { IDLE, MISSING_INPUTS, NO_STARLIGHT, WRONG_CONSTELLATION, OFFLINE, OUTPUT_BLOCKED, RUNNING }
     private final IManagedGridNode mainNode = GridHelper.createManagedNode(this,
-            (owner, node) -> owner.setChanged())
+            new IGridNodeListener<StarlightTransmutationBlockEntity>() {
+                @Override public void onSaveChanges(StarlightTransmutationBlockEntity owner, IGridNode node) {
+                    owner.setChanged();
+                }
+                @Override public void onGridChanged(StarlightTransmutationBlockEntity owner, IGridNode node) {
+                    owner.wakeNetworkTransfers();
+                }
+                @Override public void onStateChanged(StarlightTransmutationBlockEntity owner, IGridNode node, State state) {
+                    owner.wakeNetworkTransfers();
+                }
+            })
             .setInWorldNode(true).setExposedOnSides(Set.of(Direction.values()))
             .setFlags(GridFlags.REQUIRE_CHANNEL).setIdlePowerUsage(2.0);
     private final Map<BaseConstellation, Long> receivedStarlight = new HashMap<>();
@@ -79,8 +93,14 @@ public final class StarlightTransmutationBlockEntity
         @Override protected void onContentsChanged(int slot) { inventoryChanged(); }
     };
     private final ItemStackHandler pullMarkers = new ItemStackHandler(INPUT_SLOTS) {
-        @Override protected void onContentsChanged(int slot) { if (!loading) setChanged(false); }
+        @Override protected void onContentsChanged(int slot) {
+            wakeNetworkTransfers();
+            if (!loading) setChanged(false);
+        }
     };
+    private final TransmutationOutputCache outputCache = new TransmutationOutputCache();
+    private long nextNetworkTransferTick = Long.MIN_VALUE;
+    private Collection<RecipeHolder<?>> transferRecipes = List.of();
     private boolean autoPull;
     private boolean lumenOverclock, jobOverclocked;
     private int overclockCharge;
@@ -107,7 +127,7 @@ public final class StarlightTransmutationBlockEntity
     public ItemStackHandler getInventory() { return inventory; }
     public ItemStackHandler getPullMarkers() { return pullMarkers; }
     public boolean isAutoPull() { return autoPull; }
-    public void toggleAutoPull() { autoPull = !autoPull; setChanged(false); }
+    public void toggleAutoPull() { autoPull = !autoPull; wakeNetworkTransfers(); setChanged(false); }
     public boolean isLumenOverclock() { return lumenOverclock; }
     public void toggleLumenOverclock() { lumenOverclock = !lumenOverclock; setChanged(false); }
     public boolean setPullMarker(int slot, ItemStack stack) {
@@ -178,7 +198,13 @@ public final class StarlightTransmutationBlockEntity
     }
 
     public void inventoryChanged() {
+        outputCache.invalidate();
+        wakeNetworkTransfers();
         if (!loading) markForUpdate(false);
+    }
+
+    private void wakeNetworkTransfers() {
+        nextNetworkTransferTick = Long.MIN_VALUE;
     }
 
     @Override public void receiveStarlight(ServerLevel server, StarlightTransmissionPacket packet) {
@@ -213,7 +239,16 @@ public final class StarlightTransmutationBlockEntity
         receivedStarlight.values().removeIf(tick -> server.getGameTime() - tick > STARLIGHT_TIMEOUT);
         receivedFocalStarlight.values().removeIf(tick -> server.getGameTime() - tick > STARLIGHT_TIMEOUT);
         displayConstellation = receivedConstellation(null);
-        if (mainNode.isOnline()) {
+        var recipes = server.getRecipeManager().getRecipes();
+        if (recipes != transferRecipes) {
+            transferRecipes = recipes;
+            wakeNetworkTransfers();
+        }
+        if (mainNode.isOnline() && server.getGameTime() >= nextNetworkTransferTick) {
+            // Any AE2 stack watcher forces a full inventory report every tick, even for one key.
+            // Poll only these slots at a bounded interval; local changes and node events wake
+            // this immediately, while external stock/capacity changes wait at most five ticks.
+            nextNetworkTransferTick = server.getGameTime() + NETWORK_RETRY_INTERVAL;
             exportOutputs();
             if (autoPull) balanceInputs();
         }
@@ -256,26 +291,47 @@ public final class StarlightTransmutationBlockEntity
     }
 
     private void process(ServerLevel server) {
-        var recipes = server.getRecipeManager().getAllRecipesFor(RecipeTypesAS.FOCAL_COMBINE_TYPE.get()).stream()
-                .sorted(Comparator.comparing((RecipeHolder<FocalCombineRecipe> holder) -> !holder.id().equals(recipeId))
-                        .thenComparing(holder -> holder.id().toString())).toList();
         boolean anyInput = false, matchingInputs = false;
+        for (int slot = 0; slot < INPUT_SLOTS; slot++) anyInput |= !inventory.getStackInSlot(slot).isEmpty();
+        if (!anyInput) {
+            resetProgress();
+            status = Status.IDLE;
+            return;
+        }
         RecipeHolder<FocalCombineRecipe> selected = null;
         int[] consumed = null;
-        for (int slot = 0; slot < INPUT_SLOTS; slot++) anyInput |= !inventory.getStackInSlot(slot).isEmpty();
-        for (var holder : recipes) {
-            var match = TransmutationPlan.match(holder.value().getInputs(), inventory);
-            if (match == null) continue;
-            matchingInputs = true;
-            if (availableConstellations().anyMatch(holder.value()::isRequiredConstellation)) {
-                selected = holder;
+        // Most ticks continue the same job. Resolve it against the live manager so a datapack
+        // reload still replaces/removes it immediately, without copying or sorting all recipes.
+        var current = recipeId == null ? null : server.getRecipeManager().byKey(recipeId).orElse(null);
+        if (current != null && current.value() instanceof FocalCombineRecipe recipe) {
+            var match = TransmutationPlan.match(recipe.getInputs(), inventory);
+            matchingInputs = match != null;
+            if (matchingInputs && availableConstellations().anyMatch(recipe::isRequiredConstellation)) {
+                @SuppressWarnings("unchecked")
+                var typed = (RecipeHolder<FocalCombineRecipe>) current;
+                selected = typed;
                 consumed = match;
-                break;
             }
         }
-        if (!anyInput || !matchingInputs) {
+        if (selected == null) {
+            String selectedId = null;
+            for (var holder : server.getRecipeManager().getAllRecipesFor(RecipeTypesAS.FOCAL_COMBINE_TYPE.get())) {
+                if (holder.id().equals(recipeId)) continue;
+                String id = holder.id().toString();
+                if (selectedId != null && id.compareTo(selectedId) >= 0) continue;
+                var match = TransmutationPlan.match(holder.value().getInputs(), inventory);
+                if (match == null) continue;
+                matchingInputs = true;
+                if (availableConstellations().anyMatch(holder.value()::isRequiredConstellation)) {
+                    selected = holder;
+                    selectedId = id;
+                    consumed = match;
+                }
+            }
+        }
+        if (!matchingInputs) {
             resetProgress();
-            status = anyInput ? Status.MISSING_INPUTS : Status.IDLE;
+            status = Status.MISSING_INPUTS;
             return;
         }
         if (selected == null) {
@@ -289,7 +345,7 @@ public final class StarlightTransmutationBlockEntity
         displayConstellation = receivedConstellation(selected.value());
         duration = processingDuration(selected.value());
         if (!mainNode.isOnline()) { status = Status.OFFLINE; return; }
-        var output = TransmutationPlan.output(selected.value().getOutputs(), inventory);
+        var output = outputCache.plan(selected.value(), inventory);
         if (output == null) { status = Status.OUTPUT_BLOCKED; return; }
         // Decide once at the start. Insufficient lumen uses the current starlight source's duration.
         if (progress == 0) {
@@ -381,9 +437,8 @@ public final class StarlightTransmutationBlockEntity
                 if (inserted > 0) inventory.extractItem(slot, (int) inserted, false);
                 continue;
             }
-            if (target == 0 || !accepts(marker)) continue;
             int missing = target - current.getCount();
-            if (missing <= 0) continue;
+            if (missing <= 0 || !accepts(marker)) continue;
             var key = AEItemKey.of(marker);
             if (key == null) continue;
             long extracted = StorageHelper.poweredExtraction(energy, storage, key, missing, source);

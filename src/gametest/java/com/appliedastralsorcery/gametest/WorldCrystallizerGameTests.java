@@ -78,8 +78,10 @@ public final class WorldCrystallizerGameTests {
                     "Crystallizer and cable must coexist in AE2's native part host on " + face);
             List<AABB> boxes = new ArrayList<>();
             panel.getBoxes(new BusCollisionHelper(boxes, face, true));
-            helper.assertTrue(!boxes.isEmpty() && boxes.stream().allMatch(box -> touchesOuterFace(box, face)),
-                    "The preview outline must be a thin panel on the outward " + face + " face");
+            // The cable nub sits behind the front panel, so only the panel must touch the outer face.
+            helper.assertTrue(!boxes.isEmpty() && boxes.stream().allMatch(box -> liesWithinOuterSlab(box, face))
+                            && boxes.stream().anyMatch(box -> touchesOuterFace(box, face)),
+                    "The preview outline must stay within the outer 3/16 slab and touch the " + face + " face");
             helper.assertTrue(!panel.getStaticModels().getModels().isEmpty()
                             && panel.getCrystallizationTarget().equals(pos.relative(face)),
                     "Part model and crystal target must use the native placement orientation");
@@ -365,11 +367,19 @@ public final class WorldCrystallizerGameTests {
                 "The native crystal tile must carry the catalyst's lumen type");
     }
 
-    private static boolean touchesOuterFace(AABB box, Direction face) {
+    private static boolean liesWithinOuterSlab(AABB box, Direction face) {
+        if (box.minX < 0 || box.minY < 0 || box.minZ < 0
+                || box.maxX > 1 || box.maxY > 1 || box.maxZ > 1) return false;
         double minimum = face.getAxis().choose(box.minX, box.minY, box.minZ);
         double maximum = face.getAxis().choose(box.maxX, box.maxY, box.maxZ);
         return face.getAxisDirection() == Direction.AxisDirection.POSITIVE
-                ? minimum >= 0.875 && maximum == 1 : minimum == 0 && maximum <= 0.125;
+                ? minimum >= 13.0 / 16 : maximum <= 3.0 / 16;
+    }
+
+    private static boolean touchesOuterFace(AABB box, Direction face) {
+        return face.getAxisDirection() == Direction.AxisDirection.POSITIVE
+                ? face.getAxis().choose(box.maxX, box.maxY, box.maxZ) == 1
+                : face.getAxis().choose(box.minX, box.minY, box.minZ) == 0;
     }
 
     private static ItemStack crystal() { return LumenCrystalItem.getCrystal(LumenAS.AEVITAS); }

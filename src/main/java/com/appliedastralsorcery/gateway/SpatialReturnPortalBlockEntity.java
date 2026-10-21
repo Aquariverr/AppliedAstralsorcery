@@ -27,6 +27,10 @@ import net.minecraft.world.phys.Vec3;
 
 public final class SpatialReturnPortalBlockEntity extends TileCelestialGateway {
     private static final String PORTAL = "appliedas_return_portal";
+    private static final String SEARCH = "appliedas_return_portal_search";
+    public static final int SEARCH_CANDIDATES_PER_TICK = 4096;
+    public static final int GLOBAL_SEARCH_CANDIDATES = 16384;
+    public static final int FAILED_SEARCH_RETRY_TICKS = 200;
     private GlobalPos returnGateway;
     private int plotId = -1;
     public SpatialReturnPortalBlockEntity(BlockPos pos, BlockState state) {
@@ -56,7 +60,8 @@ public final class SpatialReturnPortalBlockEntity extends TileCelestialGateway {
     private MECelestialGatewayBlockEntity activeGateway() {
         if (!(level instanceof ServerLevel server) || returnGateway == null || plotId < 0) return null;
         var source = server.getServer().getLevel(returnGateway.dimension());
-        if (source == null || !(source.getBlockEntity(returnGateway.pos()) instanceof MECelestialGatewayBlockEntity gate)) return null;
+        if (source == null || !source.hasChunk(returnGateway.pos().getX() >> 4, returnGateway.pos().getZ() >> 4)
+                || !(source.getBlockEntity(returnGateway.pos()) instanceof MECelestialGatewayBlockEntity gate)) return null;
         var cell = gate.getInventory().getStackInSlot(0);
         var info = cell.get(AEComponents.SPATIAL_PLOT_INFO);
         if (info == null || info.id() != plotId || !SpatialCellAccess.accepts(cell) || SpatialCellAccess.isFormatting(cell)
@@ -83,40 +88,86 @@ public final class SpatialReturnPortalBlockEntity extends TileCelestialGateway {
     }
 
     public static SpatialReturnPortalBlockEntity prepare(ItemStack cell, SpatialStoragePlot plot) {
+        if (SpatialCellAccess.isFormatting(cell) || SpatialCellAccess.plot(cell) != plot) return null;
         var level = SpatialStoragePlotManager.INSTANCE.getLevel();
         var tag = cell.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
         if (tag.contains(PORTAL)) {
             var pos = BlockPos.of(tag.getLong(PORTAL));
-            if (inside(plot, pos) && level.getBlockEntity(pos) instanceof SpatialReturnPortalBlockEntity portal
-                    && arrival(level, pos) != null) return portal;
+            if (inside(plot, pos)) {
+                if (!GatewayWorkBudget.chunkReady(level, pos)) return null;
+                if (level.getBlockEntity(pos) instanceof SpatialReturnPortalBlockEntity portal
+                        && arrival(level, pos) != null) return portal;
+            }
+            // A removed/blocked portal must restart at the first candidate, never at an old cursor.
+            tag.remove(SEARCH);
+            CustomData.update(DataComponents.CUSTOM_DATA, cell, data -> { data.remove(PORTAL); data.remove(SEARCH); });
         }
         var origin = plot.getOrigin();
         var size = plot.getSize();
+        int width = size.getX() - 2, depth = size.getZ() - 2;
+        int total = width * depth * (size.getY() - 2);
+        var search = tag.getCompound(SEARCH);
+        boolean samePlot = search.getInt("plot") == plot.getId() && search.getLong("size") == size.asLong();
+        int index = samePlot ? Math.clamp(search.getInt("cursor"), 0, total) : 0;
+        long retry = samePlot ? search.getLong("retry") : 0;
+        long now = level.getGameTime();
+        if (index == total) {
+            if (retry > now && retry - now <= FAILED_SEARCH_RETRY_TICKS) return null;
+            index = 0; // Periodic rescans also recover edits to positions visited in a previous pass.
+        }
+        int granted = GatewayWorkBudget.search(level, plot.getId());
+        if (granted <= 0) return null;
+        var cursor = new BlockPos.MutableBlockPos();
         // Low layers are preferred so an empty cell's matrix shell provides the floor.
-        for (int y = 0; y < size.getY() - 2; y++) {
-            for (int z = 1; z < size.getZ() - 1; z++) for (int x = 1; x < size.getX() - 1; x++) {
-                var pos = origin.offset(x, y, z);
-                if (level.getBlockEntity(pos) instanceof SpatialReturnPortalBlockEntity portal && arrival(level, pos) != null) {
-                    remember(cell, pos);
-                    return portal;
-                }
-                if (!clear(level, pos) || !clear(level, pos.above()) || !clear(level, pos.above(2))) continue;
-                if (!Block.canSupportRigidBlock(level, pos.below())) {
-                    // Only add a floor in empty space. Existing non-supporting blocks are left alone.
-                    if (!inside(plot, pos.below()) || !clear(level, pos.below())) continue;
-                    if (!level.setBlockAndUpdate(pos.below(), BlocksAS.MARBLE_RAW.get().defaultBlockState())) continue;
-                }
-                if (!level.setBlockAndUpdate(pos, ModContent.SPATIAL_RETURN_PORTAL.get().defaultBlockState())) continue;
-                if (level.getBlockEntity(pos) instanceof SpatialReturnPortalBlockEntity portal) {
-                    remember(cell, pos);
-                    return portal;
-                }
+        for (int limit = Math.min(total, index + granted); index < limit; index++) {
+            int layer = index / width;
+            cursor.setWithOffset(origin, 1 + index % width, layer / depth, 1 + layer % depth);
+            if (!GatewayWorkBudget.chunkReady(level, cursor)) break;
+            var state = level.getBlockState(cursor);
+            if (state.is(ModContent.SPATIAL_RETURN_PORTAL.get())
+                    && level.getBlockEntity(cursor) instanceof SpatialReturnPortalBlockEntity portal
+                    && arrival(level, cursor) != null) {
+                remember(cell, cursor);
+                return portal;
+            }
+            if (!state.isAir() || !state.getFluidState().isEmpty()) continue;
+            if (!clear(level, cursor.above()) || !clear(level, cursor.above(2))) continue;
+            // Only candidates that can place a portal need a retained, immutable position.
+            var pos = cursor.immutable();
+            boolean supported = Block.canSupportRigidBlock(level, pos.below());
+            if (!supported && (!inside(plot, pos.below()) || !clear(level, pos.below()))) continue;
+            // The placement's neighbor notifications must not synchronously load an adjacent chunk.
+            if (!placementChunksReady(level, pos)) break;
+            if (!supported && !level.setBlockAndUpdate(pos.below(), BlocksAS.MARBLE_RAW.get().defaultBlockState())) continue;
+            if (!level.setBlockAndUpdate(pos, ModContent.SPATIAL_RETURN_PORTAL.get().defaultBlockState())) continue;
+            if (level.getBlockEntity(pos) instanceof SpatialReturnPortalBlockEntity portal) {
+                remember(cell, pos);
+                return portal;
             }
         }
+        int next = index;
+        if (samePlot && next == search.getInt("cursor") && next < total) return null;
+        CustomData.update(DataComponents.CUSTOM_DATA, cell, data -> {
+            var saved = new CompoundTag();
+            saved.putInt("plot", plot.getId());
+            saved.putLong("size", size.asLong());
+            saved.putInt("cursor", next);
+            if (next == total) saved.putLong("retry", now + FAILED_SEARCH_RETRY_TICKS);
+            data.put(SEARCH, saved);
+        });
         return null;
     }
+
+    private static boolean placementChunksReady(ServerLevel level, BlockPos pos) {
+        return GatewayWorkBudget.chunkReady(level, pos.west()) && GatewayWorkBudget.chunkReady(level, pos.east())
+                && GatewayWorkBudget.chunkReady(level, pos.north()) && GatewayWorkBudget.chunkReady(level, pos.south());
+    }
+
     private static void remember(ItemStack cell, BlockPos pos) {
-        CustomData.update(DataComponents.CUSTOM_DATA, cell, tag -> tag.putLong(PORTAL, pos.asLong()));
+        CustomData.update(DataComponents.CUSTOM_DATA, cell, tag -> {
+            tag.putLong(PORTAL, pos.asLong());
+            tag.remove(SEARCH);
+        });
     }
     private static boolean inside(SpatialStoragePlot plot, BlockPos pos) {
         var offset = pos.subtract(plot.getOrigin());
@@ -124,7 +175,8 @@ public final class SpatialReturnPortalBlockEntity extends TileCelestialGateway {
                 && offset.getX() < plot.getSize().getX() && offset.getY() < plot.getSize().getY() && offset.getZ() < plot.getSize().getZ();
     }
     private static boolean clear(ServerLevel level, BlockPos pos) {
-        return level.getBlockState(pos).isAir() && level.getFluidState(pos).isEmpty();
+        var state = level.getBlockState(pos);
+        return state.isAir() && state.getFluidState().isEmpty();
     }
     private static Vec3 arrival(ServerLevel level, BlockPos pos) {
         if (!level.getWorldBorder().isWithinBounds(pos) || !clear(level, pos.above()) || !clear(level, pos.above(2))

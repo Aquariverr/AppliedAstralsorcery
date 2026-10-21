@@ -82,9 +82,12 @@ public final class LumenCrystalCollectorGameTests {
                         "Collector must coexist with its cable and target exactly the block in front");
                 List<AABB> boxes = new ArrayList<>();
                 part.getBoxes(new BusCollisionHelper(boxes, face, true));
-                helper.assertTrue(!boxes.isEmpty() && boxes.stream().allMatch(box -> touchesOuterFace(box, face))
+                // The cable nub sits behind the front panel, so only the panel must touch the outer face.
+                helper.assertTrue(!boxes.isEmpty() && boxes.stream().allMatch(box -> liesWithinOuterSlab(box, face))
+                                && boxes.stream().anyMatch(box -> touchesOuterFace(box, face))
                                 && !part.getStaticModels().getModels().isEmpty(),
-                        "Each collector orientation must expose a native thin-panel outline and static model");
+                        "Collector outline must stay within the outer 3/16 slab, touch the " + face
+                                + " face and expose a static model");
                 helper.getLevel().getBlockState(pos).useWithoutItem(helper.getLevel(), player,
                         new BlockHitResult(click, face, pos, false));
                 helper.assertTrue(player.containerMenu == player.inventoryMenu,
@@ -340,11 +343,19 @@ public final class LumenCrystalCollectorGameTests {
                 "The same native typed crystal tile must remain at stage " + stage);
     }
 
-    private static boolean touchesOuterFace(AABB box, Direction face) {
+    private static boolean liesWithinOuterSlab(AABB box, Direction face) {
+        if (box.minX < 0 || box.minY < 0 || box.minZ < 0
+                || box.maxX > 1 || box.maxY > 1 || box.maxZ > 1) return false;
         double min = face.getAxis().choose(box.minX, box.minY, box.minZ);
         double max = face.getAxis().choose(box.maxX, box.maxY, box.maxZ);
         return face.getAxisDirection() == Direction.AxisDirection.POSITIVE
-                ? min >= 0.75 && max == 1 : min == 0 && max <= 0.25;
+                ? min >= 13.0 / 16 : max <= 3.0 / 16;
+    }
+
+    private static boolean touchesOuterFace(AABB box, Direction face) {
+        return face.getAxisDirection() == Direction.AxisDirection.POSITIVE
+                ? face.getAxis().choose(box.maxX, box.maxY, box.maxZ) == 1
+                : face.getAxis().choose(box.minX, box.minY, box.minZ) == 0;
     }
 
     private static ItemStack crystalStack() { return LumenCrystalItem.getCrystal(LumenAS.AEVITAS); }

@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import appeng.api.stacks.AEFluidKey;
 import appeng.api.stacks.AEItemKey;
@@ -89,10 +90,10 @@ public final class AltarPatternTransferHandler
                         .orElseThrow()))
                 .toList();
         var outputs = getOutputs(recipeSlots);
+        var inputKeys = inputs.stream().flatMap(List::stream).map(GenericStack::what).collect(Collectors.toSet());
 
         // EncodingHelper merges identical keys, but silently drops keys beyond the terminal's slot limit.
-        if (inputs.stream().flatMap(List::stream).map(GenericStack::what).distinct().count()
-                > menu.getProcessingInputSlots().length
+        if (inputKeys.size() > menu.getProcessingInputSlots().length
                 || outputs.stream().map(GenericStack::what).distinct().count()
                 > menu.getProcessingOutputSlots().length) {
             return helper.createUserErrorWithTooltip(ItemModText.RECIPE_TOO_LARGE.text());
@@ -105,8 +106,7 @@ public final class AltarPatternTransferHandler
 
         boolean anyCraftable = clientRepo.getAllEntries().stream()
                 .filter(GridInventoryEntry::isCraftable)
-                .anyMatch(entry -> inputs.stream().flatMap(List::stream)
-                        .anyMatch(stack -> stack.what().equals(entry.getWhat())));
+                .anyMatch(entry -> inputKeys.contains(entry.getWhat()));
         return new IRecipeTransferError() {
             @Override
             public Type getType() {

@@ -92,14 +92,14 @@ public final class WorldCrystallization {
     /** Random uses nextInt(bound). No catalyst or operation cost is committed before world placement succeeds. */
     public boolean tick(ServerLevel level, BlockPos target, MEStorage storage, IActionSource source,
             IntUnaryOperator random) {
+        if (returning) return returnResources(storage, source);
         boolean changed = flushItems(storage, source);
-        if (returning) return returnResources(storage, source) || changed;
+        if (lumen == null && (marker.isEmpty() || recipeId == null)) return changed;
         if (!pendingItems.isEmpty() || !level.hasChunk(target.getX() >> 4, target.getZ() >> 4)) return changed;
 
         var state = level.getBlockState(target);
         var cluster = level.getBlockEntity(target) instanceof TileLumenCrystalCluster tile ? tile : null;
         if (lumen == null) {
-            if (marker.isEmpty() || recipeId == null) return changed;
             var holder = level.getRecipeManager().byKey(recipeId).orElse(null);
             if (holder == null || !(holder.value() instanceof LumenCrystallizationRecipe recipe)
                     || !recipe.getInput().test(marker) || recipe.getLumenConsumedPerOperation() < 1

@@ -31,6 +31,7 @@ final class AltarResourceBuffer {
     }
 
     boolean canInsert(List<GenericStack> incoming) {
+        if (incoming.isEmpty()) return true;
         // Simulate the entire batch on a copy; individual simulations could reuse the same empty fluid tank.
         var copy = new AltarResourceBuffer(() -> {});
         for (int i = 0; i < FLUID_TANKS; i++) copy.fluids.getTank(i).setContent(fluid.getFluidInTank(i));

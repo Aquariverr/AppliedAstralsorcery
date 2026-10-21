@@ -15,12 +15,15 @@ import hellfirepvp.astralsorcery.common.util.data.Vector3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import org.joml.Vector3f;
 
 public final class IridescentAttunementEffects implements IridescentAttunementBlockEntity.ClientEffects {
     private static final double RELAY_FOCUS_Y = 0.85;
     private static final double STREAM_SPEED = 0.22;
     private final IridescentAttunementBlockEntity altar;
     private final Vector3[] lastStar = new Vector3[AttunementLayout.STATIONS.size()];
+    private final AttunementRingGeometry geometry = new AttunementRingGeometry();
+    private final Vector3f starPosition = new Vector3f();
     private VFXImmediateFacingSprite flare;
     private boolean working;
 
@@ -29,11 +32,12 @@ public final class IridescentAttunementEffects implements IridescentAttunementBl
     private boolean isPresent() {
         var client = Minecraft.getInstance();
         var level = altar.getLevel();
-        return level != null && level == client.level && !altar.isRemoved()
+        var camera = client.getCameraEntity();
+        var pos = altar.getBlockPos();
+        return level != null && level == client.level && !altar.isRemoved() && camera != null
+                && camera.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64 * 64
                 && level.hasChunk(altar.getBlockPos().getX() >> 4, altar.getBlockPos().getZ() >> 4)
-                && level.getBlockEntity(altar.getBlockPos()) == altar
-                && client.getCameraEntity() != null
-                && client.getCameraEntity().distanceToSqr(altar.getBlockPos().getCenter()) <= 64 * 64;
+                && level.getBlockEntity(altar.getBlockPos()) == altar;
     }
 
     private static ColorWrapper color(int station) {
@@ -46,7 +50,7 @@ public final class IridescentAttunementEffects implements IridescentAttunementBl
             stop();
             return;
         }
-        var crystal = IridescentAttunementRenderer.crystalCentre(altar, 0);
+        Vector3 crystal = null;
         boolean peak = level.getGameTime() % IridescentAttunementRenderer.BREATH_CYCLE
                 == IridescentAttunementRenderer.BREATH_CYCLE / 2 - 1;
         var random = level.random;
@@ -56,8 +60,12 @@ public final class IridescentAttunementEffects implements IridescentAttunementBl
                 lastStar[i] = null;
                 continue;
             }
-            working = true;
-            var star = IridescentAttunementRenderer.starCentre(altar, i, 0);
+            if (!working) {
+                updateGeometry();
+                crystal = IridescentAttunementRenderer.crystalCentre(altar, 0);
+                working = true;
+            }
+            var star = starCentre(i);
             trail(random, i, lastStar[i] == null ? star : lastStar[i], star);
             stream(random, i, crystal);
             if (peak) {
@@ -79,7 +87,20 @@ public final class IridescentAttunementEffects implements IridescentAttunementBl
             flare.setPos(crystal.copy());
             shimmer(random, crystal);
         }
-        if (altar.isLumenFed()) lumenMotes(random, level.getGameTime(), crystal);
+        if (altar.isLumenFed()) {
+            if (crystal == null) crystal = IridescentAttunementRenderer.crystalCentre(altar, 0);
+            lumenMotes(random, level.getGameTime(), crystal);
+        }
+    }
+
+    private void updateGeometry() {
+        geometry.update(altar.getRingClock(0), (float) Mth.smoothstep(altar.getRingRise(0)),
+                altar.getRingPhase(0), lastStar.length);
+    }
+
+    private Vector3 starCentre(int station) {
+        geometry.starCentre(station, starPosition);
+        return new Vector3(altar.getBlockPos()).add(starPosition.x, starPosition.y, starPosition.z);
     }
 
     private void trail(RandomSource random, int station, Vector3 from, Vector3 to) {
@@ -95,8 +116,9 @@ public final class IridescentAttunementEffects implements IridescentAttunementBl
     }
 
     private void stream(RandomSource random, int station, Vector3 crystal) {
-        var relay = new Vector3(altar.getBlockPos().offset(AttunementLayout.STATIONS.get(station).offset()))
-                .add(0.5, RELAY_FOCUS_Y, 0.5);
+        var offset = AttunementLayout.STATIONS.get(station).offset();
+        var relay = new Vector3(altar.getBlockPos()).add(offset.getX() + 0.5, offset.getY() + RELAY_FOCUS_Y,
+                offset.getZ() + 0.5);
         var from = crystal.copy().add((random.nextFloat() - 0.5) * 0.15, (random.nextFloat() - 0.5) * 0.3,
                 (random.nextFloat() - 0.5) * 0.15);
         var path = relay.subtract(from);
@@ -163,7 +185,8 @@ public final class IridescentAttunementEffects implements IridescentAttunementBl
         if (level == null || !isPresent()) return;
         var random = level.random;
         var crystal = IridescentAttunementRenderer.crystalCentre(altar, 0);
-        var star = IridescentAttunementRenderer.starCentre(altar, station, 0);
+        updateGeometry();
+        var star = starCentre(station);
         var color = color(station);
         arc(random, crystal, star, color, 0.16F);
         arc(random, crystal, star, ColorWrapper.WHITE, 0.12F);
@@ -182,6 +205,7 @@ public final class IridescentAttunementEffects implements IridescentAttunementBl
     }
 
     @Override public void stop() {
+        if (!working && flare == null) return;
         working = false;
         if (flare != null) flare.requestRemoval();
         flare = null;

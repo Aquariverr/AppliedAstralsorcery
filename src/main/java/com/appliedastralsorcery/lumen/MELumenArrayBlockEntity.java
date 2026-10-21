@@ -41,6 +41,7 @@ public class MELumenArrayBlockEntity extends TileLumenArray implements IGridConn
     private LumenStack pendingOutput = LumenStack.EMPTY;
     // Native recipes run once per second, including starlight-consuming cycles at full lumen capacity.
     private long glowWorkingUntil = Long.MIN_VALUE;
+    private final LumenCatalystSearch catalystSearch = new LumenCatalystSearch();
 
     public MELumenArrayBlockEntity(BlockPos pos, BlockState state) {
         this(new TileRegistryObject<>(ModContent.ARRAY_ENTITY), pos, state);
@@ -203,12 +204,13 @@ public class MELumenArrayBlockEntity extends TileLumenArray implements IGridConn
         long extractedFluid = storage.extract(AEFluidKey.of(fluid), wantedFluid, Actionable.MODULATE, source);
         if (extractedFluid > 0) tank.fill(new FluidStack(fluid, (int) extractedFluid), IFluidHandler.FluidAction.EXECUTE);
         var inv = getTileData().getInventory();
-        if (selected == null || !inv.getStackInSlot(0).isEmpty()) return;
-        for (var entry : storage.getAvailableStacks()) {
-            if (!(entry.getKey() instanceof AEItemKey key) || entry.getLongValue() <= 0) continue;
+        // The inventory rejects every catalyst without starlight, so do not scan the whole ME network.
+        if (selected == null || !inv.getStackInSlot(0).isEmpty() || getTileData().getContainedFluid().isEmpty()) return;
+        // AE2 shares this snapshot between machines and refreshes it at most once per tick.
+        // The final extraction remains authoritative when another machine consumes the candidate first.
+        for (var key : catalystSearch.candidates(level, selected, isAlchemyArray(),
+                grid.getStorageService().getCachedInventory())) {
             var candidate = key.toStack(1);
-            if (hellfirepvp.astralsorcery.common.util.RecipeFinder.of(level)
-                    .findLumenGenerationRecipe(candidate, selected, isAlchemyArray()).isEmpty()) continue;
             if (!inv.insertItem(0, candidate, true).isEmpty()) continue;
             if (storage.extract(key, 1, Actionable.MODULATE, source) == 1) {
                 inv.insertItem(0, candidate, false);

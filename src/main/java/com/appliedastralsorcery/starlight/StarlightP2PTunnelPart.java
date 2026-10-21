@@ -27,10 +27,16 @@ public final class StarlightP2PTunnelPart extends P2PTunnelPart<StarlightP2PTunn
     // Forward synchronously: there is no saved energy or tick buffer that a feedback loop can refill.
     private static final ThreadLocal<Set<StarlightP2PTunnelPart>> TRANSMISSION_PATH = new ThreadLocal<>();
     private static final int MAX_HOPS = 64;
+    private final StarlightRouteCache routes = new StarlightRouteCache();
 
     public StarlightP2PTunnelPart(IPartItem<?> item) {
         super(item);
         getMainNode().addService(IGridTickable.class, this);
+    }
+
+    @Override public void removeFromWorld() {
+        routes.clear();
+        super.removeFromWorld();
     }
 
     public static void registerModels() {
@@ -63,7 +69,7 @@ public final class StarlightP2PTunnelPart extends P2PTunnelPart<StarlightP2PTunn
             var share = packet.withMultiplier(1.0F / outputs.size());
             for (var output : outputs) {
                 StarlightP2PTransport.emit((ServerLevel) output.getLevel(),
-                        output.getBlockEntity().getBlockPos(), output.getSide(), share, kind);
+                        output.getBlockEntity().getBlockPos(), output.getSide(), share, kind, output.routes);
             }
         } finally {
             path.remove(this);
@@ -85,7 +91,7 @@ public final class StarlightP2PTunnelPart extends P2PTunnelPart<StarlightP2PTunn
         DataAS.DOMAIN_AS.getData(level, DataAS.KEY_FOCAL_POINT_DATA).getNode(pos).ifPresent(focal -> {
             // The native focal-point transmutation strength is 1 per tick. Multiple ports on the
             // same cable share it just as they share a beam aimed at that cable block.
-            int inputs = StarlightP2PTransport.inputsAt(level, pos).size();
+            int inputs = StarlightP2PTransport.countInputsAt(level, pos);
             if (inputs > 0) receiveStarlight(new StarlightTransmissionPacket(focal.getConstellation(), 1.0F / inputs),
                     StarlightP2PTransport.Kind.FOCAL);
         });

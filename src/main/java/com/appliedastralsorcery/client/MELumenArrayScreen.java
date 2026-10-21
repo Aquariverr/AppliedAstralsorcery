@@ -6,12 +6,14 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 
 import com.appliedastralsorcery.ModContent;
 import com.appliedastralsorcery.integration.jei.GhostIngredientResolver;
+import java.util.Collection;
 import java.util.List;
 import com.appliedastralsorcery.lumen.LumenKey;
 import com.appliedastralsorcery.lumen.MELumenArrayMenu;
 import hellfirepvp.astralsorcery.client.ClientProxy;
 import hellfirepvp.astralsorcery.client.lib.TexturesAS;
 import hellfirepvp.astralsorcery.common.lumen.Lumen;
+import hellfirepvp.astralsorcery.common.recipe.lumen.LumenGenerationRecipe;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -23,6 +25,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.lwjgl.glfw.GLFW;
 
 @ParametersAreNonnullByDefault
@@ -46,6 +49,10 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
     private final ReserveMarkerDrag reserveDrag = new ReserveMarkerDrag();
     private int lastTarget = -1;
     private ItemStack catalystMarker = ItemStack.EMPTY;
+    private ItemStack catalystAlternative = ItemStack.EMPTY;
+    @Nullable private Lumen catalystLumen;
+    @Nullable private LumenGenerationRecipe catalystRecipe;
+    private Collection<RecipeHolder<?>> catalystRecipes = List.of();
     private ArrayButton apply, previous, next, export, supply, filaments, redstone;
 
     public MELumenArrayScreen(MELumenArrayMenu menu, Inventory inventory, Component title) {
@@ -237,20 +244,39 @@ public final class MELumenArrayScreen extends AbstractContainerScreen<MELumenArr
     }
 
     private void updateCatalystMarker() {
-        catalystMarker = ItemStack.EMPTY;
         Lumen selected = menu.getSelectedLumen();
-        if (selected == null || minecraft == null || minecraft.level == null || menu.getSlot(0).hasItem()) return;
-        // Follow the selected recipe even while the array is draining its previous lumen.
-        minecraft.level.getRecipeManager().getAllRecipesFor(
-                hellfirepvp.astralsorcery.common.lib.RecipeTypesAS.LUMEN_GENERATION_TYPE.get()).stream()
-                .filter(recipe -> recipe.value().getProducedLumen() == selected
-                        && menu.isAlchemyArray() != recipe.value().getLumenCombinationInputs().isEmpty())
-                .findFirst().ifPresent(recipe -> {
-            ItemStack[] alternatives = recipe.value().getInput().getItems();
-            if (alternatives.length > 0) {
-                catalystMarker = alternatives[(int) ((Util.getMillis() / 1000L) % alternatives.length)].copyWithCount(1);
+        if (selected == null || minecraft == null || minecraft.level == null || menu.getSlot(0).hasItem()) {
+            catalystMarker = catalystAlternative = ItemStack.EMPTY;
+            return;
+        }
+        var manager = minecraft.level.getRecipeManager();
+        var recipes = manager.getRecipes();
+        // RecipeManager replaces its immutable recipe map on reload. Keep misses cached too,
+        // so an unavailable catalyst does not trigger a full recipe scan on every frame.
+        if (selected != catalystLumen || recipes != catalystRecipes) {
+            catalystLumen = selected;
+            catalystRecipes = recipes;
+            catalystRecipe = null;
+            catalystMarker = catalystAlternative = ItemStack.EMPTY;
+            for (var holder : manager.getAllRecipesFor(
+                    hellfirepvp.astralsorcery.common.lib.RecipeTypesAS.LUMEN_GENERATION_TYPE.get())) {
+                var recipe = holder.value();
+                if (recipe.getProducedLumen() == selected
+                        && menu.isAlchemyArray() != recipe.getLumenCombinationInputs().isEmpty()) {
+                    catalystRecipe = recipe;
+                    break;
+                }
             }
-        });
+        }
+        if (catalystRecipe == null) return;
+        // Follow the selected recipe even while the array is draining its previous lumen.
+        ItemStack[] alternatives = catalystRecipe.getInput().getItems();
+        ItemStack alternative = alternatives.length == 0 ? ItemStack.EMPTY
+                : alternatives[(int) ((Util.getMillis() / 1000L) % alternatives.length)];
+        if (alternative != catalystAlternative) {
+            catalystAlternative = alternative;
+            catalystMarker = alternative.copyWithCount(1);
+        }
     }
 
     @Nullable private Lumen displayedLumen() {
