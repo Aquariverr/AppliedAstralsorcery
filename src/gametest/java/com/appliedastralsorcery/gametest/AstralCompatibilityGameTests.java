@@ -2,10 +2,13 @@ package com.appliedastralsorcery.gametest;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import appeng.api.crafting.PatternDetailsHelper;
 import appeng.api.stacks.AEItemKey;
+import appeng.api.stacks.GenericStack;
 import appeng.api.stacks.KeyCounter;
 import com.appliedastralsorcery.ModContent;
 import com.appliedastralsorcery.altar.AltarRecipePlan;
@@ -96,6 +99,37 @@ public final class AstralCompatibilityGameTests {
         helper.assertTrue(plan != null && plan.additional().size() == 2
                         && plan.additional().stream().mapToInt(ItemStack::getCount).sum() == 2,
                 "Altar automation must plan both additional aquamarine inputs without a linkage error");
+        helper.succeed();
+    }
+
+    @GameTest(template = "attunement_test")
+    public static void altarPatternsDisambiguateNativeProducts(GameTestHelper helper) {
+        var pos = new BlockPos(10, 2, 10);
+        helper.setBlock(pos, BlocksAS.ALTAR_ILLUMINATION.get());
+        var altar = (TileAltar) helper.getLevel().getBlockEntity(helper.absolutePos(pos));
+        var supplied = new KeyCounter();
+        var marble = AEItemKey.of(BlocksAS.MARBLE_RAW.get());
+        supplied.add(marble, 2);
+        // Both native recipes consume two raw marble; the pattern output must pick the arrangement.
+        var plans = Stream.of("marble_arch", "marble_pillar").map(name -> {
+            var id = ResourceLocation.fromNamespaceAndPath("astralsorcery", "altar/" + name);
+            var recipe = (AltarRecipe) helper.getLevel().getRecipeManager().byKey(id).orElseThrow().value();
+            return AltarRecipePlan.create(altar, new RecipeHolder<>(id, recipe), new KeyCounter[]{supplied});
+        }).toList();
+        helper.assertTrue(plans.stream().allMatch(plan -> plan != null),
+                "Both native marble recipes must accept the same processing inputs");
+        var patternStack = PatternDetailsHelper.encodeProcessingPattern(List.of(new GenericStack(marble, 2)),
+                List.of(new GenericStack(AEItemKey.of(BlocksAS.MARBLE_PILLAR.get()), 2)));
+        var pattern = PatternDetailsHelper.decodePattern(patternStack, helper.getLevel());
+        helper.assertTrue(pattern != null && AltarRecipePlan.select(altar, plans, pattern) == plans.get(1),
+                "Native displayed products must select marble pillars instead of the first matching input plan");
+        var invalidPattern = PatternDetailsHelper.decodePattern(PatternDetailsHelper.encodeProcessingPattern(
+                List.of(new GenericStack(marble, 2)), List.of(new GenericStack(AEItemKey.of(Items.DIAMOND), 1))),
+                helper.getLevel());
+        helper.assertTrue(AltarRecipePlan.select(altar, plans, invalidPattern) == null,
+                "A pattern requesting an unrelated product must not select an altar recipe");
+        helper.assertTrue(supplied.get(marble) == 2,
+                "Checking candidate recipes and pattern outputs must not consume the supplied items");
         helper.succeed();
     }
 

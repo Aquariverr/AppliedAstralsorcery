@@ -55,6 +55,7 @@ public abstract class FocusCrystalP2PMixin implements FocalStarlightReceiver {
         var temporary = new FocusCrystalSourceNode(crystal.getBlockPos());
         temporary.setConstellation(appliedas$focalConstellation);
         temporary.setCrystalProperties(crystal.getTileData().getCrystalAttributes());
+        temporary.setValidLayers(crystal.getTileData().getValidLayers().size());
         return temporary.produceStarlight(level).map(packet -> packet.withMultiplier(appliedas$focalAmount));
     }
 

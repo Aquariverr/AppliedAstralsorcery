@@ -119,7 +119,8 @@ public record AltarRecipePlan(RecipeHolder<AltarRecipe> recipe, List<ItemStack> 
     private Set<Item> productTypes(TileAltar altar, HolderLookup.Provider registries) {
         var input = AltarCraftingInput.createDisplay(altar.getTileData().getFocusedConstellation().orElse(null), grid, relays);
         var types = new HashSet<Item>();
-        for (var stack : recipe.value().getOutputsForDisplay(input, registries)) {
+        // Pattern selection must be deterministic, independent of the display animation tick.
+        for (var stack : recipe.value().getOutputsForDisplay(input, registries, 0L)) {
             if (!stack.isEmpty()) types.add(stack.getItem());
         }
         return types;

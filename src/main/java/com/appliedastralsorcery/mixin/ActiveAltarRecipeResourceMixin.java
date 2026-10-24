@@ -2,8 +2,8 @@ package com.appliedastralsorcery.mixin;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import com.appliedastralsorcery.altar.AltarAutomationBlockEntity;
@@ -40,7 +40,7 @@ public abstract class ActiveAltarRecipeResourceMixin {
 
     @Inject(method = "tickTrackAdditionalInputs", at = @At("HEAD"))
     private void appliedas$drawCachedLumen(TileAltar altar, ServerLevel level, BlockPos altarPos,
-            Map<BaseConstellation, Float> aggregateStarlight, CallbackInfo ci) {
+            Set<BaseConstellation> starlight, CallbackInfo ci) {
         appliedas$resourceSource = AltarAutomationBlockEntity.getResourceSource(altar, playerUUID);
         appliedas$drewCachedLumen = false;
         // AS draws at most one lumen type, up to 100 units, every 40 ticks.

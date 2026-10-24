@@ -37,7 +37,7 @@ Minecraft **1.21.1**, NeoForge **21.1.238 or later**, and **Java 21**, with comp
 
 | Required mod | Version |
 | --- | --- |
-| [Astral Sorcery](https://www.curseforge.com/minecraft/mc-mods/astral-sorcery) | 2.0.2; tested Maven builds 2.0.2.39 and 2.0.2.50 |
+| [Astral Sorcery](https://www.curseforge.com/minecraft/mc-mods/astral-sorcery) | 2.0.3; built and tested with Maven build 2.0.3.59 |
 | [Applied Energistics 2](https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2) | 19.2.17 or later, below 20 |
 | [GuideME](https://www.curseforge.com/minecraft/mc-mods/guideme) | 21.1.1 or later |
 | [ObserverLib](https://www.curseforge.com/minecraft/mc-mods/observerlib) | 1.10.3 or later |
@@ -45,10 +45,10 @@ Minecraft **1.21.1**, NeoForge **21.1.238 or later**, and **Java 21**, with comp
 
 JEI, Jade and AE2 JEI Integration are optional.
 
-Applied Astralsorcery 0.5.1 is built against [Astral Sorcery 2.0.2.39](https://maven.hellfiredev.net/hellfirepvp/astralsorcery/AstralSorcery/2.0.2.39/). The same compiled code supports both 2.0.2.39 and 2.0.2.50 through compatible lumen array recipe lookup hooks. Astral Sorcery reports only `2.0.2` to NeoForge, so the loader's version check cannot distinguish individual builds; other builds have not been verified. This update migrates the 19 altar and Liquid Starlight recipes to the new JSON format and rebuilds guide and altar automation integration against `SizedIngredient`.
+Built against [Astral Sorcery 2.0.3.59](https://maven.hellfiredev.net/hellfirepvp/astralsorcery/AstralSorcery/2.0.3.59/), requiring Astral Sorcery 2.0.3 or later at load time. Astral Sorcery reports only `2.0.3` to NeoForge, so the loader's version check cannot distinguish individual builds; other builds have not been verified. This update adapts altar resource hooks and recipe output previews to the new API, fixing the crash when placing an Illuminated Crafting Table. P2P-fed focus crystals also retain the new filament-layer production bonus. Astral Sorcery 2.0.2 is no longer supported by this build.
 
 Jade shows AE2's native network status for the Starlight Transmutation Chamber, ME Lumen Array and ME Chalice, including online, offline, network booting and missing channels.
 
 ## Development checks
 
-Run `./gradlew build` for the release jar. Run `./gradlew runAttunementGameTest -PattunementGameTests` for the attunement and ME automation integration tests in an isolated world under `build/attunement-gametest`. Test classes and structures are excluded from release jars.
+Run `./gradlew build` for the release jar. Run `./gradlew runAttunementGameTest -PattunementGameTests` for the attunement and ME automation integration tests in an isolated world under `build/attunement-gametest`. Compatibility regressions cover native altar placement and ticking, manual and automated crafting, recipe selection, and focus-crystal P2P production bonuses. Test classes and structures are excluded from release jars.

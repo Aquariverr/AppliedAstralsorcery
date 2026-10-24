@@ -31,7 +31,7 @@ side="BOTH"
 modId="astralsorcery"
 type="required"
 # Astral Sorcery omits its build number here; see README for the tested Maven builds.
-versionRange="[2.0.2,)"
+versionRange="[2.0.3,)"
 ordering="AFTER"
 side="BOTH"
 

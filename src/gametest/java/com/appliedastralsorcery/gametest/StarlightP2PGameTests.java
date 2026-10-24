@@ -13,6 +13,7 @@ import appeng.core.definitions.AEParts;
 import appeng.parts.PartPlacement;
 import com.appliedastralsorcery.ModConfig;
 import com.appliedastralsorcery.ModContent;
+import com.appliedastralsorcery.starlight.FocalStarlightReceiver;
 import com.appliedastralsorcery.starlight.StarlightP2PTunnelPart;
 import com.appliedastralsorcery.transmutation.StarlightTransmutationBlockEntity;
 import hellfirepvp.astralsorcery.common.constellation.BaseConstellation;
@@ -369,6 +370,41 @@ public final class StarlightP2PGameTests {
                             && !chamber.hasStarlight(),
                     "Ending the source must deactivate crystals and stop their native downstream route");
         }).thenSucceed();
+    }
+
+    @GameTest(template = "attunement_test")
+    public static void transportedFocalLightKeepsNativeFilamentLayerBonus(GameTestHelper helper)
+            throws ReflectiveOperationException {
+        var level = helper.getLevel();
+        var cst = visibleChamberRecipe(helper).getRequiredConstellation().orElseThrow();
+        var crystal = focusCrystal(helper, helper.absolutePos(new BlockPos(10, 3, 10)), cst);
+        var receiver = (FocalStarlightReceiver) crystal;
+        receiver.appliedas$receiveFocalStarlight(level, new StarlightTransmissionPacket(cst, 0.5F));
+        // Seed the native observer's validated state without coupling this transport test to its geometry rules.
+        var addLayer = TileStarlightFocusCrystal.Data.class.getDeclaredMethod("addValidLayer", int.class);
+        var clearLayers = TileStarlightFocusCrystal.Data.class.getDeclaredMethod("clearValidLayers");
+        addLayer.setAccessible(true);
+        clearLayers.setAccessible(true);
+        long previousTime = level.getDayTime();
+        try {
+            level.setDayTime(18000);
+            var baseline = receiver.appliedas$produceFocusedStarlight(level).orElseThrow();
+            helper.assertTrue(baseline.amount() > 0, "The split focal supply must produce measurable starlight");
+            for (int layer : new int[]{-1, 0, 1}) addLayer.invoke(crystal.getTileData(), layer);
+            var boosted = receiver.appliedas$produceFocusedStarlight(level).orElseThrow();
+            helper.assertTrue(boosted.constellation() == cst
+                            && Math.abs(boosted.amount() - baseline.amount() * 1.24F) < 0.0001F,
+                    "Three validated filament layers must add the native 24% bonus to split P2P focal light");
+            clearLayers.invoke(crystal.getTileData());
+            var reduced = receiver.appliedas$produceFocusedStarlight(level).orElseThrow();
+            helper.assertTrue(Math.abs(reduced.amount() - baseline.amount()) < 0.0001F,
+                    "Removing validated filament layers must remove their bonus immediately");
+            crystal.getNetworkNode().ifPresent(source -> helper.assertTrue(source.getConstellation().isEmpty(),
+                    "Applying a filament bonus must not permanently initialize the crystal source"));
+        } finally {
+            level.setDayTime(previousTime);
+        }
+        helper.succeed();
     }
 
     @GameTest(template = "attunement_test", timeoutTicks = 160)
