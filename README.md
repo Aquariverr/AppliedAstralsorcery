@@ -45,10 +45,4 @@ Minecraft **1.21.1**, NeoForge **21.1.238 or later**, and **Java 21**, with comp
 
 JEI, Jade and AE2 JEI Integration are optional.
 
-Built against [Astral Sorcery 2.0.3.59](https://maven.hellfiredev.net/hellfirepvp/astralsorcery/AstralSorcery/2.0.3.59/), requiring Astral Sorcery 2.0.3 or later at load time. Astral Sorcery reports only `2.0.3` to NeoForge, so the loader's version check cannot distinguish individual builds; other builds have not been verified. This update adapts altar resource hooks and recipe output previews to the new API, fixing the crash when placing an Illuminated Crafting Table. P2P-fed focus crystals also retain the new filament-layer production bonus. Astral Sorcery 2.0.2 is no longer supported by this build.
-
-Jade shows AE2's native network status for the Starlight Transmutation Chamber, ME Lumen Array and ME Chalice, including online, offline, network booting and missing channels.
-
-## Development checks
-
-Run `./gradlew build` for the release jar. Run `./gradlew runAttunementGameTest -PattunementGameTests` for the attunement and ME automation integration tests in an isolated world under `build/attunement-gametest`. Compatibility regressions cover native altar placement and ticking, manual and automated crafting, recipe selection, and focus-crystal P2P production bonuses. Test classes and structures are excluded from release jars.
+Built against [Astral Sorcery 2.0.3.59](https://maven.hellfiredev.net/hellfirepvp/astralsorcery/AstralSorcery/2.0.3.59/).
