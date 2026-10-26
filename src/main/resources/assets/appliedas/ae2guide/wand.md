@@ -21,6 +21,13 @@ Retains Resonating Wand functions and builds structures from blocks in ME or you
 
 Normal right-click retains the original wand functions.
 
+With **AEInfinityBooster** installed, an active access point in the linked network can extend the wand's reach:
+
+- **Infinity Range Booster Card:** Unlimited range within the access point's dimension.
+- **Dimension Card:** Unlimited range across dimensions.
+
+The linked access point must stay loaded, and the access point providing coverage still needs power and a channel.
+
 ## Settings
 
 **Right-click air** to open settings.

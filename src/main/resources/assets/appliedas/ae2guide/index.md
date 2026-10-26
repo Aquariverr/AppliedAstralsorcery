@@ -48,6 +48,8 @@ Adds Astral Sorcery automation and lumen storage to AE2. Lumen is measured in **
 
 ## Recipes and settings
 
+Use an **AE2 Memory Card** to copy settings for the Automatic Starmetal Chisel, ME Lumen Array, ME Lumen Alchemy Array, ME Chalice and Starlight Transmutation Chamber. **Sneak-right-click** saves settings; **right-click** applies them to another machine of the same type. This copies configuration only, including side modes and ghost filters, without moving stored resources or copying enchantments. Changing an array's lumen or a chalice's fluid keeps the existing contents until they can return to ME.
+
 Hover over recipe items to see their names. Outer ingredients in altar recipes go on Focus Relays. Start crafting at night with a Resonating Wand; individual pages identify additional ingredients to drop nearby.
 
 Adjust processing times and lumen costs under **Mods → Applied Astralsorcery → Config → Server Settings**.

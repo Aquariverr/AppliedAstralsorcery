@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.appliedastralsorcery.ModContent;
+import com.appliedastralsorcery.integration.MachineMemoryCard;
 import com.mojang.serialization.MapCodec;
 import hellfirepvp.astralsorcery.common.block.tile.ChaliceBlock;
 import net.minecraft.core.BlockPos;
@@ -69,6 +70,8 @@ public final class MEChaliceBlock extends ChaliceBlock {
     @Nonnull
     @Override protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level,
             BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        var cardResult = MachineMemoryCard.use(stack, level, pos, player);
+        if (cardResult != ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION) return cardResult;
         if (stack.getCapability(Capabilities.FluidHandler.ITEM) != null)
             return super.useItemOn(stack, state, level, pos, player, hand, hit);
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

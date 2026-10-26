@@ -5,12 +5,16 @@ import javax.annotation.Nullable;
 import net.minecraft.MethodsReturnNonnullByDefault;
 
 import com.appliedastralsorcery.ModContent;
+import com.appliedastralsorcery.integration.MachineMemoryCard;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -59,6 +63,12 @@ public final class AutoChiselBlock extends BaseEntityBlock {
     @Override @Nullable public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide ? null : createTickerHelper(type, ModContent.AUTO_CHISEL_ENTITY.get(),
                 (world, pos, blockState, entity) -> entity.serverTick());
+    }
+    @Override protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level,
+            BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        var result = MachineMemoryCard.use(stack, level, pos, player);
+        return result != ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION ? result
+                : super.useItemOn(stack, state, level, pos, player, hand, hit);
     }
     @Override protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (player.isSpectator()) return InteractionResult.PASS;

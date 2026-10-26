@@ -367,6 +367,7 @@ public final class ModContent {
         MELumenCrystalCollectorPart.registerModels();
         LumenCellEnhancement.register(bus);
         MEResonatingWandItem.registerComponents(bus);
+        com.appliedastralsorcery.integration.MachineMemoryCard.registerComponents(bus);
         BLOCKS.register(bus);
         ITEMS.register(bus);
         BLOCK_ENTITIES.register(bus);

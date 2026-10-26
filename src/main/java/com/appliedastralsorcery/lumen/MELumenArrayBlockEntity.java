@@ -8,6 +8,7 @@ import appeng.me.helpers.IGridConnectedBlockEntity;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEFluidKey;
 import com.appliedastralsorcery.ModContent;
+import com.appliedastralsorcery.integration.MemoryCardSettings;
 import com.mojang.serialization.Codec;
 import hellfirepvp.astralsorcery.common.lib.LumenAS;
 import hellfirepvp.astralsorcery.common.lib.FluidsAS;
@@ -26,7 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
-public class MELumenArrayBlockEntity extends TileLumenArray implements IGridConnectedBlockEntity {
+public class MELumenArrayBlockEntity extends TileLumenArray implements IGridConnectedBlockEntity, MemoryCardSettings {
     private final IManagedGridNode mainNode = GridHelper.createManagedNode(this,
             (owner, node) -> owner.setChanged())
             .setInWorldNode(true).setExposedOnSides(Set.of(Direction.DOWN))
@@ -96,6 +97,32 @@ public class MELumenArrayBlockEntity extends TileLumenArray implements IGridConn
         if (type == null || type == LumenAS.NONE.get()) return;
         selected = type;
         finishSwitchIfEmpty();
+        setChanged();
+    }
+
+    @Override public CompoundTag exportMemoryCardSettings() {
+        var settings = new CompoundTag();
+        var lumen = getSelectedLumen();
+        if (lumen != null && lumen != LumenAS.NONE.get())
+            settings.putString("lumen", lumen.getRegistryKey().orElseThrow().location().toString());
+        settings.putInt("target", pullTarget);
+        settings.putBoolean("export", export);
+        settings.putBoolean("items", supplyItems);
+        settings.putBoolean("filaments", interactWithFilaments);
+        settings.putBoolean("redstoneControl", redstoneControl);
+        return settings;
+    }
+
+    @Override public void importMemoryCardSettings(CompoundTag settings) {
+        var id = ResourceLocation.tryParse(settings.getString("lumen"));
+        var lumen = id == null ? null : RegistriesAS.REGISTRY_LUMEN.get(id);
+        if (!settings.contains("lumen")) selected = null;
+        else if (lumen != null && lumen != LumenAS.NONE.get()) setSelectedLumen(lumen);
+        if (settings.contains("target")) setPullTarget(settings.getInt("target"));
+        if (settings.contains("export")) setExportEnabled(settings.getBoolean("export"));
+        if (settings.contains("items")) setSupplyItemsEnabled(settings.getBoolean("items"));
+        if (settings.contains("filaments")) setInteractWithFilaments(settings.getBoolean("filaments"));
+        if (settings.contains("redstoneControl")) setRedstoneControlEnabled(settings.getBoolean("redstoneControl"));
         setChanged();
     }
 

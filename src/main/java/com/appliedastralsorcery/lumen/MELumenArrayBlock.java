@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import net.minecraft.MethodsReturnNonnullByDefault;
 
 import com.appliedastralsorcery.ModContent;
+import com.appliedastralsorcery.integration.MachineMemoryCard;
 import com.mojang.serialization.MapCodec;
 import hellfirepvp.astralsorcery.common.block.tile.LumenArrayBlock;
 import hellfirepvp.astralsorcery.common.util.data.TileRegistryObject;
@@ -43,6 +44,8 @@ public class MELumenArrayBlock extends LumenArrayBlock {
     @Override protected MapCodec<? extends BaseEntityBlock> codec() { return CODEC; }
     @Override protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level,
             BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        var result = MachineMemoryCard.use(stack, level, pos, player);
+        if (result != ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION) return result;
         if (player.isShiftKeyDown()) return super.useItemOn(stack, state, level, pos, player, hand, hit);
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }

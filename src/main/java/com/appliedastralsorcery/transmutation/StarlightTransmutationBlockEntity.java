@@ -24,6 +24,7 @@ import appeng.api.storage.StorageHelper;
 import appeng.me.helpers.IGridConnectedBlockEntity;
 import com.appliedastralsorcery.ModContent;
 import com.appliedastralsorcery.ModConfig;
+import com.appliedastralsorcery.integration.MemoryCardSettings;
 import com.appliedastralsorcery.lumen.LumenKey;
 import com.mojang.serialization.Codec;
 import hellfirepvp.astralsorcery.common.constellation.BaseConstellation;
@@ -65,7 +66,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 @MethodsReturnNonnullByDefault
 public final class StarlightTransmutationBlockEntity
         extends TileEntityNetwork<ForwardingStarlightReceiverNode, TileEntityNetwork.Data>
-        implements ForwardingStarlightReceiverNode.ReceiverTile, IGridConnectedBlockEntity {
+        implements ForwardingStarlightReceiverNode.ReceiverTile, IGridConnectedBlockEntity, MemoryCardSettings {
     public static final int INPUT_SLOTS = 9, OUTPUT_SLOTS = 9;
     public static final int OVERCLOCK_LUMEN_COST = 5;
     // Transmission is live light, not a stored energy resource. Allow the network's tick ordering.
@@ -135,6 +136,35 @@ public final class StarlightTransmutationBlockEntity
         pullMarkers.setStackInSlot(slot, stack.isEmpty() ? ItemStack.EMPTY
                 : stack.copyWithCount(Math.clamp(stack.getCount(), 1, Math.min(64, stack.getMaxStackSize()))));
         return true;
+    }
+
+    @Override public CompoundTag exportMemoryCardSettings() {
+        var settings = new CompoundTag();
+        settings.putBoolean("autoPull", autoPull);
+        settings.putBoolean("lumenOverclock", lumenOverclock);
+        var markers = new CompoundTag();
+        if (level != null) {
+            for (int slot = 0; slot < INPUT_SLOTS; slot++) {
+                var marker = pullMarkers.getStackInSlot(slot);
+                if (!marker.isEmpty()) markers.put(Integer.toString(slot), marker.save(level.registryAccess()));
+            }
+        }
+        settings.put("pullMarkers", markers);
+        return settings;
+    }
+
+    @Override public void importMemoryCardSettings(CompoundTag settings) {
+        if (level == null) return;
+        autoPull = settings.getBoolean("autoPull");
+        lumenOverclock = settings.getBoolean("lumenOverclock");
+        var markers = settings.getCompound("pullMarkers");
+        for (int slot = 0; slot < INPUT_SLOTS; slot++) {
+            var marker = ItemStack.parseOptional(level.registryAccess(), markers.getCompound(Integer.toString(slot)));
+            if (!setPullMarker(slot, marker)) setPullMarker(slot, ItemStack.EMPTY);
+        }
+        // Settings affect the next refill/job; paid overclock charge and the active recipe stay intact.
+        wakeNetworkTransfers();
+        setChanged(false);
     }
     public int getProgress() { return progress; }
     public int getDuration() { return duration; }

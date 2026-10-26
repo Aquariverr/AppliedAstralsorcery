@@ -5,12 +5,15 @@ import javax.annotation.Nullable;
 import net.minecraft.MethodsReturnNonnullByDefault;
 
 import com.appliedastralsorcery.ModContent;
+import com.appliedastralsorcery.integration.MachineMemoryCard;
 import com.mojang.serialization.MapCodec;
 import hellfirepvp.astralsorcery.common.block.tile.base.BaseTickTileBlock;
 import hellfirepvp.astralsorcery.common.util.data.TileRegistryObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -53,6 +56,12 @@ public final class StarlightTransmutationBlock extends BaseTickTileBlock<Starlig
     @Override protected RenderShape getRenderShape(BlockState state) { return RenderShape.MODEL; }
     @Override protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) { return SHAPE; }
     @Override protected BlockEntityTicker<StarlightTransmutationBlockEntity> createTicker() { return ticker(); }
+    @Override protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level,
+            BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        var cardResult = MachineMemoryCard.use(stack, level, pos, player);
+        if (cardResult != ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION) return cardResult;
+        return super.useItemOn(stack, state, level, pos, player, hand, hit);
+    }
     @Override protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (player.isSpectator()) return InteractionResult.PASS;
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof StarlightTransmutationBlockEntity entity)

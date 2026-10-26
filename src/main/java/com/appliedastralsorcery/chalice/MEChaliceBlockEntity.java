@@ -7,6 +7,7 @@ import appeng.api.networking.security.IActionSource;
 import appeng.me.helpers.IGridConnectedBlockEntity;
 import appeng.api.stacks.AEFluidKey;
 import com.appliedastralsorcery.ModContent;
+import com.appliedastralsorcery.integration.MemoryCardSettings;
 import hellfirepvp.astralsorcery.common.tile.TileChalice;
 import hellfirepvp.astralsorcery.common.util.data.TileRegistryObject;
 import net.minecraft.core.*;
@@ -20,7 +21,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
 
-public final class MEChaliceBlockEntity extends TileChalice implements IGridConnectedBlockEntity {
+public final class MEChaliceBlockEntity extends TileChalice implements IGridConnectedBlockEntity, MemoryCardSettings {
     public static final int CAPACITY = 64_000;
     private final IManagedGridNode mainNode = GridHelper.createManagedNode(this,
             (owner, node) -> owner.setChanged())
@@ -61,6 +62,24 @@ public final class MEChaliceBlockEntity extends TileChalice implements IGridConn
     public void setPullTarget(int amount) { pullTarget = Math.clamp(amount, 0, CAPACITY); setChanged(); }
     public void setPullEnabled(boolean enabled) { pull = enabled; setChanged(); }
     public void setExportEnabled(boolean enabled) { export = enabled; setChanged(); }
+
+    @Override public CompoundTag exportMemoryCardSettings() {
+        var settings = new CompoundTag();
+        if (selected != null && level != null) settings.put("fluidKey", selected.toTag(level.registryAccess()));
+        settings.putInt("target", pullTarget);
+        settings.putBoolean("pull", pull);
+        settings.putBoolean("export", export);
+        return settings;
+    }
+
+    @Override public void importMemoryCardSettings(CompoundTag settings) {
+        if (level == null) return;
+        setSelectedKey(settings.contains("fluidKey")
+                ? AEFluidKey.fromTag(level.registryAccess(), settings.getCompound("fluidKey")) : null);
+        setPullTarget(settings.getInt("target"));
+        setPullEnabled(settings.getBoolean("pull"));
+        setExportEnabled(settings.getBoolean("export"));
+    }
 
     @Override public void serverTick(ServerLevel server) {
         if (!mainNode.isReady()) {

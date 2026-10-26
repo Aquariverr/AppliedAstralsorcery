@@ -14,6 +14,7 @@ import java.util.UUID;
 
 import com.appliedastralsorcery.ModContent;
 import com.appliedastralsorcery.ModConfig;
+import com.appliedastralsorcery.integration.MemoryCardSettings;
 import hellfirepvp.astralsorcery.common.crystal.CrystalPropertyGenerator;
 import hellfirepvp.astralsorcery.common.item.crystal.RockCrystalItem;
 import hellfirepvp.astralsorcery.common.lib.DataComponentsAS;
@@ -48,7 +49,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public final class AutoChiselBlockEntity extends BlockEntity {
+public final class AutoChiselBlockEntity extends BlockEntity implements MemoryCardSettings {
     public static final int OUTPUT_SLOTS = 9;
     public static final int LUMEN_CAPACITY = 2000;
     private static final int IDLE_DROP_SEARCH_INTERVAL = 5;
@@ -165,6 +166,39 @@ public final class AutoChiselBlockEntity extends BlockEntity {
         sideModes[side.ordinal()] = getSideMode(side).cycle(reverse);
         invalidateCapabilities();
         if (droppedItemMode) resetDropJob();
+        setChanged();
+    }
+
+    @Override public CompoundTag exportMemoryCardSettings() {
+        var settings = new CompoundTag();
+        settings.putIntArray("sides", Arrays.stream(sideModes).mapToInt(Enum::ordinal).toArray());
+        settings.putBoolean("autoInput", autoInput);
+        settings.putBoolean("autoOutput", autoOutput);
+        settings.putBoolean("droppedItemMode", droppedItemMode);
+        settings.putBoolean("roundRobin", roundRobin);
+        return settings;
+    }
+
+    @Override public void importMemoryCardSettings(CompoundTag settings) {
+        var sides = settings.getIntArray("sides");
+        boolean sidesChanged = false;
+        for (int i = 0; i < Math.min(sides.length, sideModes.length); i++) {
+            if (sides[i] >= 0 && sides[i] < SideMode.values().length) {
+                var mode = SideMode.values()[sides[i]];
+                sidesChanged |= sideModes[i] != mode;
+                sideModes[i] = mode;
+            }
+        }
+        if (settings.contains("autoInput")) autoInput = settings.getBoolean("autoInput");
+        if (settings.contains("autoOutput")) autoOutput = settings.getBoolean("autoOutput");
+        // Apply the same job resets as the menu when its processing mode or input faces change.
+        if (settings.contains("droppedItemMode") && settings.getBoolean("droppedItemMode") != droppedItemMode)
+            toggleDroppedItemMode();
+        if (settings.contains("roundRobin") && settings.getBoolean("roundRobin") != roundRobin) toggleRoundRobin();
+        if (sidesChanged) {
+            invalidateCapabilities();
+            if (droppedItemMode) resetDropJob();
+        }
         setChanged();
     }
 

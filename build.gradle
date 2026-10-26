@@ -126,6 +126,11 @@ dependencies {
     localRuntime "maven.modrinth:advancedae:${advanced_ae_version}"
     localRuntime "maven.modrinth:glodium:${glodium_version}"
     localRuntime "maven.modrinth:geckolib:${geckolib_version_id}"
+
+    // Opt in to testing the wand with real AEInfinityBooster cards.
+    if (providers.gradleProperty('aeInfinityBoosterGameTests').isPresent()) {
+        localRuntime 'maven.modrinth:VQhDBNs8:qpbQk2Iq' // NeoForge 1.21.1-1.0.0.58
+    }
 }
 
 def generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {
